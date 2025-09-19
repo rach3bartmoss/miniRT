@@ -1,0 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 18:48:14 by dopereir          #+#    #+#             */
+/*   Updated: 2025/09/19 23:49:33 by dopereir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+/// @brief Checks if .rt description file is valid.
+/// @param filename Name of the .rt file.
+/// @return return 0 on error, 1 on success.
+int	check_filename(char *filename)
+{
+	int	len;
+
+	if (!filename)
+		return (0);
+	len = ft_strlen(filename);
+	if (len < 3)
+		return (0);
+	if (ft_strcmp(filename + len -3, ".rt") == 0)
+		return (1);
+	return (0);
+}
+
+int	file_management(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (open_error_cases(filename, errno));
+	return (fd);
+}
+
+int	parse_file(t_scene	*scene, int fd)
+{
+	char	*line;
+
+	if (!init_objects(scene))
+		return (0);
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		//printf("line: %s\n", line);
+		tokenize_line(line, scene);
+		free (line);
+	}
+	close(fd);
+	return (1);
+}
+
