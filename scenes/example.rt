@@ -1,0 +1,23 @@
+# Example miniRT scene file
+# This creates a simple scene with spheres and basic lighting
+
+# Camera: position(0,0,0) direction(0,0,1) fov(70)
+C 0,0,0 0,0,1 70
+
+# Ambient lighting: intensity(0.2) color(white)
+A 0.2 255,255,255
+
+# Light source: position(10,10,10) intensity(0.7) color(white)
+L 10,10,10 0.7 255,255,255
+
+# Red sphere: center(0,0,5) diameter(2) color(red)
+sp 0,0,5 2 255,0,0
+
+# Green sphere: center(-3,0,5) diameter(2) color(green)
+sp -3,0,5 2 0,255,0
+
+# Blue sphere: center(3,0,5) diameter(2) color(blue)
+sp 3,0,5 2 0,0,255
+
+# Ground plane: point(0,-2,0) normal(0,1,0) color(light gray)
+pl 0,-2,0 0,1,0 200,200,200

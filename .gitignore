@@ -1,0 +1,25 @@
+# Compiled binaries
+miniRT
+*.o
+*.a
+
+# Object files
+obj/
+objs/
+
+# Debug files
+*.dSYM/
+*.debug
+
+# IDE and editor files
+.vscode/
+.DS_Store
+*~
+
+# Test outputs
+test_output/
+renders/
+
+# Temporary files
+*.tmp
+*.temp

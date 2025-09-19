@@ -1,0 +1,29 @@
+# Advanced miniRT scene - Dramatic lighting setup
+# This scene showcases multiple lights and geometric objects
+
+# Camera positioned for dramatic angle
+C 0,2,-5 0,-0.3,1 60
+
+# Low ambient lighting for mood
+A 0.05 100,100,150
+
+# Warm key light from upper right
+L 5,10,-2 0.8 255,200,150
+
+# Cool fill light from left
+L -3,5,2 0.4 150,200,255
+
+# Central orange sphere
+sp 0,0,0 1.5 150,75,0
+
+# Tall cylinder on the right
+cy 2,0,0 0,1,0 1 3 200,200,200
+
+# Small red sphere on the left
+sp -2,0,1 0.8 200,50,50
+
+# Dark floor plane
+pl 0,-2,0 0,1,0 50,50,50
+
+# Back wall
+pl 0,0,8 0,0,-1 100,100,100
