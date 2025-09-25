@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:27:05 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/19 23:47:41 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/20 14:55:16 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,37 @@ int	check_element_id(char *id, t_scene *scene, char *line)
 {
 	int	rc;
 
-	rc = 0;
+	rc = 1;
 	if (ft_strcmp(id, "A") == 0)
 		rc = fill_ambiance(scene, line);
-	if (ft_strcmp(id, "C") == 0)
+	else if (ft_strcmp(id, "C") == 0)
 		rc = fill_camera(scene, line);
-	if (ft_strcmp(id, "L") == 0)
+	else if (ft_strcmp(id, "L") == 0)
 		rc = fill_light(scene, line);
-	if (ft_strcmp(id, "sp") == 0)
+	else if (ft_strcmp(id, "sp") == 0)
 		rc = fill_sphere(scene, line);
-	/*if (ft_strcmp(id, "pl") == 0)
+	else if (ft_strcmp(id, "pl") == 0)
 		rc = fill_plane(scene, line);
-	if (ft_strcmp(id, "cy") == 0)
-		rc = fill_cylinder(scene, line);*/
+	else if (ft_strcmp(id, "cy") == 0)
+		rc = fill_cylinder(scene, line);
+	else if (ft_strcmp(id, "\n") == 0)
+		rc = 1;
+	else
+	{
+		printf("miniRT: incorrect ID: '%s'\n", id);
+		return (0);
+	}
 	return (rc);
 }
 
 int	tokenize_line(char *line, t_scene *scene)
 {
 	char	*id;
+	int		rc;
 
 	(void) scene;
 	id = ft_strtok(line, " \t\v\f\r");
-	check_element_id(id, scene, line);
+	rc = check_element_id(id, scene, line);
 	
-	return (1);
+	return (rc);
 }

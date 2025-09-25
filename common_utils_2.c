@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/18 22:40:41 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/21 17:08:01 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	parse_coordinates(char *xyz_str, float xyz_target[3])
 	i = 0;
 	coordinates = ft_split(xyz_str, ',');
 	if (validate_coordinates(coordinates, xyz_str) != 1)
+	{
+		free_split(coordinates);
 		return (0);
+	}
 	while (i < 3)
 	{
 		if (!coordinates[i])
@@ -68,7 +71,10 @@ int	parse_coordinates_vector(char *vector_str, float vector_target[3])
 	i = 0;
 	vector_values = ft_split(vector_str, ',');
 	if (validate_coordinates(vector_values, vector_str) != 1)
+	{
+		free_split(vector_values);
 		return (0);
+	}
 	while (i < 3)
 	{
 		if (!parse_vector_loop(vector_values[i], vector_target, &i))
@@ -91,8 +97,15 @@ int	validate_fov_str(char *fov_str)
 		return (0);
 	while (fov_str[i] == '+' || fov_str[i] == '-')
 		i++;
+	if (check_dots(fov_str, i) == 0)
+		return (0);
 	while (fov_str[i])
 	{
+		if (fov_str[i] == '.')
+		{
+			i++;
+			continue ;
+		}
 		if (ft_isdigit(fov_str[i]) != 1)
 		{
 			printf("miniRT: invalid FOV format: '%s'\n", fov_str);
@@ -103,9 +116,9 @@ int	validate_fov_str(char *fov_str)
 	return (1);
 }
 
-int	parse_fov(char *fov_str, int *fov_target)
+int	parse_fov(char *fov_str, float *fov_target)
 {
-	int		res;
+	float	res;
 	char	*endptr;
 	int		sign;
 
@@ -113,7 +126,7 @@ int	parse_fov(char *fov_str, int *fov_target)
 	if (!validate_fov_str(fov_str))
 		return (0);
 	sign = sign_handler(&fov_str);
-	res = ft_strtol(fov_str, &endptr, 10);
+	res = ft_strtof(fov_str, &endptr);
 	if (*endptr != '\0')
 	{
 		printf("miniRT: Fov value conversion failed: %s\n", endptr);
@@ -122,7 +135,7 @@ int	parse_fov(char *fov_str, int *fov_target)
 	res *= sign;
 	if (res < 0 || res > 180)
 	{
-		printf("miniRT: FOV out-of-range: '%d' (Range: 0-180)\n", res);
+		printf("miniRT: FOV out-of-range: '%f' (Range: 0-180)\n", res);
 		return (0);
 	}
 	*fov_target = res;

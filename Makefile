@@ -5,16 +5,28 @@ sources =	main.c \
 			common_utils.c \
 			common_utils_2.c \
 			common_utils_3.c \
+			create_vectors.c \
+			create_vectors_utils.c \
 			error_handlers.c \
 			fill_ambiance.c \
 			fill_camera.c \
+			fill_cylinder.c \
 			fill_light.c \
+			fill_plane.c \
 			fill_sphere.c \
 			fill_utils.c \
+			init_hit_record.c \
 			init_objects.c \
+			intersections.c \
+			math_operations.c \
 			parser.c \
 			populate_structs.c \
+			put_pixel_utils.c \
+			sphere_intersection_utils.c \
 			validate_array_utils.c \
+			vector_operations.c \
+			vector_operations_2.c \
+			key_events.c \
 
 CC = cc
 

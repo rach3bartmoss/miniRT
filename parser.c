@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:48:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/19 23:49:33 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:30:58 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,25 @@ int	file_management(char *filename)
 int	parse_file(t_scene	*scene, int fd)
 {
 	char	*line;
+	int		rc;
 
+	rc = 1;
 	if (!init_objects(scene))
 		return (0);
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		//printf("line: %s\n", line);
-		tokenize_line(line, scene);
+		//printf("line: <%s>\n", line);
+		rc = tokenize_line(line, scene);
+		if (rc != 1)
+		{
+			sanitize_gnl(fd);
+			close(fd);
+			free(line);
+			return (rc);
+		}
 		free (line);
 	}
 	close(fd);
-	return (1);
+	return (rc);
 }
 

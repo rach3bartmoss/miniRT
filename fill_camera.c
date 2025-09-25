@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:13:24 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/19 22:38:19 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:12:37 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ int	fill_camera(t_scene *scene, char *line)
 	parse_line = NULL;
 	if (!pre_elem_check((void **)&scene->camera, line, &parse_line, CAMERA))
 		return (0);
+	ft_memset(scene->camera, 0, sizeof(t_camera));
 	scene->camera->id = 'C';
 	if (fill_camera_helper(scene, parse_line, &rc) != 1)
 		return (handle_default_error((void **)&scene->camera, parse_line,
 				NULL));
 	set_and_get_occ(1, CAMERA);
+	free (parse_line);
 	return (1);
 }

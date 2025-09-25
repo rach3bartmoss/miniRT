@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:14:40 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/19 22:22:21 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:24:59 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ int	check_whitespaces_after_parse(char *raw_line)
 	if (!raw_line)
 		return (0);
 	skip = 0;
-	token = ft_strtok(raw_line, " \t\v\f\r\n");
+	token = strtok(raw_line, " \t\v\f\r\n");
 	while (token != NULL && skip < 3)
 	{
 		skip++;
-		token = ft_strtok(NULL, " \t\v\f\r\n");
+		token = strtok(NULL, " \t\v\f\r\n");
 	}
 	while (token != NULL)
 	{
 		printf("<%s.>\n", token);
 		if (*token != '\0' && ft_strspn(token, " \t\v\f\r") != ft_strlen(token))
 			return (0);
-		token = ft_strtok(NULL, " \t\v\f\r");
+		token = strtok(NULL, " \t\v\f\r");
 	}
 	return (1);
 }
@@ -52,6 +52,7 @@ int	pre_ambiance_validation(t_scene *scene, char *line, char **parse_line)
 		free (*parse_line);
 		return (0);
 	}
+	ft_memset(scene->ambiance, 0, sizeof(t_ambient));
 	scene->ambiance->id = 'A';
 	return (1);
 }
@@ -62,10 +63,11 @@ int	fill_ambiance_helper(t_scene *scene, char *parse_line, int *rc)
 	int		token_count;
 
 	*rc = 1;
-	token = ft_strtok(parse_line, " \t\v\f\r");
+	token = ft_strtok(parse_line, " \t\v\f\r\n");
 	token_count = 0;
 	while (token != NULL && token_count < 3)
 	{
+		//printf("token[%d] = '%s'\n", token_count, token);
 		if (token_count == 1)
 			*rc = parse_light_ratio(token, &scene->ambiance->light_ratio, AMBIENT);
 		if (token_count == 2 && *rc == 1)
@@ -73,7 +75,7 @@ int	fill_ambiance_helper(t_scene *scene, char *parse_line, int *rc)
 		if (*rc != 1)
 			return (0);
 		token_count++;
-		token = ft_strtok(NULL, " \t\v\f\r");
+		token = ft_strtok(NULL, " \t\v\f\r\n");
 	}
 	return (1);
 }

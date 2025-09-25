@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 23:47:24 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/18 23:10:02 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:39:15 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int	parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type)
 	i = 0;
 	components = ft_split(rgb_str, ',');
 	if (validate_rgb_components(components, rgb_str) != 1)
+	{
+		free_split(components);
 		return (0);
+	}
 	while (i < 3)
 	{
 		if (!components[i])
@@ -29,7 +32,7 @@ int	parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type)
 		if (rgb_target[i] < 0 || rgb_target[i] > 255)
 		{
 			printf("Invalid %s RGB value: '%d' (Range: 0-255)\n", get_type_name(type) ,rgb_target[i]);
-			//free_split(components);
+			free_split(components);
 			return (0);
 		}
 		i++;

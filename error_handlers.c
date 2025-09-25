@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:04 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 00:03:33 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/21 17:07:45 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	print_element(void *elem, e_type_elem type)
 			printf("Camera [id: %c]\n", c->id);
 			printf("	Coordinates: [%.2f, %.2f, %.2f]\n", c->coordinates_xyz[0], c->coordinates_xyz[1], c->coordinates_xyz[2]);
 			printf("	Orientation Vector: [%.2f, %.2f, %.2f]\n", c->vector_xyz[0], c->vector_xyz[1], c->vector_xyz[2]);
-			printf("	FOV: %d\n", c->fov);
+			printf("	FOV: %f\n", c->fov);
 			break;
 		}
 		case LIGHT: {
@@ -81,7 +81,7 @@ void	print_element(void *elem, e_type_elem type)
 		case PLANE: {
 			t_plane *p = (t_plane *)elem;
 			printf("Plane [id: %s]\n", p->id);
-			printf("	Point: [%.2f, %.2f, %.2f]\n", p->point_xyz[0], p->point_xyz[1], p->point_xyz[2]);
+			printf("	Point: [%.2f, %.2f, %.2f]\n", p->pl_xyz[0], p->pl_xyz[1], p->pl_xyz[2]);
 			printf("	Vector: [%.2f, %.2f, %.2f]\n", p->pl_vector_xyz[0], p->pl_vector_xyz[1], p->pl_vector_xyz[2]);
 			printf("	RGB: [%d, %d, %d]\n", p->pl_rgb[0], p->pl_rgb[1], p->pl_rgb[2]);
 			break;
@@ -89,7 +89,7 @@ void	print_element(void *elem, e_type_elem type)
 		case CYLINDER: {
 			t_cylinder *cy = (t_cylinder *)elem;
 			printf("Cylinder [id: %s]\n", cy->id);
-			printf("	Center: [%.2f, %.2f, %.2f]\n", cy->cy_center_xyz[0], cy->cy_center_xyz[1], cy->cy_center_xyz[2]);
+			printf("	Center: [%.2f, %.2f, %.2f]\n", cy->cy_xyz[0], cy->cy_xyz[1], cy->cy_xyz[2]);
 			printf("	Vector: [%.2f, %.2f, %.2f]\n", cy->cy_vector_xyz[0], cy->cy_vector_xyz[1], cy->cy_vector_xyz[2]);
 			printf("	Diameter: %.2f\n", cy->cy_diameter);
 			printf("	Height: %.2f\n", cy->cy_height);
@@ -109,6 +109,28 @@ void	print_spheres(t_scene *scene)
 	{
 		if (scene->sphere[i])
 			print_element(scene->sphere[i], SPHERE);
+	}
+}
+
+void	print_planes(t_scene *scene)
+{
+	int	count = set_and_get_occ(-1, PLANE);
+
+	for (int i = 0; i < count; i++)
+	{
+		if (scene->plane[i])
+			print_element(scene->plane[i], PLANE);
+	}
+}
+
+void	print_cylinders(t_scene *scene)
+{
+	int	count = set_and_get_occ(-1, CYLINDER);
+
+	for (int i = 0; i < count; i++)
+	{
+		if (scene->cylinder[i])
+			print_element(scene->cylinder[i], CYLINDER);
 	}
 }
 
