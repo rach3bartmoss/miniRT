@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/26 20:38:52 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/26 20:56:43 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,21 @@ A = Vector XYZ normalized (Normal)
 T = C + hA
 B = (0, 0, 40) + (21.12 / 2) * (0, 0, 1)
 */
-int	def_cylinder_geometry(t_cylinder *curr_cy)
+int	ray_cylinder_intersection(t_cylinder *curr_cy)
 {
 	float	base_center[3];
 	float	top_center[3];
 	float	hA[3];
 	float	half_height;
+	float	w[3];
 
 	half_height = curr_cy->cy_height / 2;
 	scale(hA, curr_cy->cy_vector_xyz, half_height);
 	sub(base_center, curr_cy->cy_xyz, hA);
 
 	add(top_center, curr_cy->cy_xyz, hA);
+
+	
 }
+//w = (origin - center) - ((origin - center) * A)A
+float	solve_bhaskara()
