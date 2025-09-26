@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 14:26:25 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:22:15 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	main(int argc, char **argv)
 	print_cylinders(app.scene);
 
 	app.win->mlx = mlx_init();
-	app.win->width = 800;
-	app.win->height = 600;
+	app.win->width = 1200;
+	app.win->height = 900;
 	app.win->aspect_ratio = (float)win.width / (float)win.height;
 	app.win->win = mlx_new_window(win.mlx, win.width, win.height, "miniRT");
 	app.win->img = mlx_new_image(win.mlx, win.width, win.height);
@@ -62,7 +62,12 @@ int	main(int argc, char **argv)
 	ft_memset(app.ray_table, 0, sizeof(t_ray_table));
 	create_rays(app.scene->camera, app.win, app.ray_table);
 
+	//init_hit_record here?
+	if (!app.ray_table->hit_record)
+		app.ray_table->hit_record = malloc(sizeof(t_hit) * app.ray_table->total_rays);
+	init_hit_record(app.ray_table);
 	render_sphere(app.ray_table, app.scene, app.win);
+	render_plane(app.ray_table, app.scene, app.win);
 
 	mlx_hook(app.win->win, 17, 0, close_window, &app);
 	mlx_hook(app.win->win, 2, 1L<<0, key_press, &app);

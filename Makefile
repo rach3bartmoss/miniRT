@@ -20,6 +20,7 @@ sources =	main.c \
 			intersections.c \
 			math_operations.c \
 			parser.c \
+			plane_intersection_utils.c \
 			populate_structs.c \
 			put_pixel_utils.c \
 			sphere_intersection_utils.c \

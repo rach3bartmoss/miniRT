@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:58:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 14:46:26 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:21:08 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ void	render_sphere_loop(t_ray_table *ray_table, t_window *win)
 //d = ray direction
 int	render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win)
 {
-	if (!ray_table->hit_record)
-		ray_table->hit_record = malloc(sizeof(t_hit) * ray_table->total_rays);
-	init_hit_record(ray_table);
 	ray_sphere_intersect(ray_table, scene);
 	render_sphere_loop(ray_table, win);
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);

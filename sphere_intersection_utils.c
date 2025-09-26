@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 13:50:58 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/26 10:03:39 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,16 @@ int	solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc)
 int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 {
 	float	hit_p[3];
-	float	e_d_sum[3];
+	//float	e_d_sum[3];
 	float	normal[3];
 
 	if (!sp_ctx->rec)
 		return (0);
 	if (sp_ctx->rec->hit && (double)sp_ctx->rec->t <= t + EPS)
 		return (0);
-	add(e_d_sum, e, d);
-	scale(hit_p, e_d_sum, t);
+	scale(hit_p, d, t);
+	add(hit_p, e, hit_p);
+	
 	sub(normal, hit_p, sp_ctx->curr_sp->sp_center_xyz);
 	normalize(normal, normal);
 	sp_ctx->rec->t = (float)t;
@@ -131,9 +132,6 @@ int	ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene)
 		sp_ctx.dir[1] = ray_table->vectors_y[sp_ctx.i];
 		sp_ctx.dir[2] = ray_table->vectors_z[sp_ctx.i];
 		sp_ctx.rec = &ray_table->hit_record[sp_ctx.i];
-		sp_ctx.rec->hit = 0;
-		sp_ctx.rec->t = INFINITY;
-		sp_ctx.rec->object_idx = -1;
 		s = 0;
 		while (s < scene->sphere_capacity && scene->sphere[s])
 		{

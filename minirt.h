@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 14:25:40 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/26 09:28:23 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ typedef struct s_sphere
 
 typedef struct s_plane
 {
-	char	*id; //pl
-	float	pl_xyz[3];
-	float	pl_vector_xyz[3];
-	int		pl_rgb[3];
+	char	*id;				//pl
+	float	pl_xyz[3];			//p0
+	float	pl_vector_xyz[3];	//N
+	int		pl_rgb[3];			//color
 }	t_plane;
 
 typedef struct s_cylinder
@@ -101,6 +101,21 @@ typedef struct s_scene
 	int			plane_capacity;
 	int			cylinder_capacity;
 }	t_scene;
+
+typedef struct s_bbox
+{
+	float	min[3];
+	float	max[3];
+}	t_bbox;
+
+typedef struct s_bvh_node
+{
+	t_bbox				bounds;
+	struct s_bvh_node	*left;
+	struct s_bvh_node	*right;
+	int					start;
+	int					count;
+}	t_bvh_node;
 
 typedef struct s_window
 {
@@ -154,6 +169,20 @@ typedef struct s_sp_ctx
 	float		dir[3];
 	int			i;
 }	t_sp_ctx;
+
+typedef struct s_pl_ctx
+{
+	t_plane	*curr_pl;
+	t_hit	*rec;
+	float	d[3];
+	float	normal[3];
+	float	origin[3];
+	float	p0[3];
+	double	denom;
+	int		i;
+	int		s;
+	
+}	t_pl_ctx;
 
 typedef struct s_abc
 {
@@ -229,6 +258,8 @@ int		sign(double x);
 int		check_filename(char *filename);
 int		file_management(char *filename);
 int		parse_file(t_scene	*scene, int fd);
+//plane_intersection_utils.c
+int		render_plane(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //populate_structs.c
 int		check_element_id(char *id, t_scene *scene, char *line);
 int		tokenize_line(char *line, t_scene *scene);
