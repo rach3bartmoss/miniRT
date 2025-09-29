@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 19:44:37 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:06:11 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,12 @@ typedef struct s_camera_basis
 
 typedef struct s_hit
 {
-	float	t; //distance from origin to hit
-	int		hit; //true/false 1/0
-	int		object_idx;//in the array of objects
 	float	hit_point[3];
 	float	normal[3];
 	int		color[3];
+	float	t; //distance from origin to hit
+	int		hit; //true/false 1/0
+	int		object_idx;//in the array of objects
 }	t_hit;
 
 typedef struct s_ray_table
@@ -277,10 +277,12 @@ void	init_hit_record(t_ray_table *ray_table);
 //init_objects.c
 int		init_objects(t_scene *scene);
 //intersections.c
-void	render_loop(t_ray_table *ray_table, t_window *win);
+void	render_loop(t_ray_table *ray_table, t_window *win, t_scene *scene);
 int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);
+//light_management.c
+void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, int a_shade[3]);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/26 10:03:39 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/29 20:59:16 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc)
 int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 {
 	float	hit_p[3];
-	//float	e_d_sum[3];
 	float	normal[3];
 
 	if (!sp_ctx->rec)
@@ -74,7 +73,6 @@ int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 		return (0);
 	scale(hit_p, d, t);
 	add(hit_p, e, hit_p);
-	
 	sub(normal, hit_p, sp_ctx->curr_sp->sp_center_xyz);
 	normalize(normal, normal);
 	sp_ctx->rec->t = (float)t;

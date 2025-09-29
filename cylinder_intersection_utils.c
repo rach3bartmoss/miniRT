@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 19:52:04 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/29 21:24:11 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene)
 int	render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win)
 {
 	ray_cylinder_intersection(ray_table, scene);
-	render_loop(ray_table, win);
+	render_loop(ray_table, win, scene);
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
 	return (1);
 }

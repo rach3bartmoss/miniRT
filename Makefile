@@ -21,6 +21,7 @@ sources =	main.c \
 			init_objects.c \
 			intersections.c \
 			math_operations.c \
+			light_management.c \
 			parser.c \
 			plane_intersection_utils.c \
 			populate_structs.c \
