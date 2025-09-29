@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/26 09:28:23 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:44:37 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,25 @@ typedef struct s_pl_ctx
 	
 }	t_pl_ctx;
 
+typedef struct s_cy_ctx
+{
+	t_cylinder	*curr_cy;
+	t_hit		*rec;
+	float		d[3];
+	float		normal[3];
+	float		origin[3];
+	float		base_center[3];
+	float		top_center[3];
+	float		hA[3];
+	float		v[3];
+	float		w[3];
+	float		y;
+	float		half_height;
+	double		radius;
+	int			i;
+	int			s;
+}	t_cy_ctx;
+
 typedef struct s_abc
 {
 	double	A;
@@ -222,6 +241,13 @@ int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
 int		init_rays(t_ray_table *ray_table);
 int		calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis, t_window *win);
 int		print_array3(float *target_xyz);
+//cylinder_caps.c
+void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
+void	calc_v_w(t_cy_ctx *cy_ctx);
+int		cylinder_bottom_cap(t_cy_ctx *cy_ctx);
+int		cylinder_top_cap(t_cy_ctx *cy_ctx);
+//cylinder_intersection_utils.c
+int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //error_handlers.c
 int		open_error_cases(char *filename, int errno_code);
 void	print_element(void *elem, e_type_elem type);
@@ -251,6 +277,7 @@ void	init_hit_record(t_ray_table *ray_table);
 //init_objects.c
 int		init_objects(t_scene *scene);
 //intersections.c
+void	render_loop(t_ray_table *ray_table, t_window *win);
 int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);

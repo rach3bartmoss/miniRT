@@ -7,6 +7,8 @@ sources =	main.c \
 			common_utils_3.c \
 			create_vectors.c \
 			create_vectors_utils.c \
+			cylinder_caps.c \
+			cylinder_intersection_utils.c \
 			error_handlers.c \
 			fill_ambiance.c \
 			fill_camera.c \

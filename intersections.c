@@ -6,11 +6,40 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:58:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 16:21:08 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/28 22:01:49 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	render_loop(t_ray_table *ray_table, t_window *win)
+{
+	t_hit	*rec;
+	int		color;
+	int		x;
+	int		y;
+	int		i;
+
+	y = 0;
+	while (y < win->height)
+	{
+		x = 0;
+		while (x < win->width)
+		{
+			i = y * win->width + x;
+			rec = &ray_table->hit_record[i];
+			if (rec->hit)
+			{
+				color = rgb3_to_hex(rec->color);
+				mrt_put_pixel(win, x, y, color);
+			}
+			else
+				mrt_put_pixel(win, x, y, 0x000000);
+			x++;
+		}
+		y++;
+	}
+}
 
 //mlx_pixel_put(win->mlx, win->win, x, y, 0x000000);
 void	render_sphere_loop(t_ray_table *ray_table, t_window *win)

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/25 19:22:15 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/28 22:12:34 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	main(int argc, char **argv)
 	init_hit_record(app.ray_table);
 	render_sphere(app.ray_table, app.scene, app.win);
 	render_plane(app.ray_table, app.scene, app.win);
+	render_cylinder(app.ray_table, app.scene, app.win);
 
 	mlx_hook(app.win->win, 17, 0, close_window, &app);
 	mlx_hook(app.win->win, 2, 1L<<0, key_press, &app);
