@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 20:59:16 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:39:44 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 /// @param d Ray direction normalized, vectors ZYX in ray_table
 /// @param sp_ctx Context variables store in just one place for simplicity
 /// @return 1 on success, 0 on failure, FIND 't' (closest hit point)
-int	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx)
+double	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx, int flag)
 {
 	t_abc	abc;
 	double	t;
@@ -103,10 +103,11 @@ int	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx)
 	t = solve_t(&abc);
 	if (t < 0.0f)
 	{
-		return (0);
+		return (0.0);
 	}
-	update_hit_record(t, e, d, sp_ctx);
-	return (1);
+	if (flag == 1)
+		update_hit_record(t, e, d, sp_ctx);
+	return (t);
 }
 
 /// @brief 1. Loops over all rays in ray_table.
@@ -135,7 +136,7 @@ int	ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene)
 		{
 			sp_ctx.curr_sp = scene->sphere[s];
 			solve_discriminant(scene->camera->coordinates_xyz, sp_ctx.dir,
-				&sp_ctx);
+				&sp_ctx, 1);
 			s++;
 		}
 		sp_ctx.i++;

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:58:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 22:03:07 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/30 23:47:37 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,50 @@
 //mlx_pixel_put(win->mlx, win->win, x, y, 0x000000);
 void	render_loop(t_ray_table *ray_table, t_window *win, t_scene *scene)
 {
-	t_hit	*rec;
-	int		a_shade[3];
-	int		color;
-	int		x;
-	int		y;
-	int		i;
+	t_render_ctx	render;
 
-	y = 0;
-	while (y < win->height)
+	render.y = 0;
+	while (render.y < win->height)
 	{
-		x = 0;
-		while (x < win->width)
+		render.x = 0;
+		while (render.x < win->width)
 		{
-			i = y * win->width + x;
-			rec = &ray_table->hit_record[i];
-			if (rec->hit)
+			render.i = render.y * win->width + render.x;
+			render.rec = &ray_table->hit_record[render.i];
+			if (render.rec->hit)
 			{
-				apply_ambient_light(scene, rec, a_shade);
-				color = rgb3_to_hex(a_shade);
-				mrt_put_pixel(win, x, y, color);
+				//posible pipeline ambient light > shadows / diffuse light term
+				apply_ambient_light(scene, render.rec, &render);
+				float	w = diffuse_and_shadow_algo(ray_table, scene, &render);
+				if (w > 0.0f)
+				{
+					render.c_obj_term[0] = render.rec->color[0] / 255.0f;
+					render.c_obj_term[1] = render.rec->color[1] / 255.0f;
+					render.c_obj_term[2] = render.rec->color[2] / 255.0f;
+
+					render.c_light_term[0] = scene->light->light_rgb[0] / 255.0f;
+					render.c_light_term[1] = scene->light->light_rgb[1] / 255.0f;
+					render.c_light_term[2] = scene->light->light_rgb[2] / 255.0f;
+
+					for (int c = 0; c < 3; ++c)
+					{
+						float	amb_chan = render.a_shade[c] / 255.0f;
+						// add diffuse contribution
+						float	chan = amb_chan + w * render.c_light_term[c] * render.c_obj_term[c];
+						chan = fminf(chan, 1.0f);           // clamp
+						render.a_shade[c] = (int)(chan * 255.0f);
+					}
+				}
+
+				
+				render.color = rgb3_to_hex(render.a_shade);
+				mrt_put_pixel(win, render.x, render.y, render.color);
 			}
 			else
-				mrt_put_pixel(win, x, y, 0x000000);
-			x++;
+				mrt_put_pixel(win, render.x, render.y, 0x000000);
+			render.x++;
 		}
-		y++;
+		render.y++;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 22:06:11 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/09/30 23:45:24 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define M_PI 3.14159265358979323846
 # define EPS 1e-8
 # define KEY_ESC 65307
+# define SHADOW_EPS 1e-4f
 
 # include <math.h>
 # include <float.h>
@@ -102,21 +103,6 @@ typedef struct s_scene
 	int			cylinder_capacity;
 }	t_scene;
 
-typedef struct s_bbox
-{
-	float	min[3];
-	float	max[3];
-}	t_bbox;
-
-typedef struct s_bvh_node
-{
-	t_bbox				bounds;
-	struct s_bvh_node	*left;
-	struct s_bvh_node	*right;
-	int					start;
-	int					count;
-}	t_bvh_node;
-
 typedef struct s_window
 {
 	void	*mlx;
@@ -161,6 +147,20 @@ typedef struct s_ray_table
 	float	half_height;
 	int		total_rays;
 }	t_ray_table;
+
+typedef struct s_render_ctx
+{
+	t_hit	*rec;
+	int		a_shade[3];
+	int		c_obj_term[3];
+	int		c_light_term[3];
+	int		final_shade[3];
+	int		shade_to_hex[3];
+	int		color;
+	int		x;
+	int		y;
+	int		i;
+}	t_render_ctx;
 
 typedef struct s_sp_ctx
 {
@@ -282,7 +282,8 @@ int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);
 //light_management.c
-void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, int a_shade[3]);
+void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
+float	diffuse_and_shadow_algo(t_ray_table *ray_table, t_scene *scene, t_render_ctx *render);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);
@@ -299,7 +300,7 @@ int		rgb3_to_hex(int rgb[3]);
 double	solve_t(t_abc *abc);
 int		solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc);
 int		update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx);
-int		solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx);
+double	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx, int flag);
 int		ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene);
 //validate_array_utils.c
 int		validate_rgb_components(char **components, char *rgb_str);
