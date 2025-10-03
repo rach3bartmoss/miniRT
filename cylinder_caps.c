@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:02:28 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 20:58:36 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:54:40 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
 	cy_ctx->rec->t = t_side;
 	cy_ctx->rec->hit = 1;
 	cy_ctx->rec->object_idx = cy_ctx->i;
+	cy_ctx->rec->object_type = CYLINDER;
 	copy_vectors(cy_ctx->rec->hit_point, hit_p);
 	copy_vectors(cy_ctx->rec->normal, n);
 	copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);

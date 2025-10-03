@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/28 22:12:34 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:57:12 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,13 @@ int	main(int argc, char **argv)
 	if (!app.ray_table->hit_record)
 		app.ray_table->hit_record = malloc(sizeof(t_hit) * app.ray_table->total_rays);
 	init_hit_record(app.ray_table);
-	render_sphere(app.ray_table, app.scene, app.win);
+	
 	render_plane(app.ray_table, app.scene, app.win);
 	render_cylinder(app.ray_table, app.scene, app.win);
+	render_sphere(app.ray_table, app.scene, app.win);
+	
+	render_loop(app.ray_table, app.win, app.scene);
+	mlx_put_image_to_window(app.win->mlx, app.win->win, app.win->img, 0, 0);
 
 	mlx_hook(app.win->win, 17, 0, close_window, &app);
 	mlx_hook(app.win->win, 2, 1L<<0, key_press, &app);

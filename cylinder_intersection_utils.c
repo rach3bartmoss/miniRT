@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/29 21:24:11 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/01 20:53:59 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,40 @@ int	ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene)
 	return (1);
 }
 
+//mlx_pixel_put(win->mlx, win->win, x, y, 0x000000);
+void	render_cylinder_loop(t_ray_table *ray_table, t_window *win)
+{
+	t_hit	*rec;
+	int		color;
+	int		x;
+	int		y;
+	int		i;
+
+	y = 0;
+	while (y < win->height)
+	{
+		x = 0;
+		while (x < win->width)
+		{
+			i = y * win->width + x;
+			rec = &ray_table->hit_record[i];
+			if (rec->hit)
+			{
+				color = rgb3_to_hex(rec->color);
+				mrt_put_pixel(win, x, y, color);
+			}
+			else
+				mrt_put_pixel(win, x, y, 0x000000);
+			x++;
+		}
+		y++;
+	}
+}
+
 int	render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win)
 {
 	ray_cylinder_intersection(ray_table, scene);
-	render_loop(ray_table, win, scene);
+	render_cylinder_loop(ray_table, win);
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
 	return (1);
 }

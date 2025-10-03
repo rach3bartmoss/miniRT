@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/30 23:45:24 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/04 00:52:04 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,12 +129,13 @@ typedef struct s_camera_basis
 
 typedef struct s_hit
 {
-	float	hit_point[3];
-	float	normal[3];
-	int		color[3];
-	float	t; //distance from origin to hit
-	int		hit; //true/false 1/0
-	int		object_idx;//in the array of objects
+	float		hit_point[3];
+	float		normal[3];
+	int			color[3];
+	float		t; //distance from origin to hit
+	int			hit; //true/false 1/0
+	int			object_idx;//in the array of objects
+	e_type_elem	object_type;
 }	t_hit;
 
 typedef struct s_ray_table
@@ -154,12 +155,18 @@ typedef struct s_render_ctx
 	int		a_shade[3];
 	int		c_obj_term[3];
 	int		c_light_term[3];
-	int		final_shade[3];
+	float	final_shade[3];
+	int		out_shade[3];
 	int		shade_to_hex[3];
 	int		color;
 	int		x;
 	int		y;
 	int		i;
+	float	co[3]; //objecto color normalized
+	float	cl[3]; //light color normalized
+	float	lamb_weight;
+	float	n[3];
+	float	side;
 }	t_render_ctx;
 
 typedef struct s_sp_ctx
@@ -283,12 +290,14 @@ int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 int		sign(double x);
 //light_management.c
 void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
-float	diffuse_and_shadow_algo(t_ray_table *ray_table, t_scene *scene, t_render_ctx *render);
+int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);
 int		parse_file(t_scene	*scene, int fd);
 //plane_intersection_utils.c
+int		plane_occludes(float origin[3], float dir[3], float max_t, t_pl_ctx *P);
+double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag);
 int		render_plane(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //populate_structs.c
 int		check_element_id(char *id, t_scene *scene, char *line);
