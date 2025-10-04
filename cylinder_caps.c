@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:02:28 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/01 20:54:40 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:04:19 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	calc_v_w(t_cy_ctx *cy_ctx)
 	sub(cy_ctx->w, o_minus_c, scale_oca_normal);
 }
 
-int	cylinder_bottom_cap(t_cy_ctx *cy_ctx)
+double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag)
 {
 	float	bot_center[3];
 	float	hit_cap_p[3];
@@ -90,7 +90,7 @@ int	cylinder_bottom_cap(t_cy_ctx *cy_ctx)
 	//bot_center = base_center= C - hA
 	copy_vectors(bot_center, cy_ctx->base_center);
 	scale(bot_cap_normal, cy_ctx->normal, -1.0f);
-
+	tcap = -1.0f;
 	denom = dot(cy_ctx->d, bot_cap_normal);
 	if (fabs(denom) > 1e-6)
 	{
@@ -101,49 +101,58 @@ int	cylinder_bottom_cap(t_cy_ctx *cy_ctx)
 			scale(tmp, cy_ctx->d, (float)tcap);
 			add(hit_cap_p, cy_ctx->origin, tmp);
 			sub(tmp, hit_cap_p, bot_center);
-			if (dot(tmp,tmp) <= (r * r))
+			if (dot(tmp,tmp) <= (r * r))//intersection happens in bot cap area
 			{
-				cy_ctx->rec->t = tcap;
-				cy_ctx->rec->hit = 1;
-				cy_ctx->rec->object_idx = cy_ctx->i;
-				copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
-				copy_vectors(cy_ctx->rec->normal, bot_cap_normal);
-				copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
+				if (flag == 1)
+				{
+					cy_ctx->rec->t = tcap;
+					cy_ctx->rec->hit = 1;
+					cy_ctx->rec->object_idx = cy_ctx->i;
+					copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
+					copy_vectors(cy_ctx->rec->normal, bot_cap_normal);
+					copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
+				}
 			}
 		}
 	}
-	return (1);
+	return (tcap);
 }
 
-int	cylinder_top_cap(t_cy_ctx *cy_ctx)
+double	cylinder_top_cap(t_cy_ctx *cy_ctx, int flag)
 {
-	float cap_center[3], hit_cap_p[3], tmp[3];
+	float	cap_center[3];
+	float	hit_cap_p[3];
+	float	tmp[3];
+	double	tcap;
 	float	r = cy_ctx->curr_cy->cy_diameter / 2;
-	// cap_center = top_center = C + hA  
+	// cap_center = top_center = C + hA
 	copy_vectors(cap_center, cy_ctx->top_center);
 	float cap_n[3]; copy_vectors(cap_n, cy_ctx->normal);
-
+	tcap = -1.0f;
 	double denom = dot(cy_ctx->d, cap_n);
 	if (fabs(denom) > 1e-6)
 	{
 		float OtoC[3]; sub(OtoC, cap_center, cy_ctx->origin);
-		double tcap = dot(OtoC, cap_n) / denom;
+		tcap = dot(OtoC, cap_n) / denom;
 
 		if (tcap > 0.0 && tcap < cy_ctx->rec->t)
 		{
 			scale(tmp, cy_ctx->d, (float)tcap);
 			add(hit_cap_p, cy_ctx->origin, tmp);
 			sub(tmp, hit_cap_p, cap_center);
-			if (dot(tmp,tmp) <= (r*r))
+			if (dot(tmp,tmp) <= (r*r))//intersection happens at top cap area
 			{
-				cy_ctx->rec->t = tcap;
-				cy_ctx->rec->hit = 1;
-				cy_ctx->rec->object_idx = cy_ctx->i;
-				copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
-				copy_vectors(cy_ctx->rec->normal, cap_n);
-				copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
+				if (flag == 1)
+				{
+					cy_ctx->rec->t = tcap;
+					cy_ctx->rec->hit = 1;
+					cy_ctx->rec->object_idx = cy_ctx->i;
+					copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
+					copy_vectors(cy_ctx->rec->normal, cap_n);
+					copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
+				}
 			}
 		}
 	}
-	return (1);
+	return (tcap);
 }

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/04 00:52:04 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:02:51 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,9 +251,10 @@ int		print_array3(float *target_xyz);
 //cylinder_caps.c
 void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
 void	calc_v_w(t_cy_ctx *cy_ctx);
-int		cylinder_bottom_cap(t_cy_ctx *cy_ctx);
-int		cylinder_top_cap(t_cy_ctx *cy_ctx);
+double		cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
+double		cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
 //cylinder_intersection_utils.c
+double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
 int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //error_handlers.c
 int		open_error_cases(char *filename, int errno_code);
@@ -291,6 +292,7 @@ int		sign(double x);
 //light_management.c
 void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
 int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win);
+float	ray_intersection_pl(float *sr_origin, float *sr_dir, t_plane *pl);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/01 20:53:59 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/04 17:47:24 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ double	solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx)
 	{
 		compute_cylinder_finite_height(t_side, cy_ctx);
 	}
-	cylinder_bottom_cap(cy_ctx);
-	cylinder_top_cap(cy_ctx);
+	cylinder_bottom_cap(cy_ctx, 1);
+	cylinder_top_cap(cy_ctx, 1);
 	if (cy_ctx->rec->hit)
 		return (cy_ctx->rec->t);
 	else

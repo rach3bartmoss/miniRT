@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:01:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/04 00:51:19 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:09:09 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,81 @@ float	ray_intersection_sp_tester(float *sr_origin, float *sr_dir, t_sphere *sphe
 	return (t);
 }
 
+float ray_intersection_pl(float *sr_origin, float *sr_dir, t_plane *pl)
+{
+	float	denom;
+	float	plane0_light0[3];
+	float	t;
+
+	denom = dot(pl->pl_vector_xyz, sr_dir);
+	if (fabsf(denom) < 1e-6f)
+		return (-1.0f);
+
+	sub(plane0_light0, pl->pl_xyz, sr_origin); // (P0 - O)
+	t = dot(plane0_light0, pl->pl_vector_xyz) / denom;
+
+	if (t > 0.0f)
+		return (t);
+	else
+		return (-1.0f);
+}
+
+void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir)
+{
+	copy_vectors(cy_ctx->normal, cy_ctx->curr_cy->cy_vector_xyz);
+	copy_vectors(cy_ctx->d, sr_dir);
+	normalize(cy_ctx->normal, cy_ctx->normal);
+	copy_vectors(cy_ctx->origin, sr_origin);
+	cy_ctx->half_height = cy_ctx->curr_cy->cy_height / 2.0f;
+	cy_ctx->radius = cy_ctx->curr_cy->cy_diameter / 2.0f;
+	scale(cy_ctx->hA, cy_ctx->normal, cy_ctx->half_height);
+	sub(cy_ctx->base_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
+	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
+}
+
+float	comp_finite_height_for_light(float	t_side, t_cy_ctx *cy_ctx)
+{
+	float	hit_p[3];
+	float	scale_td[3];
+	float	hitp_minus_center[3];
+
+	scale(scale_td, cy_ctx->d, (float)t_side);
+	add(hit_p, cy_ctx->origin, scale_td);
+	sub(hitp_minus_center, hit_p, cy_ctx->curr_cy->cy_xyz);
+	cy_ctx->y = dot(hitp_minus_center, cy_ctx->normal);
+	if (cy_ctx->y >= -cy_ctx->half_height && cy_ctx->y <= cy_ctx->half_height)
+	{
+		return (cy_ctx->y);//intersection happened
+	}
+	return (-1.0f);
+}
+
+float	ray_intersection_cy(float *sr_origin, float *sr_dir, t_cylinder *cy)
+{
+	t_cy_ctx	cy_ctx;
+	float		t_side;
+	double		t_bot_top;
+
+	(void)sr_dir;
+	cy_ctx.curr_cy = cy;
+	prep_sr_cy_intersect(&cy_ctx, sr_origin, sr_dir);
+	calc_v_w(&cy_ctx);
+	t_side = solve_t_cylinder(cy_ctx.v, cy_ctx.w, &cy_ctx);
+	if (t_side > 0.0)
+	{
+		t_bot_top = comp_finite_height_for_light(t_side, &cy_ctx);
+		if (t_bot_top > 0.0f)
+			return (t_bot_top);
+	}
+	t_bot_top = cylinder_bottom_cap(&cy_ctx, 0);
+	if (t_bot_top > 0.0f)
+		return (t_bot_top);
+	t_bot_top = cylinder_top_cap(&cy_ctx, 0);
+	if (t_bot_top > 0.0f)
+		return (t_bot_top);
+	return (-1.0f);
+}
+
 int	apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win)
 {
 	(void)win;
@@ -90,19 +165,36 @@ int	apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win
 	sub(l_pos_p, scene->light->light_xyz, render->rec->hit_point);
 	distance = ray_length(l_pos_p);//distance from hit_point to light point
 
-	double	t;
+	double	t_sp;
+	double	t_pl;
 	int		is_in_shadow = 0;
-	int	sp_count = set_and_get_occ(-1, SPHERE);
+	int		sp_count = set_and_get_occ(-1, SPHERE);
 	int	i = 0;
 	while (i < sp_count)
 	{
-		t = ray_intersection_sp_tester(p_offset, light_dir_normalized, scene->sphere[i]);
-		if (t > 0.0f && t < distance)//intersection happens
+		t_sp = ray_intersection_sp_tester(p_offset, light_dir_normalized, scene->sphere[i]);
+		if (t_sp > 0.0f && t_sp < distance)//intersection happens
 		{
 			is_in_shadow = 1;
 			break ;
 		}
 		i++;
+	}
+
+	i = 0;
+	
+	if (!is_in_shadow)
+	{
+		int	pl_count = set_and_get_occ(-1, PLANE);
+		for (int p = 0; p < pl_count; ++p)
+		{
+			t_pl = ray_intersection_pl(p_offset, light_dir_normalized, scene->plane[i]);
+			if (t_pl > 0.0f && t_pl < distance)
+			{
+				is_in_shadow = 1;
+				break;
+			}
+		}
 	}
 
 	//3 part - calculate final color
@@ -113,9 +205,9 @@ int	apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win
 
 	
 	
-	if (is_in_shadow == 0)
+	if (!is_in_shadow)
 	{
-		for (int j = 0;i<3;i++)
+		for (int j = 0;j<3;j++)
 		{
 			obj_color[j]   = render->rec->color[j] / 255.0f;
 			light_color[j] = scene->light->light_rgb[j] / 255.0f;
