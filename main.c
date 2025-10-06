@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/02 17:57:12 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:34:21 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	main(int argc, char **argv)
 	print_cylinders(app.scene);
 
 	app.win->mlx = mlx_init();
-	app.win->width = 1200;
-	app.win->height = 900;
+	app.win->width = 1280;
+	app.win->height = 720;
 	app.win->aspect_ratio = (float)win.width / (float)win.height;
 	app.win->win = mlx_new_window(win.mlx, win.width, win.height, "miniRT");
 	app.win->img = mlx_new_image(win.mlx, win.width, win.height);

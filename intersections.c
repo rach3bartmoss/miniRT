@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:58:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/02 22:28:45 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:35:57 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	render_loop(t_ray_table *ray_table, t_window *win, t_scene *scene)
 			render.rec = &ray_table->hit_record[render.i];
 			if (render.rec->hit)
 			{
-				//posible pipeline ambient light > shadows / diffuse light term
 				apply_ambient_light(scene, render.rec, &render);
 				if (apply_diffuse_and_shadow(&render, scene, win) == 1)
 				{

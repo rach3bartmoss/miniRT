@@ -9,6 +9,7 @@ sources =	main.c \
 			create_vectors_utils.c \
 			cylinder_caps.c \
 			cylinder_intersection_utils.c \
+			cylinder_shadow_rays_utils.c \
 			error_handlers.c \
 			fill_ambiance.c \
 			fill_camera.c \
@@ -22,6 +23,7 @@ sources =	main.c \
 			intersections.c \
 			math_operations.c \
 			light_management.c \
+			light_management_utils.c \
 			parser.c \
 			plane_intersection_utils.c \
 			populate_structs.c \

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/04 18:02:51 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:32:39 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define M_PI 3.14159265358979323846
 # define EPS 1e-8
 # define KEY_ESC 65307
-# define SHADOW_EPS 1e-4f
+# define SHADOW_EPS 1e-3f
 
 # include <math.h>
 # include <float.h>
@@ -210,6 +210,15 @@ typedef struct s_cy_ctx
 	int			s;
 }	t_cy_ctx;
 
+typedef struct s_cy_cap_ctx
+{
+	float	cap_normal[3];
+	float	hit_cap_point[3];
+	double	denom;
+	double	hit_cap;
+	float	r;
+}	t_cy_cap;
+
 typedef struct s_abc
 {
 	double	A;
@@ -251,11 +260,17 @@ int		print_array3(float *target_xyz);
 //cylinder_caps.c
 void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
 void	calc_v_w(t_cy_ctx *cy_ctx);
-double		cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
-double		cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
+double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
+double	cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
+//cylinder_shadow_rays_utils.c
+double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
+double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
 //cylinder_intersection_utils.c
 double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
 int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
+void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir);
+float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx, float t_max);
+float	ray_intersection_cy(float *sr_origin, float *sr_dir, t_cylinder *cy, float distance);
 //error_handlers.c
 int		open_error_cases(char *filename, int errno_code);
 void	print_element(void *elem, e_type_elem type);
@@ -290,9 +305,15 @@ int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);
 //light_management.c
-void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
+
 int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win);
+
+//light_management_utils.c
+void	normalize_colors(float rgb[3]);
+double	ray_length(float vector[3]);
+void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
 float	ray_intersection_pl(float *sr_origin, float *sr_dir, t_plane *pl);
+float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);
