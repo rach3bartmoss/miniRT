@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 22:27:10 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/06 22:30:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/08 23:19:07 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,20 @@ float	ray_intersection_sp(float *sr_origin, float *sr_dir,
 	return (t);
 }
 
-float	ray_intersection_pl(float *sr_origin, float *sr_dir, t_plane *pl)
+double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir, t_plane *pl,
+	float distance)
 {
-	float	denom;
+	double	denom;
 	float	plane0_light0[3];
-	float	t;
+	double	t;
 
 	denom = dot(pl->pl_vector_xyz, sr_dir);
-	if (fabsf(denom) < 1e-6f)
-		return (-1.0f);
+	if (fabs(denom) <= 1e-4)
+		return (-1.0);
 	sub(plane0_light0, pl->pl_xyz, sr_origin);
 	t = dot(plane0_light0, pl->pl_vector_xyz) / denom;
-	if (t > 0.0f)
+	if (t > 1e-4 && t < (double)(distance - 1e-4))
 		return (t);
 	else
-		return (-1.0f);
+		return (-1.0);
 }

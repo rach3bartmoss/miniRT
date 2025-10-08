@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/06 22:32:39 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/08 23:55:26 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *wi
 void	normalize_colors(float rgb[3]);
 double	ray_length(float vector[3]);
 void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
-float	ray_intersection_pl(float *sr_origin, float *sr_dir, t_plane *pl);
+double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir, t_plane *pl, float distance);
 float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
 //parser.c
 int		check_filename(char *filename);
@@ -343,9 +343,11 @@ void	sub(float *target, float *a, float *b);
 void	add(float *target, float *a, float *b);
 void	scale(float *target, float *a, float scale_factor);
 int		normalize(float *vector_xyz, float *target_xyz);
-//vector_operations.c
+//vector_operations_2.c
 void	copy_vectors(float out[3], float in[3]);
 void	copy_int_vectors(int out[3], int in[3]);
+void	mult(float target_xyz[3], float a[3], float b[3]);
+void	normalize_target_colors(float target_xyz[3], int rgb[3]);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
