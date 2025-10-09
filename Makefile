@@ -32,6 +32,7 @@ sources =	main.c \
 			validate_array_utils.c \
 			vector_operations.c \
 			vector_operations_2.c \
+			vector_operations_3.c \
 			key_events.c \
 
 CC = cc

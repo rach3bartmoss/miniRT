@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 23:47:24 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 18:39:15 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:22:14 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type)
 		rgb_target[i] = ft_atoi(components[i]);
 		if (rgb_target[i] < 0 || rgb_target[i] > 255)
 		{
-			printf("Invalid %s RGB value: '%d' (Range: 0-255)\n", get_type_name(type) ,rgb_target[i]);
-			free_split(components);
-			return (0);
+			printf("Invalid %s RGB value: '%d' (Range: 0-255)\n",
+				get_type_name(type), rgb_target[i]);
+			return (free_split(components), 0);
 		}
 		i++;
 	}
@@ -63,7 +63,8 @@ int	parse_light_ratio(char *ratio_str, float *light_ratio, e_type_elem type)
 		*light_ratio = res;
 		return (1);
 	}
-	printf("miniRT: %s ratio should be between 0.0 and 1.0\n", get_type_name(type));
+	printf("miniRT: %s ratio should be between 0.0 and 1.0\n",
+		get_type_name(type));
 	return (0);
 }
 

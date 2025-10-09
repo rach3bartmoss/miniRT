@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 09:15:54 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 18:35:18 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:30:33 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	fill_plane_helper(t_plane *new_plane, char *parse_line)
 	token_count = 0;
 	while (token != NULL && token_count < 4)
 	{
-		//printf("token[%d] = '%s'\n", token_count, token);
-
 		if (token_count == 1)
 			rc = parse_coordinates(token, new_plane->pl_xyz);
 		if (token_count == 2 && rc == 1)

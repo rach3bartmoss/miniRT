@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/01 20:53:09 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:36:14 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	plane_occludes(float origin[3], float dir[3], float max_t, t_pl_ctx *P)
 	t = dot(diff, P->normal) / denom;
 	return (t > SHADOW_EPS && t < max_t);
 }
-
 
 void	create_iter_pl_ctx(t_scene *scene, t_pl_ctx *pl_ctx)
 {
@@ -48,7 +47,7 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 	float	diff[3];
 	double	t;
 	float	hit_p[3];
-	float	scale_tD[3];
+	float	scale_td[3];
 
 	if (flag == 1)
 		create_iter_pl_ctx(scene, pl_ctx);
@@ -58,14 +57,14 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 	t = dot(diff, pl_ctx->normal) / pl_ctx->denom;
 	if (t < 0.0f)
 		return (-1.0f);
-	if (flag == 1 && t < pl_ctx->rec->t)//intersection occurs
+	if (flag == 1 && t < pl_ctx->rec->t)
 	{
 		pl_ctx->rec->t = t;
 		pl_ctx->rec->hit = 1;
 		pl_ctx->rec->object_idx = pl_ctx->i;
 		pl_ctx->rec->object_type = PLANE;
-		scale(scale_tD, pl_ctx->d, t);			//store into scale_tD = (t*D)
-		add(hit_p, pl_ctx->origin, scale_tD);	//hit_p = (O + t * D)
+		scale(scale_td, pl_ctx->d, t);			//store into scale_tD = (t*D)
+		add(hit_p, pl_ctx->origin, scale_td);	//hit_p = (O + t * D)
 		copy_vectors(pl_ctx->rec->hit_point, hit_p);
 		copy_vectors(pl_ctx->rec->normal, pl_ctx->normal);
 		copy_int_vectors(pl_ctx->rec->color, pl_ctx->curr_pl->pl_rgb);
@@ -76,7 +75,7 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 int	ray_plane_intersect(t_ray_table *ray_table, t_scene *scene)
 {
 	t_pl_ctx	pl_ctx;
-	
+
 	pl_ctx.i = 0;
 	while (pl_ctx.i < ray_table->total_rays)
 	{

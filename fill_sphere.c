@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:24:59 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 18:34:19 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:31:57 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	check_dots(char *diameter_str, int i)
 		{
 			if (dot_seen)
 			{
-				printf("miniRT: invalid diameter format (multiple dots): '%s'\n", diameter_str);
+				printf("miniRT: invalid diameter fmt (multiple dots): '%s'\n",
+					diameter_str);
 				return (0);
 			}
 			dot_seen = 1;
@@ -80,7 +81,8 @@ int	parse_diameter(char *diameter_str, float *diameter_target, e_type_elem type)
 	res *= sign;
 	if (res <= 0)
 	{
-		printf("miniRT: '%s' diameter must be greater than 0: '%f'\n", get_type_name(type), res);
+		printf("miniRT: '%s' diameter must be greater than 0: '%f'\n",
+			get_type_name(type), res);
 		return (0);
 	}
 	*diameter_target = res;
@@ -129,7 +131,7 @@ int	fill_sphere(t_scene *scene, char *line)
 		if (!scene->sphere)
 			return (printf("miniRT: Sphere realloc failed.\n"), 0);
 	}
-	new_sphere = malloc(sizeof(t_sphere));//
+	new_sphere = malloc(sizeof(t_sphere));
 	if (!new_sphere)
 		return (printf("New sphere malloc failed\n"), 0);
 	ft_memset(new_sphere, 0, sizeof(t_sphere));

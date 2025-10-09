@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 21:41:58 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 19:30:17 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:16:41 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_split(char **parts)
 
 	i = 0;
 	if (!parts)
-		return;
+		return ;
 	while (parts[i])
 	{
 		free(parts[i]);
@@ -33,11 +33,14 @@ void	sanitize_gnl(int fd)
 {
 	char	*tmp;
 
-	while ((tmp = get_next_line(fd)) != NULL)
-		free (tmp);
+	while (tmp != NULL)
+	{
+		tmp = get_next_line(fd);
+	}
+	free (tmp);
 }
 
-void	cleanup_all(t_scene *scene)
+void	clean_lights_and_camera(t_scene *scene)
 {
 	if (scene->ambiance)
 	{
@@ -54,31 +57,48 @@ void	cleanup_all(t_scene *scene)
 		free (scene->light);
 		scene->camera = NULL;
 	}
-	int	count = set_and_get_occ(-1, SPHERE);
-	for (int i = 0; i < count; i++)
+}
+
+void	clean_sp_pl(t_scene *scene)
+{
+	int	count;
+	int	i;
+
+	count = set_and_get_occ(-1, SPHERE);
+	i = 0;
+	while (i < count)
 	{
 		free(scene->sphere[i]->id);
 		free(scene->sphere[i]);
+		i++;
 	}
 	free (scene->sphere);
-	
+	i = 0;
 	count = set_and_get_occ(-1, PLANE);
-	for (int i = 0; i < count; i++)
+	while (i < count)
 	{
 		free(scene->plane[i]->id);
 		free(scene->plane[i]);
+		i++;
 	}
 	free(scene->plane);
-	
+}
+
+void	cleanup_all(t_scene *scene)
+{
+	int	count;
+	int	i;
+
+	clean_lights_and_camera(scene);
+	clean_sp_pl(scene);
 	count = set_and_get_occ(-1, CYLINDER);
-	for (int i = 0; i < count; i++)
+	i = 0;
+	while (i < count)
 	{
 		free(scene->cylinder[i]->id);
 		free(scene->cylinder[i]);
+		i++;
 	}
 	free(scene->cylinder);
 	ft_strtok_free();
-	//gnl_free_buffer();
 }
-
-

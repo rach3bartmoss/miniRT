@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:27:05 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 14:55:16 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:37:09 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,5 @@ int	tokenize_line(char *line, t_scene *scene)
 	(void) scene;
 	id = ft_strtok(line, " \t\v\f\r");
 	rc = check_element_id(id, scene, line);
-	
 	return (rc);
 }

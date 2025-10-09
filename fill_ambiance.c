@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:14:40 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 16:24:59 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:29:14 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ int	fill_ambiance_helper(t_scene *scene, char *parse_line, int *rc)
 	token_count = 0;
 	while (token != NULL && token_count < 3)
 	{
-		//printf("token[%d] = '%s'\n", token_count, token);
 		if (token_count == 1)
-			*rc = parse_light_ratio(token, &scene->ambiance->light_ratio, AMBIENT);
+			*rc = parse_light_ratio(token,
+					&scene->ambiance->light_ratio, AMBIENT);
 		if (token_count == 2 && *rc == 1)
 			*rc = parse_rgb(token, scene->ambiance->a_rgb, AMBIENT);
 		if (*rc != 1)
@@ -88,7 +88,7 @@ int	fill_ambiance(t_scene *scene, char *line)
 
 	if (set_and_get_occ(GET_OCCURRENCE, AMBIENT) > 0)
 	{
-		printf("miniRT: the input file has more than one definition of ambient light\n");
+		printf("miniRT: more than one definition of ambient light\n");
 		return (0);
 	}
 	parse_line = NULL;

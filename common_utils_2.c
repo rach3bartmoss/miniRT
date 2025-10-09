@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/21 17:08:01 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/09 20:20:25 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	parse_coordinates(char *xyz_str, float xyz_target[3])
 		}
 		i++;
 	}
-	free_split(coordinates);
-	return (1);
+	return (free_split(coordinates), 1);
 }
 
 static int	parse_vector_loop(char	*vector_value, float *vector_target, int *i)
