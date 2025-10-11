@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:05:46 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/10/11 09:52:23 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,15 @@ typedef struct s_abc
 	double	C;
 }	t_abc;
 
+typedef struct s_screen_ndc_ctx
+{
+	float	u;
+	float	v;
+	int		x_index;
+	int		y_index;
+	int		index;
+}	t_screen_ndc_ctx;
+
 typedef struct s_app
 {
 	t_scene		*scene;
@@ -351,6 +360,7 @@ void	mult(float target_xyz[3], float a[3], float b[3]);
 void	normalize_colors(float rgb[3]);
 void	normalize_target_colors(float target_xyz[3], int rgb[3]);
 //vector_operations_3.c
+int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
 double	ray_length(float vector[3]);
 //key_events.c
 int		close_window(t_app *app);
