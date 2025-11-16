@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 17:53:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:25:39 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx)
 	copy_vectors(cy_ctx->origin, scene->camera->coordinates_xyz);
 	cy_ctx->half_height = cy_ctx->curr_cy->cy_height / 2.0f;
 	cy_ctx->radius = cy_ctx->curr_cy->cy_diameter / 2.0f;
-	scale(cy_ctx->hA, cy_ctx->normal, cy_ctx->half_height);
-	sub(cy_ctx->base_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
-	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
+	scale(cy_ctx->ha, cy_ctx->normal, cy_ctx->half_height);
+	sub(cy_ctx->base_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->ha);
+	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->ha);
 }
 
 /// @brief Solve t using the quadratic formula and pick the smallest
@@ -51,15 +51,15 @@ double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx)
 	double	delta;
 	double	root;
 
-	abc.A = dot(v, v);
-	abc.B = dot(v, w) * 2.0;
-	abc.C = dot(w, w) - (cy_ctx->radius * cy_ctx->radius);
-	delta = (abc.B * abc.B) - (4.0 * (abc.A * abc.C));
-	if (delta < 0.0 || fabs(abc.A) < 1e-12)
+	abc.a = dot(v, v);
+	abc.b = dot(v, w) * 2.0;
+	abc.c = dot(w, w) - (cy_ctx->radius * cy_ctx->radius);
+	delta = (abc.b * abc.b) - (4.0 * (abc.a * abc.c));
+	if (delta < 0.0 || fabs(abc.a) < 1e-12)
 		return (-1.0);
 	root = sqrt(delta);
-	t1 = (-abc.B - root) / (2.0 * abc.A);
-	t2 = (-abc.B + root) / (2.0 * abc.A);
+	t1 = (-abc.b - root) / (2.0 * abc.a);
+	t2 = (-abc.b + root) / (2.0 * abc.a);
 	if (t1 > 0.0 && t2 > 0.0)
 		return (fmin(t1, t2));
 	if (t1 > 0.0)

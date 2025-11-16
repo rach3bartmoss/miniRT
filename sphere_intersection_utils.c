@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/01 20:52:38 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:27:48 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ double	solve_t(t_abc *abc)
 	double	t0;
 	double	t1;
 
-	delta = abc->B * abc->B - (4.0 * (abc->A * abc->C));
+	delta = abc->b * abc->b - (4.0 * (abc->a * abc->c));
 	if (delta < 0.0)
 		return (-1.0);
-	q = -0.5 * (abc->B + (double)sign(abc->B) * sqrt(delta));
-	t0 = q / abc->A;
-	t1 = abc->C / q;
+	q = -0.5 * (abc->b + (double)sign(abc->b) * sqrt(delta));
+	t0 = q / abc->a;
+	t1 = abc->c / q;
 	if (t0 > t1)
 	{
 		t = t0;
@@ -53,12 +53,12 @@ int	solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc)
 	float	sub_tmp[3];
 	double	radius;
 
-	abc->A = (double)dot(d, d);
+	abc->a = (double)dot(d, d);
 	scale(scale_tmp, d, 2.0f);
 	sub(sub_tmp, e, sphere->sp_center_xyz);
-	abc->B = dot(scale_tmp, sub_tmp);
+	abc->b = dot(scale_tmp, sub_tmp);
 	radius = (double)sphere->sp_diameter * 0.5;
-	abc->C = dot(sub_tmp, sub_tmp) - (radius * radius);
+	abc->c = dot(sub_tmp, sub_tmp) - (radius * radius);
 	return (1);
 }
 

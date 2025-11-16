@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 21:26:38 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/06 22:23:37 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:26:30 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir)
 	copy_vectors(cy_ctx->origin, sr_origin);
 	cy_ctx->half_height = cy_ctx->curr_cy->cy_height / 2.0f;
 	cy_ctx->radius = cy_ctx->curr_cy->cy_diameter / 2.0f;
-	scale(cy_ctx->hA, cy_ctx->normal, cy_ctx->half_height);
-	sub(cy_ctx->base_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
-	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->hA);
+	scale(cy_ctx->ha, cy_ctx->normal, cy_ctx->half_height);
+	sub(cy_ctx->base_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->ha);
+	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->ha);
 }
 
 float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,

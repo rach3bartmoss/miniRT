@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 17:55:29 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:23:52 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,6 @@ typedef struct s_pl_ctx
 	double	denom;
 	int		i;
 	int		s;
-	
 }	t_pl_ctx;
 
 typedef struct s_cy_ctx
@@ -200,7 +199,7 @@ typedef struct s_cy_ctx
 	float		origin[3];
 	float		base_center[3];
 	float		top_center[3];
-	float		hA[3];
+	float		ha[3];
 	float		v[3];
 	float		w[3];
 	float		y;
@@ -227,9 +226,9 @@ typedef struct s_cy_cap_ctx
 
 typedef struct s_abc
 {
-	double	A;
-	double	B;
-	double	C;
+	double	a;
+	double	b;
+	double	c;
 }	t_abc;
 
 typedef struct s_screen_ndc_ctx
@@ -254,10 +253,12 @@ void	sanitize_gnl(int fd);
 void	cleanup_all(t_scene *scene);
 //common_utils.c
 int		parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type);
-int		parse_light_ratio(char *ratio_str, float *light_ratio, e_type_elem type);
+int		parse_light_ratio(char *ratio_str, float *light_ratio,
+			e_type_elem type);
 int		set_and_get_occ(int value, e_type_elem index);
 int		handle_default_error(void **scene_elem, void *str1, void *str2);
-int		pre_elem_check(void **target, char *line, char **parse_line, e_type_elem type);
+int		pre_elem_check(void **target, char *line, char **parse_line,
+			e_type_elem type);
 //common_utils_2.c
 int		parse_coordinates(char *xyz_str, float xyz_target[3]);
 int		parse_coordinates_vector(char *vector_str, float vector_target[3]);
@@ -270,7 +271,8 @@ int		create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table);
 //create_vectors_utils.c
 int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
 int		init_rays(t_ray_table *ray_table);
-int		calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis, t_window *win);
+int		calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis,
+			t_window *win);
 int		print_array3(float *target_xyz);
 //cylinder_caps.c
 double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
@@ -285,10 +287,13 @@ double	solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx);
 double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
 double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
 void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir);
-float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx, float t_max);
-float	ray_intersection_cy(float *sr_origin, float *sr_dir, t_cylinder *cy, float distance);
+float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
+			float t_max);
+float	ray_intersection_cy(float *sr_origin, float *sr_dir,
+			t_cylinder *cy, float distance);
 
 //cylinder_intersection_utils.c
+void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
 double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
 int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
 
@@ -311,7 +316,8 @@ int		fill_plane(t_scene *scene, char *line);
 //fill_sphere.c
 int		check_dots(char *diameter_str, int i);
 int		validate_diameter_str(char *diameter_str);
-int		parse_diameter(char *diameter_str, float *diameter_target, e_type_elem type);
+int		parse_diameter(char *diameter_str, float *diameter_target,
+			e_type_elem type);
 int		fill_sphere(t_scene *scene, char *line);
 //fill_utils.c
 size_t	get_elem_size(e_type_elem type);
@@ -327,15 +333,16 @@ int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);
 //light_management.c
-
-int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene, t_window *win);
-
+int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene,
+			t_window *win);
 //light_management_utils.c
 float	prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
-							float *p_offset);
+			float *p_offset);
 int		combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
-void	apply_ambient_light(t_scene *scene, t_hit *curr_rec, t_render_ctx *render);
-double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir, t_plane *pl, float distance);
+void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
+			t_render_ctx *render);
+double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir,
+			t_plane *pl, float distance);
 float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
 //parser.c
 int		check_filename(char *filename);
