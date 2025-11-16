@@ -7,6 +7,7 @@ sources =	main.c \
 			common_utils_3.c \
 			create_vectors.c \
 			create_vectors_utils.c \
+			cylinder_caps_utils.c \
 			cylinder_caps.c \
 			cylinder_intersection_utils.c \
 			cylinder_shadow_rays_utils.c \
@@ -20,7 +21,6 @@ sources =	main.c \
 			fill_utils.c \
 			init_hit_record.c \
 			init_objects.c \
-			intersections.c \
 			math_operations.c \
 			light_management.c \
 			light_management_utils.c \
@@ -28,7 +28,9 @@ sources =	main.c \
 			plane_intersection_utils.c \
 			populate_structs.c \
 			put_pixel_utils.c \
+			render_loop.c \
 			sphere_intersection_utils.c \
+			sphere_render.c \
 			validate_array_utils.c \
 			vector_operations.c \
 			vector_operations_2.c \

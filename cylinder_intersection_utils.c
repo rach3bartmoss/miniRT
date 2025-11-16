@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/04 17:47:24 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:53:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,6 @@ double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx)
 	if (t2 > 0.0)
 		return (t2);
 	return (-1.0);
-}
-
-double	solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx)
-{
-	double	t_side;
-
-	init_curr_iter_values(scene, cy_ctx);
-	calc_v_w(cy_ctx);
-	t_side = solve_t_cylinder(cy_ctx->v, cy_ctx->w, cy_ctx);
-	if (t_side > 0.0 && t_side < cy_ctx->rec->t)
-	{
-		compute_cylinder_finite_height(t_side, cy_ctx);
-	}
-	cylinder_bottom_cap(cy_ctx, 1);
-	cylinder_top_cap(cy_ctx, 1);
-	if (cy_ctx->rec->hit)
-		return (cy_ctx->rec->t);
-	else
-		return (-1.0);
 }
 
 int	ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene)

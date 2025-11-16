@@ -6,153 +6,91 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:02:28 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/06 22:20:39 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:50:12 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
-	double t_side)
+/// @brief 
+/// @param cap_ctx 
+/// @param cylinder 
+/// @param flag Set 0 for bottom cap and 1 for top cap
+static void	init_cap_ctx(t_cy_cap *cap_ctx, t_cy_ctx *cylinder, int flag)
 {
-	float	q[3];
-	float	n[3];
-
-	scale(q, cy_ctx->normal, cy_ctx->y);
-	add(q, cy_ctx->curr_cy->cy_xyz, q);
-	sub(n, hit_p, q);
-	normalize(n, n);
-	cy_ctx->rec->t = t_side;
-	cy_ctx->rec->hit = 1;
-	cy_ctx->rec->object_idx = cy_ctx->i;
-	cy_ctx->rec->object_type = CYLINDER;
-	copy_vectors(cy_ctx->rec->hit_point, hit_p);
-	copy_vectors(cy_ctx->rec->normal, n);
-	copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
-}
-
-/// @brief P = O + tside * D, y = (P - C) * A ∈ [-h , h]
-/// @param t_side 
-/// @param cy_ctx 
-void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx)
-{
-	float	hit_p[3];
-	float	scale_td[3];
-	float	hitp_minus_center[3];
-
-	scale(scale_td, cy_ctx->d, (float)t_side);
-	add(hit_p, cy_ctx->origin, scale_td);
-	sub(hitp_minus_center, hit_p, cy_ctx->curr_cy->cy_xyz);
-	cy_ctx->y = dot(hitp_minus_center, cy_ctx->normal);
-	if (cy_ctx->y >= -cy_ctx->half_height && cy_ctx->y <= cy_ctx->half_height)
+	if (flag == 0)
 	{
-		save_intersection_in_table(cy_ctx, hit_p, t_side);
+		copy_vectors(cap_ctx->center, cylinder->base_center);
+		scale(cap_ctx->cap_normal, cylinder->normal, -1.0f);
 	}
+	else if (flag == 1)
+	{
+		copy_vectors(cap_ctx->center, cylinder->top_center);
+		copy_vectors(cap_ctx->cap_normal, cylinder->normal);
+	}
+	cap_ctx->denom = dot(cylinder->d, cap_ctx->cap_normal);
+	cap_ctx->tcap = -1.0f;
+	cap_ctx->radius = cylinder->curr_cy->cy_diameter / 2;
 }
 
-/// @brief Solves this equations: v = D - (D * A)A
-/// @brief and w = (O - C) - ((O - C) * A)A
-/// @brief 1) D = current ray direction 
-/// @brief 2) A = Axis-orientation vector
-/// @brief 3) C = Center xyz coordinates of the cylinder
-/// @brief 4) O = Ray origin (camera xyz coordinates)
-/// @param cy_ctx 
-/// @return Fill the v and w values inside t_cy_ctx struct
-void	calc_v_w(t_cy_ctx *cy_ctx)
+/// @brief 1) find the ray-plane intersect for the plane containing the cap
+/// @brief 2) then check if the intersection point is within the cap's radius
+/// @brief 3) IF |P - C| * |P - C| < r² INTERSECTION HAPPENS
+/// @brief 4) Where P = intersection point
+/// @brief 5) C = cap center point
+/// @brief 6) r = radius of cap
+/// @brief 7) return on caller cap_ctx->tcap != -1.0f (true)
+/// @param cap_ctx Cylinder cap context variables, use for calcs
+/// @param cy_ctx Current cylinder context varaibles
+/// @param flag Flag to differ from camera-ray and shadow-ray usage
+static void	calc_cap_helper(t_cy_cap *cap_ctx, t_cy_ctx *cy_ctx, int flag)
 {
-	float	scale_da_normal[3];
-	double	da;
-	float	o_minus_c[3];
-	float	scale_oca_normal[3];
-	double	oca;
+	float	origin_minus_center[3];
+	float	tmp[3];
 
-	da = dot(cy_ctx->d, cy_ctx->normal);
-	scale(scale_da_normal, cy_ctx->normal, (float)da);
-	sub(cy_ctx->v, cy_ctx->d, scale_da_normal);
-	sub(o_minus_c, cy_ctx->origin, cy_ctx->curr_cy->cy_xyz);
-	oca = dot(o_minus_c, cy_ctx->normal);
-	scale(scale_oca_normal, cy_ctx->normal, (float)oca);
-	sub(cy_ctx->w, o_minus_c, scale_oca_normal);
+	sub(origin_minus_center, cap_ctx->center, cy_ctx->origin);
+	cap_ctx->tcap = dot(origin_minus_center, cap_ctx->cap_normal);
+	cap_ctx->tcap /= cap_ctx->denom;
+	if (cap_ctx->tcap > 0.0 && cap_ctx->tcap < cy_ctx->rec->t)
+	{
+		scale(tmp, cy_ctx->d, (float)cap_ctx->tcap);
+		add(cap_ctx->hit_cap_p, cy_ctx->origin, tmp);
+		sub(tmp, cap_ctx->hit_cap_p, cap_ctx->center);
+		if (dot(tmp, tmp) <= (cap_ctx->radius * cap_ctx->radius))
+		{
+			if (flag == 1)
+			{
+				cy_ctx->rec->t = cap_ctx->tcap;
+				cy_ctx->rec->hit = 1;
+				cy_ctx->rec->object_idx = cy_ctx->i;
+				copy_vectors(cy_ctx->rec->hit_point, cap_ctx->hit_cap_p);
+				copy_vectors(cy_ctx->rec->normal, cap_ctx->cap_normal);
+				copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
+			}
+		}
+	}
 }
 
 double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag)
 {
-	float	bot_center[3];
-	float	hit_cap_p[3];
-	float	tmp[3];
-	float	bot_cap_normal[3];
-	float	r = cy_ctx->curr_cy->cy_diameter / 2;
-	
-	double	denom;
-	float	OtoC[3];
-	double	tcap;
+	t_cy_cap	cap_ctx;
 
-	//bot_center = base_center= C - hA
-	copy_vectors(bot_center, cy_ctx->base_center);
-	scale(bot_cap_normal, cy_ctx->normal, -1.0f);
-	tcap = -1.0f;
-	denom = dot(cy_ctx->d, bot_cap_normal);
-	if (fabs(denom) > 1e-6)
+	init_cap_ctx(&cap_ctx, cy_ctx, 0);
+	if (fabs(cap_ctx.denom) > 1e-6)
 	{
-		sub(OtoC, bot_center, cy_ctx->origin);
-		tcap = dot(OtoC, bot_cap_normal) / denom;
-		if (tcap > 0.0 && tcap < cy_ctx->rec->t)
-		{
-			scale(tmp, cy_ctx->d, (float)tcap);
-			add(hit_cap_p, cy_ctx->origin, tmp);
-			sub(tmp, hit_cap_p, bot_center);
-			if (dot(tmp,tmp) <= (r * r))//intersection happens in bot cap area
-			{
-				if (flag == 1)
-				{
-					cy_ctx->rec->t = tcap;
-					cy_ctx->rec->hit = 1;
-					cy_ctx->rec->object_idx = cy_ctx->i;
-					copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
-					copy_vectors(cy_ctx->rec->normal, bot_cap_normal);
-					copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
-				}
-			}
-		}
+		calc_cap_helper(&cap_ctx, cy_ctx, flag);
 	}
-	return (tcap);
+	return (cap_ctx.tcap);
 }
 
 double	cylinder_top_cap(t_cy_ctx *cy_ctx, int flag)
 {
-	float	cap_center[3];
-	float	hit_cap_p[3];
-	float	tmp[3];
-	double	tcap;
-	float	r = cy_ctx->curr_cy->cy_diameter / 2;
-	// cap_center = top_center = C + hA
-	copy_vectors(cap_center, cy_ctx->top_center);
-	float cap_n[3]; copy_vectors(cap_n, cy_ctx->normal);
-	tcap = -1.0f;
-	double denom = dot(cy_ctx->d, cap_n);
-	if (fabs(denom) > 1e-6)
-	{
-		float OtoC[3]; sub(OtoC, cap_center, cy_ctx->origin);
-		tcap = dot(OtoC, cap_n) / denom;
+	t_cy_cap	cap_ctx;
 
-		if (tcap > 0.0 && tcap < cy_ctx->rec->t)
-		{
-			scale(tmp, cy_ctx->d, (float)tcap);
-			add(hit_cap_p, cy_ctx->origin, tmp);
-			sub(tmp, hit_cap_p, cap_center);
-			if (dot(tmp,tmp) <= (r*r))//intersection happens at top cap area
-			{
-				if (flag == 1)
-				{
-					cy_ctx->rec->t = tcap;
-					cy_ctx->rec->hit = 1;
-					cy_ctx->rec->object_idx = cy_ctx->i;
-					copy_vectors(cy_ctx->rec->hit_point, hit_cap_p);
-					copy_vectors(cy_ctx->rec->normal, cap_n);
-					copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);
-				}
-			}
-		}
+	init_cap_ctx(&cap_ctx, cy_ctx, 1);
+	if (fabs(cap_ctx.denom) > 1e-6)
+	{
+		calc_cap_helper(&cap_ctx, cy_ctx, flag);
 	}
-	return (tcap);
+	return (cap_ctx.tcap);
 }

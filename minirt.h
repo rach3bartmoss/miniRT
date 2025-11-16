@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/11 09:52:23 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:55:29 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,9 +210,15 @@ typedef struct s_cy_ctx
 	int			s;
 }	t_cy_ctx;
 
+/// @brief This struct is use in both ray-camera context
+/// @brief and shadow-ray context
 typedef struct s_cy_cap_ctx
 {
+	float	center[3];
+	float	hit_cap_p[3];
 	float	cap_normal[3];
+	double	tcap;
+	float	radius;
 	float	hit_cap_point[3];
 	double	denom;
 	double	hit_cap;
@@ -267,19 +273,25 @@ int		init_rays(t_ray_table *ray_table);
 int		calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis, t_window *win);
 int		print_array3(float *target_xyz);
 //cylinder_caps.c
-void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
-void	calc_v_w(t_cy_ctx *cy_ctx);
 double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
 double	cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
+//cylinder_caps_utils.c
+void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
+			double t_side);
+void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
+void	calc_v_w(t_cy_ctx *cy_ctx);
+double	solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx);
 //cylinder_shadow_rays_utils.c
 double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
 double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
-//cylinder_intersection_utils.c
-double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
-int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
 void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir);
 float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx, float t_max);
 float	ray_intersection_cy(float *sr_origin, float *sr_dir, t_cylinder *cy, float distance);
+
+//cylinder_intersection_utils.c
+double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
+int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
+
 //error_handlers.c
 int		open_error_cases(char *filename, int errno_code);
 void	print_element(void *elem, e_type_elem type);
@@ -308,8 +320,9 @@ char	*get_type_name(e_type_elem type);
 void	init_hit_record(t_ray_table *ray_table);
 //init_objects.c
 int		init_objects(t_scene *scene);
-//intersections.c
+//render_loop.c
 void	render_loop(t_ray_table *ray_table, t_window *win, t_scene *scene);
+//sphere_render.c
 int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);

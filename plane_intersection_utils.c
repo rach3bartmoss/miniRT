@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:36:14 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 17:59:43 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	create_iter_pl_ctx(t_scene *scene, t_pl_ctx *pl_ctx)
 
 	if (D * N) = 0 ray is parallel to the plane
 */
+//store into scale_tD = (t*D)
+//hit_p = (O + t * D)
 double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 {
 	float	diff[3];
@@ -63,8 +65,8 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 		pl_ctx->rec->hit = 1;
 		pl_ctx->rec->object_idx = pl_ctx->i;
 		pl_ctx->rec->object_type = PLANE;
-		scale(scale_td, pl_ctx->d, t);			//store into scale_tD = (t*D)
-		add(hit_p, pl_ctx->origin, scale_td);	//hit_p = (O + t * D)
+		scale(scale_td, pl_ctx->d, t);
+		add(hit_p, pl_ctx->origin, scale_td);
 		copy_vectors(pl_ctx->rec->hit_point, hit_p);
 		copy_vectors(pl_ctx->rec->normal, pl_ctx->normal);
 		copy_int_vectors(pl_ctx->rec->color, pl_ctx->curr_pl->pl_rgb);
