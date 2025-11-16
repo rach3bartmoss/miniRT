@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 09:15:54 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:30:33 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 21:35:29 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,33 @@ int	fill_plane_helper(t_plane *new_plane, char *parse_line)
 	return (1);
 }
 
+int	fill_plane_prep(t_scene *scene)
+{
+	size_t	oldsize;
+
+	oldsize = sizeof(t_plane *) * scene->plane_capacity;
+	scene->plane_capacity *= 2;
+	scene->plane = ft_realloc(scene->plane, oldsize, sizeof(t_plane *)
+			* scene->plane_capacity);
+	if (!scene->plane)
+	{
+		printf("miniRT: Plane realloc failed.\n");
+		return (0);
+	}
+	return (1);
+}
+
 int	fill_plane(t_scene *scene, char *line)
 {
 	t_plane		*new_plane;
 	char		*parse_line;
-	size_t		oldsize;
 	int			count;
 
 	count = set_and_get_occ(-1, PLANE);
 	if (count >= scene->plane_capacity)
 	{
-		oldsize = sizeof(t_plane *) * scene->plane_capacity;
-		scene->plane_capacity *= 2;
-		scene->plane = ft_realloc(scene->plane, oldsize, sizeof(t_plane *)
-				* scene->plane_capacity);
-		if (!scene->plane)
-			return (printf("miniRT: Plane realloc failed.\n"), 0);
+		if (!fill_plane_prep(scene))
+			return (0);
 	}
 	new_plane = malloc(sizeof(t_plane));
 	if (!new_plane)

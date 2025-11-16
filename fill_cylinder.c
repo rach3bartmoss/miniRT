@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 13:29:31 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/20 18:33:38 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 21:32:52 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,33 @@ int	fill_cylinder_helper(t_cylinder *new_cylinder, char *parse_line)
 	return (1);
 }
 
+static int	fill_cylinder_prep(t_scene *scene)
+{
+	size_t	oldsize;
+
+	oldsize = sizeof(t_cylinder *) * scene->cylinder_capacity;
+	scene->cylinder_capacity *= 2;
+	scene->cylinder = ft_realloc(scene->cylinder, oldsize,
+			sizeof(t_cylinder *) * scene->cylinder_capacity);
+	if (!scene->cylinder)
+	{
+		printf("miniRT: cylinder ft_realloc failed.\n");
+		return (0);
+	}
+	return (1);
+}
+
 int	fill_cylinder(t_scene *scene, char *line)
 {
 	t_cylinder	*new_cylinder;
 	char		*parse_line;
-	size_t		oldsize;
 	int			count;
 
 	count = set_and_get_occ(-1, CYLINDER);
 	if (count >= scene->cylinder_capacity)
 	{
-		oldsize = sizeof(t_cylinder *) * scene->cylinder_capacity;
-		scene->cylinder_capacity *= 2;
-		scene->cylinder = ft_realloc(scene->cylinder, oldsize,
-				sizeof(t_cylinder *) * scene->cylinder_capacity);
-		if (!scene->cylinder)
-			return (printf("miniRT: cylinder ft_realloc failed.\n"), 0);
+		if (!fill_cylinder_prep(scene))
+			return (0);
 	}
 	new_cylinder = malloc(sizeof(t_cylinder));
 	if (!new_cylinder)

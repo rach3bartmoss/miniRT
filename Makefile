@@ -25,6 +25,7 @@ sources =	main.c \
 			light_management.c \
 			light_management_utils.c \
 			parser.c \
+			plane_intersection.c \
 			plane_intersection_utils.c \
 			populate_structs.c \
 			put_pixel_utils.c \

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 18:23:52 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:13:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,9 @@ typedef struct s_pl_ctx
 	float	normal[3];
 	float	origin[3];
 	float	p0[3];
+	float	diff[3];
+	float	scale_td[3];
+	float	hit_p[3];
 	double	denom;
 	int		i;
 	int		s;
@@ -266,6 +269,10 @@ int		parse_fov(char *fov_str, float *fov_target);
 int		validate_fov_str(char *fov_str);
 //common_utils_3.c
 int		sign_handler(char **target_str);
+int		parse_diameter(char *diameter_str, float *diameter_target,
+			e_type_elem type);
+int		validate_diameter_str(char *diameter_str);
+int		check_dots(char *diameter_str, int i);
 //create_vectors.c
 int		create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table);
 //create_vectors_utils.c
@@ -291,7 +298,6 @@ float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
 			float t_max);
 float	ray_intersection_cy(float *sr_origin, float *sr_dir,
 			t_cylinder *cy, float distance);
-
 //cylinder_intersection_utils.c
 void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
 double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
@@ -314,10 +320,6 @@ int		fill_light(t_scene *scene, char *line);
 //fill_plane.c
 int		fill_plane(t_scene *scene, char *line);
 //fill_sphere.c
-int		check_dots(char *diameter_str, int i);
-int		validate_diameter_str(char *diameter_str);
-int		parse_diameter(char *diameter_str, float *diameter_target,
-			e_type_elem type);
 int		fill_sphere(t_scene *scene, char *line);
 //fill_utils.c
 size_t	get_elem_size(e_type_elem type);
@@ -349,8 +351,9 @@ int		check_filename(char *filename);
 int		file_management(char *filename);
 int		parse_file(t_scene	*scene, int fd);
 //plane_intersection_utils.c
-int		plane_occludes(float origin[3], float dir[3], float max_t, t_pl_ctx *P);
 double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag);
+//plane_intersection.c
+int		ray_plane_intersect(t_ray_table *ray_table, t_scene *scene);
 int		render_plane(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //populate_structs.c
 int		check_element_id(char *id, t_scene *scene, char *line);
