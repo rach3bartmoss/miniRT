@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ginfranc <ginfranc@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 22:13:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/22 13:47:37 by ginfranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,7 +349,7 @@ float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);
-int		parse_file(t_scene	*scene, int fd);
+int		parse_file(t_scene	*scene, char *filename);
 //plane_intersection_utils.c
 double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag);
 //plane_intersection.c

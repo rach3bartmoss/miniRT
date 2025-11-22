@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ginfranc <ginfranc@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:53:30 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/22 13:55:55 by ginfranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@ int	pre_runtime_check(char **argv, int argc)
 
 int	init_app(t_app *app, char **argv, t_window *win)
 {
-	int	fd;
-
-	fd = file_management(argv[1]);
 	ft_memset(app->scene, 0, sizeof(t_scene));
-	if (parse_file(app->scene, fd) != 1)
+	if (parse_file(app->scene, argv[1]) != 1)
 	{
 		cleanup_all(app->scene);
 		return (1);
@@ -57,7 +54,6 @@ int	main(int argc, char **argv)
 	t_scene		scene;
 	t_window	win;
 	t_ray_table	ray_table;
-	int	fd;
 
 	if (pre_runtime_check(argv, argc) == 1)
 		return (1);
@@ -65,9 +61,8 @@ int	main(int argc, char **argv)
 	app.win = &win;
 	app.ray_table = &ray_table;
 
-	fd = file_management(argv[1]);
 	ft_memset(app.scene, 0, sizeof(t_scene));
-	if (parse_file(app.scene, fd) != 1)
+	if (parse_file(app.scene, argv[1]) != 1)
 	{
 		cleanup_all(app.scene);
 		return (0);

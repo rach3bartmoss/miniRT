@@ -65,7 +65,7 @@ $(LIBFT):
 	@$(MAKE) -s -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"
 	@echo "$(GREEN)Libft compiled!$(RESET)"
 
-$(MLX): $(MLX_DIR)
+$(MLX):
 	@echo "$(GREEN)Compiling Minilibx...$(RESET)"
 	@$(MAKE) -s -C $(MLX_DIR)
 	@echo "$(GREEN)Minilibx compiled!$(RESET)"
@@ -82,12 +82,12 @@ valgrind: $(name)
 clean:
 	rm -f $(OBJ)
 	@$(MAKE) -s -C $(LIBFT_DIR) clean
-#@$(MAKE) -s -C $(MLX_DIR) clean
+	@$(MAKE) -s -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(name)
 	@$(MAKE) -s -C $(LIBFT_DIR) fclean
-#@$(MAKE) -s -C $(MLX_DIR) fclean
+	@$(MAKE) -s -C $(MLX_DIR) clean
 
 re: fclean all
 
