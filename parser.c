@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ginfranc <ginfranc@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:48:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 22:42:54 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/22 14:02:18 by ginfranc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,21 @@ int	file_management(char *filename)
 	return (fd);
 }
 
-int	parse_file(t_scene	*scene, int fd)
+int	parse_file(t_scene	*scene, char *filename)
 {
 	char	*line;
 	int		rc;
+	int		fd;
 
 	rc = 1;
-	if (!init_objects(scene))
+	fd = file_management(filename);
+	if (fd < 0)
 		return (0);
+	if (!init_objects(scene))
+	{
+		close(fd);
+		return (0);
+	}
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
