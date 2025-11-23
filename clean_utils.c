@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 21:41:58 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:16:41 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/23 10:08:52 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	sanitize_gnl(int fd)
 {
 	char	*tmp;
 
+	tmp = get_next_line(fd);
 	while (tmp != NULL)
 	{
+		free(tmp);
 		tmp = get_next_line(fd);
 	}
 	free (tmp);
@@ -55,7 +57,7 @@ void	clean_lights_and_camera(t_scene *scene)
 	if (scene->light)
 	{
 		free (scene->light);
-		scene->camera = NULL;
+		scene->light = NULL;
 	}
 }
 

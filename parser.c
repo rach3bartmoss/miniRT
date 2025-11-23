@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:48:14 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 22:42:54 by dopereir         ###   ########.fr       */
+/*   Updated: 2025/11/23 11:05:20 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	parse_file(t_scene	*scene, int fd)
 
 	rc = 1;
 	if (!init_objects(scene))
-		return (0);
+		return (close(fd), 0);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
