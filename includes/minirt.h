@@ -27,9 +27,9 @@
 # include <unistd.h>
 # include <errno.h>
 # include <fcntl.h>
-# include "includes/libft/libft.h"
-# include "includes/minilibx-linux/mlx.h"
-# include "includes/minilibx-linux/mlx_int.h"
+# include "libft.h"
+# include "mlx.h"
+# include "mlx_int.h"
 
 typedef enum e_type
 {
