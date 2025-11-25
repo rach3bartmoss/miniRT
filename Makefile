@@ -1,93 +1,115 @@
-name = miniRT
+# **************************************************************************** #
+#                                   COLORS                                     #
+# **************************************************************************** #
 
-sources =	main.c \
-			clean_utils.c \
-			common_utils.c \
-			common_utils_2.c \
-			common_utils_3.c \
-			create_vectors.c \
-			create_vectors_utils.c \
-			cylinder_caps_utils.c \
-			cylinder_caps.c \
-			cylinder_intersection_utils.c \
-			cylinder_shadow_rays_utils.c \
-			error_handlers.c \
-			fill_ambiance.c \
-			fill_camera.c \
-			fill_cylinder.c \
-			fill_light.c \
-			fill_plane.c \
-			fill_sphere.c \
-			fill_utils.c \
-			init_hit_record.c \
-			init_objects.c \
-			math_operations.c \
-			light_management.c \
-			light_management_utils.c \
-			parser.c \
-			plane_intersection.c \
-			plane_intersection_utils.c \
-			populate_structs.c \
-			put_pixel_utils.c \
-			render_loop.c \
-			sphere_intersection_utils.c \
-			sphere_render.c \
-			validate_array_utils.c \
-			vector_operations.c \
-			vector_operations_2.c \
-			vector_operations_3.c \
-			key_events.c \
+RESET   = \033[0m
+BOLD    = \033[1m
+RED     = \033[31m
+GREEN   = \033[32m
+YELLOW  = \033[33m
+BLUE    = \033[34m
+CYAN    = \033[36m
+MAGENTA = \033[35m
 
+# **************************************************************************** #
+#                                   PROJECT                                    #
+# **************************************************************************** #
+
+NAME = miniRT
 CC = cc
 
-INCLUDES = -I./ -I$(LIBFT_DIR) -I$(MLX_DIR)
+SRCS = 	srcs/utils/error_handlers.c \
+		srcs/utils/common_utils_3.c \
+		srcs/utils/common_utils.c \
+		srcs/utils/common_utils_2.c \
+		srcs/utils/init_hit_record.c \
+		srcs/utils/clean_utils.c \
+		srcs/utils/init_objects.c \
+		srcs/parsing/fill_camera.c \
+		srcs/parsing/fill_light.c \
+		srcs/parsing/populate_structs.c \
+		srcs/parsing/fill_cylinder.c \
+		srcs/parsing/fill_ambiance.c \
+		srcs/parsing/fill_plane.c \
+		srcs/parsing/fill_sphere.c \
+		srcs/parsing/validate_array_utils.c \
+		srcs/parsing/parser.c \
+		srcs/parsing/fill_utils.c \
+		srcs/objects/cylinder_intersection_utils.c \
+		srcs/objects/plane_intersection.c \
+		srcs/objects/sphere_render.c \
+		srcs/objects/cylinder_caps.c \
+		srcs/objects/sphere_intersection_utils.c \
+		srcs/objects/plane_intersection_utils.c \
+		srcs/objects/cylinder_shadow_rays_utils.c \
+		srcs/objects/cylinder_caps_utils.c \
+		srcs/math/create_vectors_utils.c \
+		srcs/math/vector_operations_2.c \
+		srcs/math/vector_operations_3.c \
+		srcs/math/create_vectors.c \
+		srcs/math/math_operations.c \
+		srcs/math/vector_operations.c \
+		srcs/hooks/key_events.c \
+		srcs/render/light_management_utils.c \
+		srcs/render/light_management.c \
+		srcs/render/put_pixel_utils.c \
+		srcs/render/render_loop.c \
+		srcs/main.c
 
-CFLAGS = -Wall -Wextra -Werror -g ${INCLUDES}
+BUILD_DIR = build
+OBJS = $(SRCS:srcs/%.c=$(BUILD_DIR)/%.o)
 
-GREEN = \033[0;32m
-RESET = \033[0m
+LIBFT_DIR = includes/libft
+LIBFT_A = $(LIBFT_DIR)/libft.a
 
-#flag -L indica o folder -l indica (lib)+<biblioteca sem prefixo lib e sem extensão>
-LINKS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
+MLX_DIR = includes/minilibx-linux
+MLX_A = $(MLX_DIR)/libmlx.a
 
-LIBFT_DIR = includes/libft/
-LIBFT = $(LIBFT_DIR)libft.a
+INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES)
 
-MLX_DIR = includes/minilibx-linux/
-MLX = $(MLX_DIR)libmlx.a
-CFLAGS_MINILIBX = $(filter-out -Werror,$(CFLAGS))
+LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
-OBJ = $(sources:.c=.o)
+VAL_RULES = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
-all: $(LIBFT) $(MLX) $(name)
+# **************************************************************************** #
+#                                   RULES                                      #
+# **************************************************************************** #
 
-$(LIBFT):
-	@$(MAKE) -s -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"
-	@echo "$(GREEN)Libft compiled!$(RESET)"
+all: $(LIBFT_A) $(MLX_A) $(NAME)
 
-$(MLX):
-	@echo "$(GREEN)Compiling Minilibx...$(RESET)"
+$(BUILD_DIR)/%.o: srcs/%.c Makefile
+	@mkdir -p $(dir $@)
+	@echo "$(CYAN)Compiling$(RESET) → $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIBFT_A):
+	@echo "$(MAGENTA)Building libft...$(RESET)"
+	@$(MAKE) -s -C $(LIBFT_DIR)
+
+$(MLX_A):
+	@echo "$(MAGENTA)Building MinilibX...$(RESET)"
 	@$(MAKE) -s -C $(MLX_DIR)
-	@echo "$(GREEN)Minilibx compiled!$(RESET)"
 
-$(name): $(OBJ) $(LIBFT) $(MLX)
-	$(CC) $(CFLAGS) -o $(name) $(OBJ) $(LINKS)
+$(NAME): $(OBJS)
+	@echo "$(YELLOW)Linking objects...$(RESET)"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+	@echo "$(GREEN)✔ Build complete: $(BOLD)$(NAME)$(RESET)"
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-valgrind: $(name)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(name) scenes/scene_1.rt
+valgrind: all
+	@echo "$(BLUE)Running with Valgrind...$(RESET)"
+	@valgrind $(VAL_RULES) ./$(NAME) scenes/scene_1.rt
 
 clean:
-	rm -f $(OBJ)
-	@$(MAKE) -s -C $(LIBFT_DIR) clean
-	@$(MAKE) -s -C $(MLX_DIR) clean
+	@echo "$(RED)Cleaning objects...$(RESET)"
+	@rm -rf $(BUILD_DIR)
+	@$(MAKE) clean -C $(LIBFT_DIR)
+	@$(MAKE) clean -C $(MLX_DIR)
 
 fclean: clean
-	rm -f $(name)
-	@$(MAKE) -s -C $(LIBFT_DIR) fclean
-	@$(MAKE) -s -C $(MLX_DIR) clean
+	@echo "$(RED)Cleaning executable...$(RESET)"
+	@rm -f $(NAME)
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
