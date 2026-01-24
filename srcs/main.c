@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/23 10:54:10 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:22:12 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ int	main(int argc, char **argv)
 	render_cylinder(app.ray_table, app.scene, app.win);
 	render_sphere(app.ray_table, app.scene, app.win);
 	
-	render_loop(app.ray_table, app.win, app.scene);
+	// render_loop(app.ray_table, app.win, app.scene);
+	start_multithread_render(&app);
 	mlx_put_image_to_window(app.win->mlx, app.win->win, app.win->img, 0, 0);
 
 	mlx_hook(app.win->win, 17, 0, close_window, &app);

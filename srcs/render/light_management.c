@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_management.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:01:03 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:05:52 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/23 23:41:27 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	shadow_ray_intersection_dispatcher(float *p_offset, float *dir,
 /// @param scene 
 /// @param win 
 /// @return Return 0 on failure success apply the shadows + ambient light
-int	apply_diffuse_and_shadow(t_render_ctx *render,
+int	apply_diffuse_specular_and_shadow(t_render_ctx *render,
 	t_scene *scene, t_window *win)
 {
 	float	light_dir_normalized[3];
