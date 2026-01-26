@@ -52,6 +52,7 @@ SRCS = 	srcs/utils/error_handlers.c \
 		srcs/hooks/key_events.c \
 		srcs/render/light_management_utils.c \
 		srcs/render/light_management.c \
+		srcs/render/light_phong.c \
 		srcs/render/put_pixel_utils.c \
 		srcs/render/render_loop.c \
 		srcs/main.c
@@ -66,9 +67,11 @@ MLX_DIR = includes/minilibx-linux
 MLX_A = $(MLX_DIR)/libmlx.a
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror -g $(INCLUDES) $(PTHREAD)
 
-LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
+PTHREAD = -pthread
+
+LIBS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz $(PTHREAD)
 
 VAL_RULES = --leak-check=full --show-leak-kinds=all --track-origins=yes
 

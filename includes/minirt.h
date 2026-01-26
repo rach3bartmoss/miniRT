@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 22:13:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/23 23:53:48 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <unistd.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <pthread.h>
+# include <stdint.h>
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
@@ -250,6 +252,15 @@ typedef struct s_app
 	t_ray_table	*ray_table;
 }	t_app;
 
+// y_start and y_end will be our horizontal delimiters
+
+typedef struct s_thread_data
+{
+	t_app			*app;
+	int				y_start;
+	int				y_end;
+}	t_thread_data;
+
 //clean_utils.c
 void	free_split(char **parts);
 void	sanitize_gnl(int fd);
@@ -329,23 +340,26 @@ void	init_hit_record(t_ray_table *ray_table);
 //init_objects.c
 int		init_objects(t_scene *scene);
 //render_loop.c
-void	render_loop(t_ray_table *ray_table, t_window *win, t_scene *scene);
+void	*render_thread(void *data);
+void	start_multithread_render(t_app *app);
 //sphere_render.c
 int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
 int		sign(double x);
 //light_management.c
-int		apply_diffuse_and_shadow(t_render_ctx *render, t_scene *scene,
+int		apply_diffuse_specular_and_shadow(t_render_ctx *render, t_scene *scene,
 			t_window *win);
 //light_management_utils.c
 float	prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
 			float *p_offset);
-int		combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
-void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
-			t_render_ctx *render);
 double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir,
 			t_plane *pl, float distance);
 float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
+//light_phong.c
+float	apply_specular_light(t_scene *scene, t_render_ctx *render);
+int		combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
+void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
+			t_render_ctx *render);
 //parser.c
 int		check_filename(char *filename);
 int		file_management(char *filename);
@@ -388,4 +402,5 @@ double	ray_length(float vector[3]);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
+
 #endif
