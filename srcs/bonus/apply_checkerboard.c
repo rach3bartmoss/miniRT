@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 22:13:12 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 23:29:01 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:16:00 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,55 +81,28 @@ void	apply_checkerboard_for_plane(t_hit *hit, t_plane *pl, int target[3])
 		set_vec_int_values(target, 0, 0, 0);
 }
 
-void	apply_checkerboard_for_cy(t_hit *hit, t_cylinder *cy, int target[3])
+/// @brief Apply checkerboard pattern into 3D cylinders
+/// @brief as used in The Ray Tracing Challenger book.
+/// @param hit 
+/// @param cy 
+/// @param target 
+void	apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3])
 {
-	float	d[3];
-	float	radial[3];
-	float	axis_u[3], axis_v[3];
-	float	u;
-	float	v;
-	int	iu;
-	int	iv;
+	t_ckboard_cy_ctx	ctx;
 
-	sub(d, hit->hit_point, cy->cy_xyz);
-
-	v = dot(d, cy->cy_vector_xyz);
-
-	radial[0] = d[0] - v * cy->cy_vector_xyz[0];
-	radial[1] = d[1] - v * cy->cy_vector_xyz[1];
-	radial[2] = d[2] - v * cy->cy_vector_xyz[2];
-
-	if (fabsf(cy->cy_vector_xyz[1]) < 0.9f)
-		axis_u[0]=0, axis_u[1]=1, axis_u[2]=0;
+	fill_inv_matrix(ctx.mx, cy);
+	apply_matrix(ctx.p, ctx.mx, hit->hit_point);
+	ctx.tetha = atan2f(ctx.p[0], ctx.p[2]);
+	ctx.rawU = ctx.tetha / (2.0f * M_PI);
+	ctx.u = 1.0f - (ctx.rawU + 0.5f);
+	ctx.v = ctx.p[1];
+	ctx.v = fmodf(ctx.v, 1.0f);
+	if (ctx.v < 0.0f)
+		ctx.v += 1.0f;
+	ctx.iu = (int)floorf(ctx.u * 20.0f);
+	ctx.iv = (int)floorf(ctx.v * 2.0f);
+	if ((ctx.iu + ctx.iv) % 2 == 0)
+		set_vec_int_values(target, 255, 255, 255);
 	else
-		axis_u[0]=1, axis_u[1]=0, axis_u[2]=0;
-
-	cross(cy->cy_vector_xyz, axis_u, axis_u);
-	normalize(axis_u, axis_u);
-
-	cross(cy->cy_vector_xyz, axis_u, axis_v);
-	normalize(axis_v, axis_v);
-
-	// u = angular coordinate
-	u = atan2f(dot(radial, axis_v), dot(radial, axis_u));
-
-	// Checker indices
-	float u01 = (u + M_PI) / (2.0f * M_PI);
-	float u_len = u01 * (2.0f * M_PI * (cy->cy_diameter / 2.0f));
-
-	iu = floorf(u_len / SQUARE_PATTERN_SCALE);
-	iv = floorf(v     / SQUARE_PATTERN_SCALE);
-
-
-	if ((iu + iv) % 2 == 0)
-	{
-		target[0] = 255;
-		target[1] = 255;
-		target[2] = 255;
-	}
-	else {
-		target[0] = 0;
-		target[1] = 0;
-		target[2] = 0;
-	}
+		set_vec_int_values(target, 0, 0, 0);
 }

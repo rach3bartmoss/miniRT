@@ -19,6 +19,7 @@ NAME = miniRT
 CC = cc
 
 SRCS = 	srcs/bonus/apply_checkerboard.c \
+		srcs/bonus/apply_checkerboard_helper.c \
 		srcs/bonus/click_event_bonus.c \
 		srcs/utils/error_handlers.c \
 		srcs/utils/common_utils_3.c \

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 23:45:42 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:13:33 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define KEY_ESC 65307
 # define SHADOW_EPS 1e-3f
 # define SQUARE_PATTERN_SCALE 5.0f
+# define CYLINDER_CHECKER_FREQUENCY 20.0f //minimum for a real square pattern
 
 # include <math.h>
 # include <float.h>
@@ -412,6 +413,7 @@ void	normalize_target_colors(float target_xyz[3], int rgb[3]);
 int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
 double	ray_length(float vector[3]);
 void	set_vec_int_values(int vec[3], int va, int vb, int vc);
+void	set_vec_float_values(float vec[3], float va, float vb, float vc);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
@@ -420,12 +422,17 @@ int		double_left_click(int keycode, int x, int y, t_app *app);
 int		apply_checkerboard(t_hit *hit);
 void	apply_checkboard_for_sphere(t_hit *hit, t_sphere *sp, int target[3]);
 void	apply_checkerboard_for_plane(t_hit *hit, t_plane *pl, int target[3]);
-void	apply_checkerboard_for_cy(t_hit *hit, t_cylinder *cy, int target[3]);
+void	apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
+//apply_checkerboard_helper.c
+void	apply_matrix(float result[3], float m[4][4], float p[3]);
+void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
+			float forward[3]);
+void	fill_inv_matrix(float m[4][4], t_cylinder *cy);
 //click_event_bonus.c
 void	handle_click(int x, int y, t_app *app);
 
 //STRUCTS FOR BONUS
-typedef struct	s_ck_ctx
+typedef struct s_ck_ctx
 {
 	float	p[3];
 	float	radius;
@@ -436,5 +443,17 @@ typedef struct	s_ck_ctx
 	int		u_i;
 	int		v_i;
 }	t_ckboard_sp_ctx;
+
+typedef struct s_ck_ctk
+{
+	float	mx[4][4];
+	float	tetha;
+	float	rawU;
+	float	u;
+	float	p[3];
+	float	v;
+	int		iu;
+	int		iv;
+}	t_ckboard_cy_ctx;
 
 #endif

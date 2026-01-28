@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 13:59:07 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 23:55:30 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:47:32 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	apply_object_base_color(t_render_ctx *render, t_scene *scene)
 		apply_checkboard_for_sphere(render->rec,
 			scene->sphere[idx], render->rec->color);
 	else if (type == CYLINDER && scene->cylinder[idx]->checkerboard)
-		apply_checkerboard_for_cy(render->rec, scene->cylinder[idx],
+		apply_checkerboard_cy(render->rec, scene->cylinder[idx],
 			render->rec->color);
 }
 
