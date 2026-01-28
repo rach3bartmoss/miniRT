@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/19 20:22:12 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/01/26 23:00:17 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,12 @@ int	main(int argc, char **argv)
 		app.ray_table->hit_record = malloc(sizeof(t_hit) * app.ray_table->total_rays);
 	init_hit_record(app.ray_table);
 	
-	render_plane(app.ray_table, app.scene, app.win);
-	render_cylinder(app.ray_table, app.scene, app.win);
-	render_sphere(app.ray_table, app.scene, app.win);
+	//render_plane(app.ray_table, app.scene, app.win);
+	//render_cylinder(app.ray_table, app.scene, app.win);
+	//render_sphere(app.ray_table, app.scene, app.win);
+	
+	render_objects(&app);
+	mlx_put_image_to_window(app.win->mlx, app.win->win, app.win->img, 0, 0);
 	
 	// render_loop(app.ray_table, app.win, app.scene);
 	start_multithread_render(&app);
@@ -109,6 +112,8 @@ int	main(int argc, char **argv)
 
 	mlx_hook(app.win->win, 17, 0, close_window, &app);
 	mlx_hook(app.win->win, 2, 1L<<0, key_press, &app);
+	mlx_mouse_hook(app.win->win, double_left_click, &app);
+
 	mlx_loop(app.win->mlx);
 
 	return (0);

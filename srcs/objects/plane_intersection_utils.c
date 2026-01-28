@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 22:12:55 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/27 00:07:49 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 		pl_ctx->rec->hit = 1;
 		pl_ctx->rec->object_idx = pl_ctx->i;
 		pl_ctx->rec->object_type = PLANE;
+		pl_ctx->rec->obj_scene_idx = pl_ctx->s;
 		scale(pl_ctx->scale_td, pl_ctx->d, t);
 		add(pl_ctx->hit_p, pl_ctx->origin, pl_ctx->scale_td);
 		copy_vectors(pl_ctx->rec->hit_point, pl_ctx->hit_p);

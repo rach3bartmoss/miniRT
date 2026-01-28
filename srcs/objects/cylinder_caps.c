@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:02:28 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 17:50:12 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/27 00:05:43 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	calc_cap_helper(t_cy_cap *cap_ctx, t_cy_ctx *cy_ctx, int flag)
 				cy_ctx->rec->t = cap_ctx->tcap;
 				cy_ctx->rec->hit = 1;
 				cy_ctx->rec->object_idx = cy_ctx->i;
+				cy_ctx->rec->obj_scene_idx = cy_ctx->s;
 				copy_vectors(cy_ctx->rec->hit_point, cap_ctx->hit_cap_p);
 				copy_vectors(cy_ctx->rec->normal, cap_ctx->cap_normal);
 				copy_int_vectors(cy_ctx->rec->color, cy_ctx->curr_cy->cy_rgb);

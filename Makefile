@@ -18,7 +18,9 @@ MAGENTA = \033[35m
 NAME = miniRT
 CC = cc
 
-SRCS = 	srcs/utils/error_handlers.c \
+SRCS = 	srcs/bonus/apply_checkerboard.c \
+		srcs/bonus/click_event_bonus.c \
+		srcs/utils/error_handlers.c \
 		srcs/utils/common_utils_3.c \
 		srcs/utils/common_utils.c \
 		srcs/utils/common_utils_2.c \
@@ -55,6 +57,7 @@ SRCS = 	srcs/utils/error_handlers.c \
 		srcs/render/light_phong.c \
 		srcs/render/put_pixel_utils.c \
 		srcs/render/render_loop.c \
+		srcs/render/shading_utils.c \
 		srcs/main.c
 
 BUILD_DIR = build
