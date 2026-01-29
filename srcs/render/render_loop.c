@@ -3,29 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   render_loop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 13:59:07 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/23 23:48:17 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:47:32 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+static void	apply_object_base_color(t_render_ctx *render, t_scene *scene)
+{
+	int	type;
+	int	idx;
+
+	type = render->rec->object_type;
+	idx = render->rec->obj_scene_idx;
+	if (type == PLANE && scene->plane[idx]->checkerboard)
+		apply_checkerboard_for_plane(render->rec,
+			scene->plane[idx], render->rec->color);
+	else if (type == SPHERE && scene->sphere[idx]->checkerboard)
+		apply_checkboard_for_sphere(render->rec,
+			scene->sphere[idx], render->rec->color);
+	else if (type == CYLINDER && scene->cylinder[idx]->checkerboard)
+		apply_checkerboard_cy(render->rec, scene->cylinder[idx],
+			render->rec->color);
+}
+
 static void	render_loop_helper(t_render_ctx	*render, t_window *win,
 	t_scene *scene)
 {
+	apply_object_base_color(render, scene);
 	apply_ambient_light(scene, render->rec, render);
 	if (apply_diffuse_specular_and_shadow(render, scene, win) == 1)
-	{
 		render->color = rgb3_to_hex(render->out_shade);
-		mrt_put_pixel(win, render->x, render->y, render->color);
-	}
 	else
-	{
 		render->color = rgb3_to_hex(render->a_shade);
-		mrt_put_pixel(win, render->x, render->y, render->color);
-	}
+	mrt_put_pixel(win, render->x, render->y, render->color);
 }
 
 void	start_multithread_render(t_app *app)
@@ -59,9 +73,9 @@ void	*render_thread(void *data)
 {
 	t_render_ctx	render;
 	t_thread_data	*thread_data;
-	t_ray_table *ray_table;
-	t_window *win;
-	t_scene *scene;
+	t_ray_table		*ray_table;
+	t_window		*win;
+	t_scene			*scene;
 
 	thread_data = (t_thread_data *)data;
 	ray_table = thread_data->app->ray_table;
@@ -84,4 +98,34 @@ void	*render_thread(void *data)
 		render.y++;
 	}
 	return (NULL);
+}
+
+void	render_objects(t_app *app)
+{
+	t_hit	*rec;
+	int		color;
+	int		x;
+	int		y;
+	int		i;
+
+	ray_sphere_intersect(app->ray_table, app->scene);
+	ray_plane_intersect(app->ray_table, app->scene);
+	ray_cylinder_intersection(app->ray_table, app->scene);
+	y = 0;
+	while (y < app->win->height)
+	{
+		x = 0;
+		while (x < app->win->width)
+		{
+			i = y * app->win->width + x;
+			rec = &app->ray_table->hit_record[i];
+			if (!rec->hit)
+				color = 0x000000;
+			else
+				color = apply_shade_to_pixel(app, rec);
+			mrt_put_pixel(app->win, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }

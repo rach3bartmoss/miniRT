@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 18:27:48 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/26 23:48:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,12 @@ double	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx, int flag)
 	solve_abc(e, d, sp_ctx->curr_sp, &abc);
 	t = solve_t(&abc);
 	if (t < 0.0f)
-	{
 		return (0.0);
-	}
 	if (flag == 1)
+	{
+		sp_ctx->rec->obj_scene_idx = sp_ctx->temp_scene_idx;
 		update_hit_record(t, e, d, sp_ctx);
+	}
 	return (t);
 }
 
@@ -136,6 +137,7 @@ int	ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene)
 		while (s < scene->sphere_capacity && scene->sphere[s])
 		{
 			sp_ctx.curr_sp = scene->sphere[s];
+			sp_ctx.temp_scene_idx = s;
 			solve_discriminant(scene->camera->coordinates_xyz, sp_ctx.dir,
 				&sp_ctx, 1);
 			s++;

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 22:27:52 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 21:40:42 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/26 11:16:33 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,15 @@ int	check_dots(char *diameter_str, int i)
 		i++;
 	}
 	return (1);
+}
+
+/// @brief The name explain itself
+/// @param  
+/// @return 
+long	get_time_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000L + tv.tv_usec / 1000L);
 }

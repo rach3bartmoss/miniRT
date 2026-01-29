@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/23 23:53:48 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:13:33 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define EPS 1e-8
 # define KEY_ESC 65307
 # define SHADOW_EPS 1e-3f
+# define SQUARE_PATTERN_SCALE 5.0f
+# define CYLINDER_CHECKER_FREQUENCY 20.0f //minimum for a real square pattern
 
 # include <math.h>
 # include <float.h>
@@ -29,6 +31,7 @@
 # include <fcntl.h>
 # include <pthread.h>
 # include <stdint.h>
+# include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
@@ -72,6 +75,7 @@ typedef struct s_sphere
 	float	sp_center_xyz[3];
 	float	sp_diameter;
 	int		sp_rgb[3];
+	int		checkerboard;//init where?
 }	t_sphere;
 
 typedef struct s_plane
@@ -80,6 +84,7 @@ typedef struct s_plane
 	float	pl_xyz[3];			//p0
 	float	pl_vector_xyz[3];	//N
 	int		pl_rgb[3];			//color
+	int		checkerboard;//init where?
 }	t_plane;
 
 typedef struct s_cylinder
@@ -90,6 +95,7 @@ typedef struct s_cylinder
 	float	cy_diameter;
 	float	cy_height;
 	int		cy_rgb[3];
+	int		checkerboard;//init where?
 }	t_cylinder;
 
 typedef struct s_scene
@@ -137,6 +143,7 @@ typedef struct s_hit
 	float		t; //distance from origin to hit
 	int			hit; //true/false 1/0
 	int			object_idx;//in the array of objects
+	int			obj_scene_idx;
 	e_type_elem	object_type;
 }	t_hit;
 
@@ -177,6 +184,7 @@ typedef struct s_sp_ctx
 	t_hit		*rec;
 	float		dir[3];
 	int			i;
+	int			temp_scene_idx;
 }	t_sp_ctx;
 
 typedef struct s_pl_ctx
@@ -193,6 +201,7 @@ typedef struct s_pl_ctx
 	double	denom;
 	int		i;
 	int		s;
+	int		temp_scene_idx;
 }	t_pl_ctx;
 
 typedef struct s_cy_ctx
@@ -212,10 +221,9 @@ typedef struct s_cy_ctx
 	double		radius;
 	int			i;
 	int			s;
+	int			temp_scene_idx;
 }	t_cy_ctx;
 
-/// @brief This struct is use in both ray-camera context
-/// @brief and shadow-ray context
 typedef struct s_cy_cap_ctx
 {
 	float	center[3];
@@ -250,6 +258,7 @@ typedef struct s_app
 	t_scene		*scene;
 	t_window	*win;
 	t_ray_table	*ray_table;
+	int			click_lock;//to prevent spam clicks while rendering
 }	t_app;
 
 // y_start and y_end will be our horizontal delimiters
@@ -284,6 +293,7 @@ int		parse_diameter(char *diameter_str, float *diameter_target,
 			e_type_elem type);
 int		validate_diameter_str(char *diameter_str);
 int		check_dots(char *diameter_str, int i);
+long	get_time_ms(void);
 //create_vectors.c
 int		create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table);
 //create_vectors_utils.c
@@ -313,7 +323,7 @@ float	ray_intersection_cy(float *sr_origin, float *sr_dir,
 void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
 double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
 int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
-
+int		ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene);
 //error_handlers.c
 int		open_error_cases(char *filename, int errno_code);
 void	print_element(void *elem, e_type_elem type);
@@ -342,6 +352,9 @@ int		init_objects(t_scene *scene);
 //render_loop.c
 void	*render_thread(void *data);
 void	start_multithread_render(t_app *app);
+void	render_objects(t_app *app);
+//shading_utils.c
+int		apply_shade_to_pixel(t_app *app, t_hit *hit);
 //sphere_render.c
 int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //math_operations.c
@@ -399,8 +412,48 @@ void	normalize_target_colors(float target_xyz[3], int rgb[3]);
 //vector_operations_3.c
 int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
 double	ray_length(float vector[3]);
+void	set_vec_int_values(int vec[3], int va, int vb, int vc);
+void	set_vec_float_values(float vec[3], float va, float vb, float vc);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
+int		double_left_click(int keycode, int x, int y, t_app *app);
+//apply_checkerboard.c
+int		apply_checkerboard(t_hit *hit);
+void	apply_checkboard_for_sphere(t_hit *hit, t_sphere *sp, int target[3]);
+void	apply_checkerboard_for_plane(t_hit *hit, t_plane *pl, int target[3]);
+void	apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
+//apply_checkerboard_helper.c
+void	apply_matrix(float result[3], float m[4][4], float p[3]);
+void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
+			float forward[3]);
+void	fill_inv_matrix(float m[4][4], t_cylinder *cy);
+//click_event_bonus.c
+void	handle_click(int x, int y, t_app *app);
+
+//STRUCTS FOR BONUS
+typedef struct s_ck_ctx
+{
+	float	p[3];
+	float	radius;
+	float	theta;
+	float	phi;
+	float	u;
+	float	v;
+	int		u_i;
+	int		v_i;
+}	t_ckboard_sp_ctx;
+
+typedef struct s_ck_ctk
+{
+	float	mx[4][4];
+	float	tetha;
+	float	rawU;
+	float	u;
+	float	p[3];
+	float	v;
+	int		iu;
+	int		iv;
+}	t_ckboard_cy_ctx;
 
 #endif
