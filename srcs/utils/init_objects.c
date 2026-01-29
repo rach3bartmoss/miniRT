@@ -6,11 +6,23 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:35:32 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/23 11:09:32 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 12:20:31 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int	init_paraboloid(t_scene *scene)
+{
+	scene->paraboloid = ft_calloc(OBJ_INITIAL_CAPACITY, sizeof(t_paraboloid *));
+	if (!scene->paraboloid)
+	{
+		printf("miniRT: Paraboloid initialization failed.\n");
+		return (0);
+	}
+	scene->paraboloid_capacity = OBJ_INITIAL_CAPACITY;
+	return (1);
+}
 
 int	init_objects(t_scene *scene)
 {
@@ -35,5 +47,7 @@ int	init_objects(t_scene *scene)
 		return (0);
 	}
 	scene->cylinder_capacity = OBJ_INITIAL_CAPACITY;
+	if (init_paraboloid(scene) == 0)
+		return (0);
 	return (1);
 }

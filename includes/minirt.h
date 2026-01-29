@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/28 23:13:33 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:11:58 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_type
 	SPHERE,
 	PLANE,
 	CYLINDER,
+	PARABOLOID,
 }	e_type_elem;
 
 typedef struct s_ambient
@@ -98,17 +99,30 @@ typedef struct s_cylinder
 	int		checkerboard;//init where?
 }	t_cylinder;
 
+//PARABOLOID STRUCT FOR BONUS
+typedef struct s_paraboloid
+{
+	float	center[3];
+	float	axis[3];
+	int		rgb[3];
+	float	k;//steepness
+	float	height;
+	char	*id;
+}	t_paraboloid;
+
 typedef struct s_scene
 {
-	t_ambient	*ambiance;
-	t_camera	*camera;
-	t_light		*light;
-	t_sphere	**sphere;
-	t_plane		**plane;
-	t_cylinder	**cylinder;
-	int			sphere_capacity;
-	int			plane_capacity;
-	int			cylinder_capacity;
+	t_ambient		*ambiance;
+	t_camera		*camera;
+	t_light			*light;
+	t_sphere		**sphere;
+	t_plane			**plane;
+	t_cylinder		**cylinder;
+	t_paraboloid	**paraboloid;
+	int				sphere_capacity;
+	int				plane_capacity;
+	int				cylinder_capacity;
+	int				paraboloid_capacity;
 }	t_scene;
 
 typedef struct s_window
@@ -294,6 +308,9 @@ int		parse_diameter(char *diameter_str, float *diameter_target,
 int		validate_diameter_str(char *diameter_str);
 int		check_dots(char *diameter_str, int i);
 long	get_time_ms(void);
+//common_utils_4.c
+int		parse_steepness(char *steep_str, float *steep_target, e_type_elem type);
+void	clean_paraboloid_and_cylinder(t_scene *scene);
 //create_vectors.c
 int		create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table);
 //create_vectors_utils.c
@@ -330,16 +347,21 @@ void	print_element(void *elem, e_type_elem type);
 void	print_spheres(t_scene *scene);
 void	print_planes(t_scene *scene);
 void	print_cylinders(t_scene *scene);
+void	print_paraboloid(t_scene *scene);
 //fill_ambiance.c
 int		fill_ambiance(t_scene *scene, char *line);
 //fill_camera.c
 int		fill_camera(t_scene *scene, char *line);
 //fill_cylinder.c
+int		validate_height_str(char *height_str);
+int		parse_height(char *height_str, float *height_target);
 int		fill_cylinder(t_scene *scene, char *line);
 //fill_light.c
 int		fill_light(t_scene *scene, char *line);
 //fill_plane.c
 int		fill_plane(t_scene *scene, char *line);
+//fill_paraboloid.c
+int		fill_paraboloid(t_scene *scene, char *line);
 //fill_sphere.c
 int		fill_sphere(t_scene *scene, char *line);
 //fill_utils.c
@@ -428,6 +450,7 @@ void	apply_matrix(float result[3], float m[4][4], float p[3]);
 void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
 			float forward[3]);
 void	fill_inv_matrix(float m[4][4], t_cylinder *cy);
+void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
 //click_event_bonus.c
 void	handle_click(int x, int y, t_app *app);
 

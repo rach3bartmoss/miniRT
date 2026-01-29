@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 20:00:04 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/21 17:07:45 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:02:54 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,16 @@ void	print_element(void *elem, e_type_elem type)
 			printf("	RGB: [%d, %d, %d]\n", cy->cy_rgb[0], cy->cy_rgb[1], cy->cy_rgb[2]);
 			break;
 		}
+		case PARABOLOID: {
+			t_paraboloid *pa = (t_paraboloid *)elem;
+			printf("Paraboloid [id: %s]\n", pa->id);
+			printf("	Center: [%.2f, %.2f, %.2f]\n", pa->center[0], pa->center[1], pa->center[2]);
+			printf("	Axis: [%.2f, %.2f, %.2f]\n", pa->axis[0], pa->axis[1], pa->axis[2]);
+			printf("	K (Steepnees): %.2f\n", pa->k);
+			printf("	Height: %.2f\n", pa->height);
+			printf("	RGB: [%d, %d, %d]\n", pa->rgb[0], pa->rgb[1], pa->rgb[2]);
+			break;
+		}
 		default:
 			printf("Unknown element type\n");
 	}
@@ -131,6 +141,17 @@ void	print_cylinders(t_scene *scene)
 	{
 		if (scene->cylinder[i])
 			print_element(scene->cylinder[i], CYLINDER);
+	}
+}
+
+void	print_paraboloid(t_scene *scene)
+{
+	int	count = set_and_get_occ(-1, PARABOLOID);
+
+	for (int i = 0; i < count; i++)
+	{
+		if (scene->paraboloid[i])
+			print_element(scene->paraboloid[i], PARABOLOID);
 	}
 }
 

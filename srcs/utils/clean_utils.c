@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 21:41:58 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/23 10:08:52 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:09:26 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,8 @@ void	clean_sp_pl(t_scene *scene)
 
 void	cleanup_all(t_scene *scene)
 {
-	int	count;
-	int	i;
-
 	clean_lights_and_camera(scene);
 	clean_sp_pl(scene);
-	count = set_and_get_occ(-1, CYLINDER);
-	i = 0;
-	while (i < count)
-	{
-		free(scene->cylinder[i]->id);
-		free(scene->cylinder[i]);
-		i++;
-	}
-	free(scene->cylinder);
+	clean_paraboloid_and_cylinder(scene);
 	ft_strtok_free();
 }

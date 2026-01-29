@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 23:47:24 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:22:14 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:56:57 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	parse_light_ratio(char *ratio_str, float *light_ratio, e_type_elem type)
 /// @return -1 as value returns the index element value, value != -1 sets
 int	set_and_get_occ(int value, e_type_elem index)
 {
-	static int	code[6] = {0};
+	static int	code[7] = {0};
 
 	if (value == -1)
 		return (code[index]);
@@ -84,7 +84,7 @@ int	set_and_get_occ(int value, e_type_elem index)
 	return (code[index]);
 }
 
-/// @brief Free two targer string and a scene->info
+/// @brief Free two target string and a scene->info
 /// @param scene_elem 
 /// @param str1 
 /// @param str2 
