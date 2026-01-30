@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:29:17 by dopereir          #+#    #+#             */
-/*   Updated: 2025/09/18 23:04:11 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:42:40 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,7 @@ char	*get_type_name(e_type_elem type)
 		return ("PLANE");
 	if (type == CYLINDER)
 		return ("CYLINDER");
+	if (type == PARABOLOID)
+		return ("PARABOLOID");
 	return ("UNKNOWN");
 }

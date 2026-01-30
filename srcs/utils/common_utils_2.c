@@ -6,12 +6,17 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:20:25 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:27:13 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+
+/// @brief Usually used to validade center/origin XYZ Vector
+/// @param xyz_str 
+/// @param xyz_target 
+/// @return Returns 1 on success 0 on failure
 int	parse_coordinates(char *xyz_str, float xyz_target[3])
 {
 	char	**coordinates;
@@ -62,6 +67,11 @@ static int	parse_vector_loop(char	*vector_value, float *vector_target, int *i)
 	return (1);
 }
 
+/// @brief Usually used for validate axus/direction XYZ vector,
+/// @brief that must be in a [-1, 1] range.
+/// @param vector_str 
+/// @param vector_target 
+/// @return 
 int	parse_coordinates_vector(char *vector_str, float vector_target[3])
 {
 	char	**vector_values;

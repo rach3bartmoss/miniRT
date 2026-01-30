@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 23:11:44 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/28 23:16:23 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/28 23:48:16 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,19 @@ void	fill_inv_matrix(float m[4][4], t_cylinder *cy)
 	m[0][3] = (float)dot(right, neg_pos);
 	m[1][3] = (float)dot(axis, neg_pos);
 	m[2][3] = (float)dot(forward, neg_pos);
+}
+
+void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene)
+{
+	int	type;
+	int	idx;
+
+	type = render->rec->object_type;
+	idx = render->rec->obj_scene_idx;
+	if (type == PLANE && scene->plane[idx]->checkerboard == 0)
+		copy_int_vectors(render->rec->color, scene->plane[idx]->pl_rgb);
+	else if (type == SPHERE && scene->sphere[idx]->checkerboard == 0)
+		copy_int_vectors(render->rec->color, scene->sphere[idx]->sp_rgb);
+	else if (type == CYLINDER && scene->cylinder[idx]->checkerboard == 0)
+		copy_int_vectors(render->rec->color, scene->cylinder[idx]->cy_rgb);
 }
