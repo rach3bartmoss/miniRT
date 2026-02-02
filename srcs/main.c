@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/26 23:00:17 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:03:24 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	main(int argc, char **argv)
 	print_spheres(app.scene);
 	print_planes(app.scene);
 	print_cylinders(app.scene);
+	print_paraboloid(app.scene);
 	app.win->mlx = mlx_init();
 	app.win->width = 1280;
 	app.win->height = 720;
@@ -98,15 +99,10 @@ int	main(int argc, char **argv)
 	if (!app.ray_table->hit_record)
 		app.ray_table->hit_record = malloc(sizeof(t_hit) * app.ray_table->total_rays);
 	init_hit_record(app.ray_table);
-	
-	//render_plane(app.ray_table, app.scene, app.win);
-	//render_cylinder(app.ray_table, app.scene, app.win);
-	//render_sphere(app.ray_table, app.scene, app.win);
-	
+
 	render_objects(&app);
 	mlx_put_image_to_window(app.win->mlx, app.win->win, app.win->img, 0, 0);
-	
-	// render_loop(app.ray_table, app.win, app.scene);
+
 	start_multithread_render(&app);
 	mlx_put_image_to_window(app.win->mlx, app.win->win, app.win->img, 0, 0);
 

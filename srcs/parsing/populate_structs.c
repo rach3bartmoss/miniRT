@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 22:27:05 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:37:09 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/01/29 12:23:30 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ int	check_element_id(char *id, t_scene *scene, char *line)
 		rc = fill_plane(scene, line);
 	else if (ft_strcmp(id, "cy") == 0)
 		rc = fill_cylinder(scene, line);
+	else if (ft_strcmp(id, "pa") == 0)
+		rc = fill_paraboloid(scene, line);
 	else if (ft_strcmp(id, "\n") == 0)
 		rc = 1;
 	else
-	{
-		printf("miniRT: incorrect ID: '%s'\n", id);
-		return (0);
-	}
+		return (printf("miniRT: incorrect ID: '%s'\n", id), 0);
 	return (rc);
 }
 

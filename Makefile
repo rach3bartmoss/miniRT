@@ -25,6 +25,7 @@ SRCS = 	srcs/bonus/apply_checkerboard.c \
 		srcs/utils/common_utils_3.c \
 		srcs/utils/common_utils.c \
 		srcs/utils/common_utils_2.c \
+		srcs/utils/common_utils_4.c \
 		srcs/utils/init_hit_record.c \
 		srcs/utils/clean_utils.c \
 		srcs/utils/init_objects.c \
@@ -35,6 +36,7 @@ SRCS = 	srcs/bonus/apply_checkerboard.c \
 		srcs/parsing/fill_ambiance.c \
 		srcs/parsing/fill_plane.c \
 		srcs/parsing/fill_sphere.c \
+		srcs/parsing/fill_paraboloid.c \
 		srcs/parsing/validate_array_utils.c \
 		srcs/parsing/parser.c \
 		srcs/parsing/fill_utils.c \
