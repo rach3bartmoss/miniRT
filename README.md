@@ -16,9 +16,13 @@ much more we gonna see through this document.
 ### 1. Install MiniLibX dependencies (Linux)
 
 
-`sudo apt-get update`
+```
+sudo apt-get update
+```
 
-`sudo apt-get install -y xorg libxext-dev libx11-dev libxrender-dev libxrandr-dev libbsd-dev`
+```
+sudo apt-get install -y xorg libxext-dev libx11-dev libxrender-dev libxrandr-dev libbsd-dev
+```
 
 | Library		|	What is for |
 | -------------- | ------------- |
@@ -38,15 +42,22 @@ much more we gonna see through this document.
 
 or
 
-`git clone git@github.com:rach3bartmoss/miniRT.git`
+```
+git clone git@github.com:rach3bartmoss/miniRT.git
+```
 
 ### 3. Enter the root repository and compile the project.
 
-`cd miniRT && make`
+```
+cd miniRT && make
+```
 
 ### 4. To run the program:
 
-`./miniRT scenes/scene_1.rt` (browse for different scenes in scenes folder)
+```
+./miniRT scenes/scene_1.rt
+```
+(browse for different scenes in scenes folder)
 
 # **Resources**
 
