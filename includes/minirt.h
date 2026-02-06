@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/29 23:11:58 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/06 21:44:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -478,5 +478,16 @@ typedef struct s_ck_ctk
 	int		iu;
 	int		iv;
 }	t_ckboard_cy_ctx;
+
+typedef struct s_light_model_ctx
+{
+	float	obj_color[3];
+	float	light_color[3];
+	float	diffuse_part[3];
+	float	specular_part[3];
+	float	diffuse_factor;
+	float	spec_factor;
+	int		j;
+}	t_light_model_ctx;
 
 #endif

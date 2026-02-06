@@ -6,12 +6,11 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/29 22:27:13 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/06 21:15:09 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
 
 /// @brief Usually used to validade center/origin XYZ Vector
 /// @param xyz_str 

@@ -98,7 +98,7 @@ $(LIBFT_A):
 
 $(MLX_A):
 	@echo "$(MAGENTA)Building MinilibX...$(RESET)"
-	@$(MAKE) -s -C $(MLX_DIR)
+	@$(MAKE) -s -C $(MLX_DIR) 2>/dev/null
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)Linking objects...$(RESET)"

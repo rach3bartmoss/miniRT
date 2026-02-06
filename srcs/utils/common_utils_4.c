@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 22:33:42 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/29 23:08:49 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/06 21:15:23 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	parse_steepness(char *steep_str, float *steep_target, e_type_elem type)
 	{
 		printf("miniRT: '%s' steepnees must be in [0.5 - 2.0 range]: '%f'\n",
 			get_type_name(type), res);
-		return(0);
+		return (0);
 	}
 	*steep_target = res;
 	return (1);

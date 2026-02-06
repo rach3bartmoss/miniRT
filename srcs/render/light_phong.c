@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_phong.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:45:09 by joao-vri          #+#    #+#             */
-/*   Updated: 2026/01/24 00:05:09 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/06 21:31:02 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,29 @@
 
 int	combine_lights(t_render_ctx *render, t_scene *scene, float *dir)
 {
-	float	obj_color[3];
-	float	light_color[3];
-	float	diffuse_part[3];
-	float	specular_part[3];
-	float	diffuse_factor;
-	float	spec_factor;
-	int		j;
+	t_light_model_ctx	ctx;
 
-	normalize_target_colors(obj_color, render->rec->color);
-	normalize_target_colors(light_color, scene->light->light_rgb);
-	diffuse_factor = fmaxf(0.0f, dot(render->rec->normal, dir));
-	mult(diffuse_part, obj_color, light_color);
-	scale(diffuse_part, diffuse_part,
-		scene->light->bright_ratio * diffuse_factor);
-	add(render->final_shade, render->final_shade, diffuse_part);
-	if (diffuse_factor > 0)
+	normalize_target_colors(ctx.obj_color, render->rec->color);
+	normalize_target_colors(ctx.light_color, scene->light->light_rgb);
+	ctx.diffuse_factor = fmaxf(0.0f, dot(render->rec->normal, dir));
+	mult(ctx.diffuse_part, ctx.obj_color, ctx.light_color);
+	scale(ctx.diffuse_part, ctx.diffuse_part,
+		scene->light->bright_ratio * ctx.diffuse_factor);
+	add(render->final_shade, render->final_shade, ctx.diffuse_part);
+	if (ctx.diffuse_factor > 0)
 	{
-		spec_factor = apply_specular_light(scene, render);
-		scale(specular_part, light_color, scene->light->bright_ratio * spec_factor);
-		add(render->final_shade, render->final_shade, specular_part);
+		ctx.spec_factor = apply_specular_light(scene, render);
+		scale(ctx.specular_part, ctx.light_color, scene->light->bright_ratio
+			* ctx.spec_factor);
+		add(render->final_shade, render->final_shade, ctx.specular_part);
 	}
-	j = 0;
-	while (j < 3)
+	ctx.j = 0;
+	while (ctx.j < 3)
 	{
-		render->final_shade[j] = fmaxf(render->final_shade[j], 0.0f);
-		render->final_shade[j] = fminf(render->final_shade[j], 1.0f);
-		render->out_shade[j] = (int)(render->final_shade[j] * 255.0f);
-		j++;
+		render->final_shade[ctx.j] = fmaxf(render->final_shade[ctx.j], 0.0f);
+		render->final_shade[ctx.j] = fminf(render->final_shade[ctx.j], 1.0f);
+		render->out_shade[ctx.j] = (int)(render->final_shade[ctx.j] * 255.0f);
+		ctx.j++;
 	}
 	return (1);
 }
