@@ -6,15 +6,14 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:36:25 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/28 23:43:38 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/06 22:10:50 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	rerender(t_app *app, t_hit *hit)
+void	rerender(t_app *app)
 {
-	(void)hit;
 	if (app->click_lock == 1)
 		return ;
 	app->click_lock = 1;
@@ -62,7 +61,7 @@ void	handle_click(int x, int y, t_app *app)
 	if (!hit->hit)
 		return ;
 	validate_idx_checkerboard(app, hit);
-	rerender(app, hit);
+	rerender(app);
 }
 
 /*	--PRINTS FOR DEBUG
