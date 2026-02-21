@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 23:11:44 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/28 23:48:16 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/21 02:42:41 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,11 @@ void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene)
 
 	type = render->rec->object_type;
 	idx = render->rec->obj_scene_idx;
-	if (type == PLANE && scene->plane[idx]->checkerboard == 0)
+	if (type == PLANE && scene->plane[idx]->checkerboard == 0
+		&& !scene->plane[idx]->base)
 		copy_int_vectors(render->rec->color, scene->plane[idx]->pl_rgb);
-	else if (type == SPHERE && scene->sphere[idx]->checkerboard == 0)
+	else if (type == SPHERE && scene->sphere[idx]->checkerboard == 0
+		&& !scene->sphere[idx]->base)
 		copy_int_vectors(render->rec->color, scene->sphere[idx]->sp_rgb);
 	else if (type == CYLINDER && scene->cylinder[idx]->checkerboard == 0)
 		copy_int_vectors(render->rec->color, scene->cylinder[idx]->cy_rgb);

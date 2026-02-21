@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:23:47 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 23:35:30 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/20 10:58:01 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ int	close_window(t_app *app)
 	free(app->ray_table->vectors_x);
 	free(app->ray_table->vectors_y);
 	free(app->ray_table->vectors_z);
+	if (app->textures)
+		clean_textures_list(app ,app->textures);
+	if (app->preset_list)
+		clean_preset_list(app->preset_list);
 	if (app->ray_table->hit_record)
 		free (app->ray_table->hit_record);
 	if (app->win->win)
@@ -40,7 +44,7 @@ int	key_press(int keycode, t_app *app)
 	return (0);
 }
 
-int	double_left_click(int keycode, int x, int y, t_app *app)
+int	mouse_click_handler(int keycode, int x, int y, t_app *app)
 {
 	long	first_click;
 
@@ -51,6 +55,12 @@ int	double_left_click(int keycode, int x, int y, t_app *app)
 	{
 		printf("Left click at (%d, %d) at %ldms\n", x, y, first_click);
 		handle_click(x, y, app);
+	}
+	else if (keycode == 3)
+	{
+		printf("Right click at (%d, %d)\n", x, y);
+		handle_right_click(x, y, app);
+		app->click_lock = 0;
 	}
 	return (0);
 }

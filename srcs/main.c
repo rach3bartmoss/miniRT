@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 22:22:24 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/20 09:39:19 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int	init_app(t_app *app, char **argv, t_window *win)
 	app->win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_length,
 			&win->endian);
 	app->click_lock = 0;
+	app->n_textures = 0;
+	app->preset_list = NULL;
+	app->textures = NULL;
 	return (0);
 }
 
@@ -67,6 +70,10 @@ void	clean_program(t_app *app)
 		free(app->ray_table->vectors_z);
 	if (app->ray_table->hit_record)
 		free (app->ray_table->hit_record);
+	if (app->textures)
+		clean_textures_list(app ,app->textures);
+	if (app->preset_list)
+		clean_preset_list(app->preset_list);
 	if (app->win->win)
 		mlx_destroy_window(app->win->mlx, app->win->win);
 	if (app->win->img)
@@ -116,7 +123,7 @@ int	main(int argc, char **argv)
 		return (1);
 	mlx_hook(app.win->win, 17, 0, close_window, &app);
 	mlx_hook(app.win->win, 2, 1L << 0, key_press, &app);
-	mlx_mouse_hook(app.win->win, double_left_click, &app);
+	mlx_mouse_hook(app.win->win, mouse_click_handler, &app);
 	mlx_loop(app.win->mlx);
 	return (0);
 }
