@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 02:04:12 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:19:36 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <signal.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <pthread.h>
@@ -40,6 +41,7 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <termios.h>
+# include <signal.h>
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
@@ -326,6 +328,7 @@ typedef struct s_r_click_ctx
 
 typedef struct s_app
 {
+	struct sigaction	sa;
 	t_scene		*scene;
 	t_window	*win;
 	t_ray_table	*ray_table;
