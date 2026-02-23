@@ -89,6 +89,7 @@ A new second-degree geometric object is introduced: the **Paraboloid**. Like the
 **Bump mapping** allows surfaces to appear textured and uneven without modifying the actual geometry. This is done by perturbing the surface normal at each hit point based on a texture map, simulating depth and roughness under lighting.
 
 
+
 **Bonus resources:**
 - Specular reflection and full Phong model by [utexas.edu](https://www.cs.utexas.edu/~bajaj/graphics2012/cs354/lectures/lect14.pdf)
 - Bump mapping introduction by [scratchapixel.com](https://www.scratchapixel.com/lessons/advanced-rendering/introduction-to-bump-mapping/bump-map.html)
