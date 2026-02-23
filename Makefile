@@ -63,6 +63,7 @@ SRCS = 	srcs/bonus/apply_checkerboard.c \
 		srcs/math/math_operations.c \
 		srcs/math/vector_operations.c \
 		srcs/hooks/key_events.c \
+		srcs/hooks/signal_handler.c \
 		srcs/render/light_management_utils.c \
 		srcs/render/light_management.c \
 		srcs/render/light_phong.c \

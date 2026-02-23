@@ -105,11 +105,6 @@ int	run_program(t_app *app)
 	return (0);
 }
 
-void	ignore_signal(int sig)
-{
-	(void)sig;
-}
-
 int	main(int argc, char **argv)
 {
 	t_app		app;

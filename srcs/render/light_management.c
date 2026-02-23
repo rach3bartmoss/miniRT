@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_management.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:01:03 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:52:22 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,26 +65,6 @@ int	get_cylinder_sr_t(double *p_offset, double *dir, double distance,
 		curr_cy = ray_intersection_cy(p_offset, dir,
 				scene->cylinder[i], distance);
 		if (curr_cy > 0.0f && curr_cy < distance)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	get_paraboloid_sr_t(double *new_origin, double *new_dir, double distance,
-		t_scene *scene)
-{
-	double	curr_pa;
-	int		i;
-	int		count;
-
-	i = 0;
-	count = set_and_get_occ(-1, PARABOLOID);
-	while (i < count)
-	{
-		curr_pa = ray_intersection_pa_shadow(new_origin,
-			new_dir, scene->paraboloid[i]);
-		if (curr_pa > 0.0f && curr_pa < distance)
 			return (1);
 		i++;
 	}

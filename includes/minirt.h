@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:53:10 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,8 @@ typedef struct s_cy_cap_ctx
 typedef struct s_pa_ctx
 {
 	t_paraboloid	*pa;
+	t_texture		*base;
+	t_texture		*bump;
 	int				i; // index
 	double			d[3];
 	double			o[3];
@@ -569,7 +571,8 @@ void		clean_preset_list(t_preset **arr);
 void		free_preset(t_preset *preset);
 int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
-
+//signal_handler.c
+void		ignore_signal(int sig);
 //apply_texture_color.c
 double		ft_clamp(double value, double min, double max);
 void		get_texture_color(t_texture *tex, int x, int y, int color[3]);
@@ -579,14 +582,20 @@ void		apply_sphere_bump(t_hit *hit, t_texture *bump);
 //plane_texture_color.c
 void		apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
 //paraboloid test
-void	init_paraboloid_ctx(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, t_scene *scene, t_ray_table *ray_table, int i);
-void	init_shadow_paraboloid(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, double *new_origin, double *dir);
-int		paraboloid_discriminant(t_pa_ctx *curr_ctx);
-double	paraboloid_quadratic(t_pa_ctx *curr_ctx);
-double	paraboloid_height_test(t_pa_ctx *curr_ctx, double tx);
-void	paraboloid_normal(t_pa_ctx *curr_ctx, double t);
-void	ray_paraboloid_intersection(t_ray_table *ray_table, t_scene *scene, int shadow);
-double	ray_intersection_pa_shadow(double *new_origin, double *new_dir, t_paraboloid *pa);
+void		init_paraboloid_ctx(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, t_scene *scene,
+				t_ray_table *ray_table, int i);
+void		init_shadow_paraboloid(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx,
+				double *new_origin, double *dir);
+int			paraboloid_discriminant(t_pa_ctx *curr_ctx);
+double		paraboloid_quadratic(t_pa_ctx *curr_ctx);
+double		paraboloid_height_test(t_pa_ctx *curr_ctx, double tx);
+void		paraboloid_normal(t_pa_ctx *curr_ctx, double t);
+void		ray_paraboloid_intersection(t_ray_table *ray_table,
+				t_scene *scene, int shadow);
+double		ray_intersection_pa_shadow(double *new_origin,
+				double *new_dir, t_paraboloid *pa);
+int			get_paraboloid_sr_t(double *new_origin, double *new_dir, double distance,
+				t_scene *scene);
 
 //STRUCTS FOR BONUS
 typedef struct s_ck_ctx
