@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_cylinder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 13:29:31 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 21:32:52 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	validate_height_str(char *height_str)
 	return (1);
 }
 
-int	parse_height(char *height_str, float *height_target)
+int	parse_height(char *height_str, double *height_target)
 {
 	char	*endptr;
-	float	res;
+	double	res;
 	int		sign;
 
 	sign = 1;

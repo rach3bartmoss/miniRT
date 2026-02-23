@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 14:19:36 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,31 +94,31 @@ typedef struct s_texture_pair
 typedef struct s_ambient
 {
 	char		id; //A
-	float		light_ratio;	//range between 0.0 - 1.0
+	double		light_ratio;	//range between 0.0 - 1.0
 	int			a_rgb[3];			//[0-255]
 }	t_ambient;
 
 typedef struct s_camera
 {
 	char		id; //C
-	float		coordinates_xyz[3];			//origin point of the camera
-	float		vector_xyz[3];	//Orientation of each axis XYZ [0.0~1.0]
-	float		fov;			//horizontal field view [0-180]
+	double		coordinates_xyz[3];			//origin point of the camera
+	double		vector_xyz[3];	//Orientation of each axis XYZ [0.0~1.0]
+	double		fov;			//horizontal field view [0-180]
 }	t_camera;
 
 typedef struct s_light
 {
 	char		id; //L
-	float		light_xyz[3];
-	float		bright_ratio;		//[0.0~1.0]
+	double		light_xyz[3];
+	double		bright_ratio;		//[0.0~1.0]
 	int			light_rgb[3];			//[0-255]
 }	t_light;
 
 typedef struct s_sphere
 {
 	char		*id; //sp
-	float		sp_center_xyz[3];
-	float		sp_diameter;
+	double		sp_center_xyz[3];
+	double		sp_diameter;
 	int			sp_rgb[3];
 	int			checkerboard;
 	t_texture	*base;
@@ -128,8 +128,8 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	char		*id;				//pl
-	float		pl_xyz[3];			//p0
-	float		pl_vector_xyz[3];	//N
+	double		pl_xyz[3];			//p0
+	double		pl_vector_xyz[3];	//N
 	int			pl_rgb[3];			//color
 	int			checkerboard;
 	t_texture	*base;
@@ -139,10 +139,10 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	char		*id; //cy
-	float		cy_xyz[3];
-	float		cy_vector_xyz[3];
-	float		cy_diameter;
-	float		cy_height;
+	double		cy_xyz[3];
+	double		cy_vector_xyz[3];
+	double		cy_diameter;
+	double		cy_height;
 	int			cy_rgb[3];
 	int			checkerboard;
 	t_texture	*base;
@@ -152,11 +152,11 @@ typedef struct s_cylinder
 //PARABOLOID STRUCT FOR BONUS
 typedef struct s_paraboloid
 {
-	float	center[3];
-	float	axis[3];
+	double	center[3];
+	double	axis[3];
 	int		rgb[3];
-	float	k;//steepness
-	float	height;
+	double	k;//steepness
+	double	height;
 	char	*id;
 }	t_paraboloid;
 
@@ -179,7 +179,7 @@ typedef struct s_window
 {
 	void	*mlx;
 	void	*win;
-	float	aspect_ratio;
+	double	aspect_ratio;
 	int		width;
 	int		height;
 	void	*img;
@@ -192,20 +192,20 @@ typedef struct s_window
 /// @brief Holds the camera coordinate system values.
 typedef struct s_camera_basis
 {
-	float	forward[3];
-	float	right[3];
-	float	up[3];
-	float	half_width;// = tanf(fov_radian/2)
-	float	half_height;// = half_width / aspect_ratio
+	double	forward[3];
+	double	right[3];
+	double	up[3];
+	double	half_width;// = tanf(fov_radian/2)
+	double	half_height;// = half_width / aspect_ratio
 }	t_cam_basis;
 
 typedef struct s_hit
 {
-	float		hit_point[3];
-	float		normal[3];
-	float		shading_normal[3];
+	double		hit_point[3];
+	double		normal[3];
+	double		shading_normal[3];
 	int			color[3];
-	float		t; //distance from origin to hit
+	double		t; //distance from origin to hit
 	int			hit; //true/false 1/0
 	int			object_idx;//in the array of objects
 	int			obj_scene_idx;
@@ -215,11 +215,11 @@ typedef struct s_hit
 typedef struct s_ray_table
 {
 	t_hit	*hit_record;
-	float	*vectors_x;
-	float	*vectors_y;
-	float	*vectors_z;
-	float	half_width;
-	float	half_height;
+	double	*vectors_x;
+	double	*vectors_y;
+	double	*vectors_z;
+	double	half_width;
+	double	half_height;
 	int		total_rays;
 }	t_ray_table;
 
@@ -229,25 +229,25 @@ typedef struct s_render_ctx
 	int		a_shade[3];
 	int		c_obj_term[3];
 	int		c_light_term[3];
-	float	final_shade[3];
+	double	final_shade[3];
 	int		out_shade[3];
 	int		shade_to_hex[3];
 	int		color;
 	int		x;
 	int		y;
 	int		i;
-	float	co[3]; //objecto color normalized
-	float	cl[3]; //light color normalized
-	float	lamb_weight;
-	float	n[3];
-	float	side;
+	double	co[3]; //objecto color normalized
+	double	cl[3]; //light color normalized
+	double	lamb_weight;
+	double	n[3];
+	double	side;
 }	t_render_ctx;
 
 typedef struct s_sp_ctx
 {
 	t_sphere	*curr_sp;
 	t_hit		*rec;
-	float		dir[3];
+	double		dir[3];
 	int			i;
 	int			temp_scene_idx;
 }	t_sp_ctx;
@@ -256,13 +256,13 @@ typedef struct s_pl_ctx
 {
 	t_plane	*curr_pl;
 	t_hit	*rec;
-	float	d[3];
-	float	normal[3];
-	float	origin[3];
-	float	p0[3];
-	float	diff[3];
-	float	scale_td[3];
-	float	hit_p[3];
+	double	d[3];
+	double	normal[3];
+	double	origin[3];
+	double	p0[3];
+	double	diff[3];
+	double	scale_td[3];
+	double	hit_p[3];
 	double	denom;
 	int		i;
 	int		s;
@@ -273,16 +273,16 @@ typedef struct s_cy_ctx
 {
 	t_cylinder	*curr_cy;
 	t_hit		*rec;
-	float		d[3];
-	float		normal[3];
-	float		origin[3];
-	float		base_center[3];
-	float		top_center[3];
-	float		ha[3];
-	float		v[3];
-	float		w[3];
-	float		y;
-	float		half_height;
+	double		d[3];
+	double		normal[3];
+	double		origin[3];
+	double		base_center[3];
+	double		top_center[3];
+	double		ha[3];
+	double		v[3];
+	double		w[3];
+	double		y;
+	double		half_height;
 	double		radius;
 	int			i;
 	int			s;
@@ -291,16 +291,35 @@ typedef struct s_cy_ctx
 
 typedef struct s_cy_cap_ctx
 {
-	float	center[3];
-	float	hit_cap_p[3];
-	float	cap_normal[3];
+	double	center[3];
+	double	hit_cap_p[3];
+	double	cap_normal[3];
 	double	tcap;
-	float	radius;
-	float	hit_cap_point[3];
+	double	radius;
+	double	hit_cap_point[3];
 	double	denom;
 	double	hit_cap;
-	float	r;
+	double	r;
 }	t_cy_cap;
+
+typedef struct s_pa_ctx
+{
+	t_paraboloid	*pa;
+	int				i; // index
+	double			d[3];
+	double			o[3];
+	double			n[3];
+	double			w[3];
+	double			p[3];
+	double			n_surface[3];
+	double			dot_dn; // height d
+	double			dot_wn; // height w
+	double			h; // height
+	double			a; // radial speed
+	double			b; // interaction
+	double			c; // relative position
+	double			discr; // discriminant
+}	t_pa_ctx;
 
 typedef struct s_abc
 {
@@ -311,8 +330,8 @@ typedef struct s_abc
 
 typedef struct s_screen_ndc_ctx
 {
-	float	u;
-	float	v;
+	double	u;
+	double	v;
 	int		x_index;
 	int		y_index;
 	int		index;
@@ -354,58 +373,58 @@ void		sanitize_gnl(int fd);
 void		cleanup_all(t_scene *scene);
 //common_utils.c
 int			parse_rgb(char *rgb_str, int rgb_target[3], t_type_elem type);
-int			parse_light_ratio(char *ratio_str, float *light_ratio,
+int			parse_light_ratio(char *ratio_str, double *light_ratio,
 				t_type_elem type);
 int			set_and_get_occ(int value, t_type_elem index);
 int			handle_default_error(void **scene_elem, void *str1, void *str2);
 int			pre_elem_check(void **target, char *line, char **parse_line,
 				t_type_elem type);
 //common_utils_2.c
-int			parse_coordinates(char *xyz_str, float xyz_target[3]);
-int			parse_coordinates_vector(char *vector_str, float vector_target[3]);
-int			parse_fov(char *fov_str, float *fov_target);
+int			parse_coordinates(char *xyz_str, double xyz_target[3]);
+int			parse_coordinates_vector(char *vector_str, double vector_target[3]);
+int			parse_fov(char *fov_str, double *fov_target);
 int			validate_fov_str(char *fov_str);
 //common_utils_3.c
 int			sign_handler(char **target_str);
-int			parse_diameter(char *diameter_str, float *diameter_target,
+int			parse_diameter(char *diameter_str, double *diameter_target,
 				t_type_elem type);
 int			validate_diameter_str(char *diameter_str);
 int			check_dots(char *diameter_str, int i);
 long		get_time_ms(void);
 //common_utils_4.c
-int			parse_steepness(char *steep_str, float *steep_target,
+int			parse_steepness(char *steep_str, double *steep_target,
 				t_type_elem type);
 void		clean_paraboloid_and_cylinder(t_scene *scene);
 //create_vectors.c
 int			create_rays(t_camera *camera, t_window *win,
 				t_ray_table *ray_table);
 //create_vectors_utils.c
-int			cross(float *a_xyz, float *b_xyz, float *target_xyz);
+int			cross(double *a_xyz, double *b_xyz, double *target_xyz);
 int			init_rays(t_ray_table *ray_table);
 int			calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis,
 				t_window *win);
-int			print_array3(float *target_xyz);
+int			print_array3(double *target_xyz);
 //cylinder_caps.c
 double		cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
 double		cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
 //cylinder_caps_utils.c
-void		save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
+void		save_intersection_in_table(t_cy_ctx *cy_ctx, double *hit_p,
 				double t_side);
 void		compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
 void		calc_v_w(t_cy_ctx *cy_ctx);
 double		solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx);
 //cylinder_shadow_rays_utils.c
-double		cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
-double		cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
-void		prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin,
-				float *sr_dir);
-float		comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
-				float t_max);
-float		ray_intersection_cy(float *sr_origin, float *sr_dir,
-				t_cylinder *cy, float distance);
+double		cylinder_top_sr(t_cy_ctx *cy_ctx, double t_max);
+double		cylinder_bottom_sr(t_cy_ctx *cy_ctx, double t_max);
+void		prep_sr_cy_intersect(t_cy_ctx *cy_ctx, double *sr_origin,
+				double *sr_dir);
+double		comp_finite_height_for_light(double t_side, t_cy_ctx *cy_ctx,
+				double t_max);
+double		ray_intersection_cy(double *sr_origin, double *sr_dir,
+				t_cylinder *cy, double distance);
 //cylinder_intersection_utils.c
 void		init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
-double		solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
+double		solve_t_cylinder(double v[3], double w[3], t_cy_ctx *cy_ctx);
 int			render_cylinder(t_ray_table *ray_table, t_scene *scene,
 				t_window *win);
 int			ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene);
@@ -422,7 +441,7 @@ int			fill_ambiance(t_scene *scene, char *line);
 int			fill_camera(t_scene *scene, char *line);
 //fill_cylinder.c
 int			validate_height_str(char *height_str);
-int			parse_height(char *height_str, float *height_target);
+int			parse_height(char *height_str, double *height_target);
 int			fill_cylinder(t_scene *scene, char *line);
 //fill_light.c
 int			fill_light(t_scene *scene, char *line);
@@ -454,15 +473,15 @@ int			sign(double x);
 int			apply_diffuse_specular_and_shadow(t_render_ctx *render,
 				t_scene *scene, t_window *win);
 //light_management_utils.c
-float		prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
-				float *p_offset);
-double		ray_intersection_pl_shadow(float *sr_origin, float *sr_dir,
-				t_plane *pl, float distance);
-float		ray_intersection_sp(float *sr_origin, float *sr_dir,
+double		prep_shadow_ray(t_scene *scene, t_render_ctx *render, double *dir,
+				double *p_offset);
+double		ray_intersection_pl_shadow(double *sr_origin, double *sr_dir,
+				t_plane *pl, double distance);
+double		ray_intersection_sp(double *sr_origin, double *sr_dir,
 				t_sphere *sphere);
 //light_phong.c
-float		apply_specular_light(t_scene *scene, t_render_ctx *render);
-int			combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
+double		apply_specular_light(t_scene *scene, t_render_ctx *render);
+int			combine_lights(t_render_ctx *render, t_scene *scene, double *dir);
 void		apply_ambient_light(t_scene *scene, t_hit *curr_rec,
 				t_render_ctx *render);
 //parser.c
@@ -482,32 +501,32 @@ void		mrt_put_pixel(t_window *win, int x, int y, int color);
 int			rgb3_to_hex(int rgb[3]);
 //sphere_intersection_utils.c
 double		solve_t(t_abc *abc);
-int			solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc);
-int			update_hit_record(double t, float e[3], float d[3],
+int			solve_abc(double e[3], double d[3], t_sphere *sphere, t_abc *abc);
+int			update_hit_record(double t, double e[3], double d[3],
 				t_sp_ctx *sp_ctx);
-double		solve_discriminant(float e[3], float d[3],
+double		solve_discriminant(double e[3], double d[3],
 				t_sp_ctx *sp_ctx, int flag);
 int			ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene);
 //validate_array_utils.c
 int			validate_rgb_components(char **components, char *rgb_str);
 int			validate_coordinates(char **coordinates, char *xyz_str);
 //vector_operations.c
-double		dot(float a[3], float b[3]);
-void		sub(float *target, float *a, float *b);
-void		add(float *target, float *a, float *b);
-void		scale(float *target, float *a, float scale_factor);
-int			normalize(float *vector_xyz, float *target_xyz);
+double		dot(double a[3], double b[3]);
+void		sub(double *target, double *a, double *b);
+void		add(double *target, double *a, double *b);
+void		scale(double *target, double *a, double scale_factor);
+int			normalize(double *vector_xyz, double *target_xyz);
 //vector_operations_2.c
-void		copy_vectors(float out[3], float in[3]);
+void		copy_vectors(double out[3], double in[3]);
 void		copy_int_vectors(int out[3], int in[3]);
-void		mult(float target_xyz[3], float a[3], float b[3]);
-void		normalize_colors(float rgb[3]);
-void		normalize_target_colors(float target_xyz[3], int rgb[3]);
+void		mult(double target_xyz[3], double a[3], double b[3]);
+void		normalize_colors(double rgb[3]);
+void		normalize_target_colors(double target_xyz[3], int rgb[3]);
 //vector_operations_3.c
-int			cross(float *a_xyz, float *b_xyz, float *target_xyz);
-double		ray_length(float vector[3]);
+int			cross(double *a_xyz, double *b_xyz, double *target_xyz);
+double		ray_length(double vector[3]);
 void		set_vec_int_values(int vec[3], int va, int vb, int vc);
-void		set_vec_float_values(float vec[3], float va, float vb, float vc);
+void		set_vec_double_values(double vec[3], double va, double vb, double vc);
 //key_events.c
 int			close_window(t_app *app);
 int			key_press(int keycode, t_app *app);
@@ -521,10 +540,10 @@ void		apply_checkerboard_for_plane(t_hit *hit, t_plane *pl,
 				int target[3]);
 void		apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
 //apply_checkerboard_helper.c
-void		apply_matrix(float result[3], float m[4][4], float p[3]);
-void		fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
-				float forward[3]);
-void		fill_inv_matrix(float m[4][4], t_cylinder *cy);
+void		apply_matrix(double result[3], double m[4][4], double p[3]);
+void		fill_inv_matrix_helper(double m[4][4], double axis[3], double right[3],
+				double forward[3]);
+void		fill_inv_matrix(double m[4][4], t_cylinder *cy);
 void		reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
 //click_event_bonus.c
 void		handle_click(int x, int y, t_app *app);
@@ -552,74 +571,83 @@ int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
 
 //apply_texture_color.c
-float		ft_clamp(float value, float min, float max);
+double		ft_clamp(double value, double min, double max);
 void		get_texture_color(t_texture *tex, int x, int y, int color[3]);
 void		apply_textures_for_hit(t_hit *rec, t_scene *scene);
 //apply_bump_mapping.c
 void		apply_sphere_bump(t_hit *hit, t_texture *bump);
 //plane_texture_color.c
 void		apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
+//paraboloid test
+void	init_paraboloid_ctx(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, t_scene *scene, t_ray_table *ray_table, int i);
+void	init_shadow_paraboloid(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, double *new_origin, double *dir);
+int		paraboloid_discriminant(t_pa_ctx *curr_ctx);
+double	paraboloid_quadratic(t_pa_ctx *curr_ctx);
+double	paraboloid_height_test(t_pa_ctx *curr_ctx, double tx);
+void	paraboloid_normal(t_pa_ctx *curr_ctx, double t);
+void	ray_paraboloid_intersection(t_ray_table *ray_table, t_scene *scene, int shadow);
+double	ray_intersection_pa_shadow(double *new_origin, double *new_dir, t_paraboloid *pa);
 
 //STRUCTS FOR BONUS
 typedef struct s_ck_ctx
 {
-	float	p[3];
-	float	radius;
-	float	theta;
-	float	phi;
-	float	u;
-	float	v;
+	double	p[3];
+	double	radius;
+	double	theta;
+	double	phi;
+	double	u;
+	double	v;
 	int		u_i;
 	int		v_i;
 }	t_ckboard_sp_ctx;
 
 typedef struct s_ck_ctk
 {
-	float	mx[4][4];
-	float	tetha;
-	float	raw_u;
-	float	u;
-	float	p[3];
-	float	v;
+	double	mx[4][4];
+	double	tetha;
+	double	raw_u;
+	double	u;
+	double	p[3];
+	double	v;
 	int		iu;
 	int		iv;
 }	t_ckboard_cy_ctx;
 
 typedef struct s_light_model_ctx
 {
-	float	obj_color[3];
-	float	light_color[3];
-	float	diffuse_part[3];
-	float	specular_part[3];
-	float	diffuse_factor;
-	float	spec_factor;
+	double	obj_color[3];
+	double	light_color[3];
+	double	diffuse_part[3];
+	double	specular_part[3];
+	double	diffuse_factor;
+	double	spec_factor;
 	int		j;
 }	t_light_model_ctx;
 
 typedef struct s_pl_tex_ctx
 {
-	float	uv[2];
-	float	tan[3];
-	float	bi_tan[3];
-	float	vec[3];
+	double	uv[2];
+	double	tan[3];
+	double	bi_tan[3];
+	double	vec[3];
 	int		xy[2];
 }	t_pl_tex_ctx;
 
 typedef struct s_sp_bump_ctx
 {
-	float	n[3];
-	float	uv[2];
-	float	du;
-	float	dv;
-	float	d_u;
-	float	d_v;
-	float	h;
-	float	hu;
-	float	hv;
-	float	tangent[3];
-	float	bitangent[3];
-	float	new_normal[3];
-	float	force;
+	double	n[3];
+	double	uv[2];
+	double	du;
+	double	dv;
+	double	d_u;
+	double	d_v;
+	double	h;
+	double	hu;
+	double	hv;
+	double	tangent[3];
+	double	bitangent[3];
+	double	new_normal[3];
+	double	force;
 }	t_sp_bump_ctx;
 
 typedef struct s_bump_height_ctx
@@ -628,9 +656,9 @@ typedef struct s_bump_height_ctx
 	int				y;
 	unsigned int	pixel;
 	int				offset;
-	float			r;
-	float			g;
-	float			b;
+	double			r;
+	double			g;
+	double			b;
 }	t_bump_height_ctx;
 
 #endif

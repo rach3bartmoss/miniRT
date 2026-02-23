@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_caps.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 23:02:28 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 00:05:43 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ static void	init_cap_ctx(t_cy_cap *cap_ctx, t_cy_ctx *cylinder, int flag)
 /// @param flag Flag to differ from camera-ray and shadow-ray usage
 static void	calc_cap_helper(t_cy_cap *cap_ctx, t_cy_ctx *cy_ctx, int flag)
 {
-	float	origin_minus_center[3];
-	float	tmp[3];
+	double	origin_minus_center[3];
+	double	tmp[3];
 
 	sub(origin_minus_center, cap_ctx->center, cy_ctx->origin);
 	cap_ctx->tcap = dot(origin_minus_center, cap_ctx->cap_normal);
 	cap_ctx->tcap /= cap_ctx->denom;
 	if (cap_ctx->tcap > 0.0 && cap_ctx->tcap < cy_ctx->rec->t)
 	{
-		scale(tmp, cy_ctx->d, (float)cap_ctx->tcap);
+		scale(tmp, cy_ctx->d, (double)cap_ctx->tcap);
 		add(cap_ctx->hit_cap_p, cy_ctx->origin, tmp);
 		sub(tmp, cap_ctx->hit_cap_p, cap_ctx->center);
 		if (dot(tmp, tmp) <= (cap_ctx->radius * cap_ctx->radius))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_management_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 22:27:10 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 00:19:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 // (N (surface) * 1e-4)
 //(Light pos - P_origin)
 //gets (N * ε)
-float	prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
-		float *p_offset)
+double	prep_shadow_ray(t_scene *scene, t_render_ctx *render, double *dir,
+		double *p_offset)
 {
-	float	ntimes_epsilon[3];
-	float	l_pos_p[3];
+	double	ntimes_epsilon[3];
+	double	l_pos_p[3];
 
 	sub(dir, scene->light->light_xyz, render->rec->hit_point);
 	normalize(dir, dir);
@@ -29,22 +29,22 @@ float	prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
 	return (ray_length(l_pos_p));
 }
 
-float	ray_intersection_sp(float *sr_origin, float *sr_dir,
+double	ray_intersection_sp(double *sr_origin, double *sr_dir,
 	t_sphere *sphere)
 {
 	t_sp_ctx	sp_ctx;
-	float		t;
+	double		t;
 
 	sp_ctx.curr_sp = sphere;
 	t = solve_discriminant(sr_origin, sr_dir, &sp_ctx, 0);
 	return (t);
 }
 
-double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir, t_plane *pl,
-	float distance)
+double	ray_intersection_pl_shadow(double *sr_origin, double *sr_dir, t_plane *pl,
+	double distance)
 {
 	double	denom;
-	float	plane0_light0[3];
+	double	plane0_light0[3];
 	double	t;
 
 	denom = dot(pl->pl_vector_xyz, sr_dir);
@@ -56,4 +56,19 @@ double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir, t_plane *pl,
 		return (t);
 	else
 		return (-1.0);
+}
+
+double	ray_intersection_pa_shadow(double *new_origin, double *new_dir, t_paraboloid *pa)
+{
+	double	  t;
+	t_pa_ctx	shadow_ctx;
+
+	init_shadow_paraboloid(pa, &shadow_ctx, new_origin, new_dir);
+	if (paraboloid_discriminant(&shadow_ctx))
+	{
+		t = paraboloid_quadratic(&shadow_ctx);
+		if (t > 0.0001)
+			return (t);
+	}
+	return (-1.0);
 }

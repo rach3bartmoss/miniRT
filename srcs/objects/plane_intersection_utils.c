@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   plane_intersection_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/22 23:14:38 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // DEPRECATED FUNCTION
-/*int	plane_occludes(float origin[3], float dir[3], float max_t, t_pl_ctx *P)
+/*int	plane_occludes(double origin[3], double dir[3], double max_t, t_pl_ctx *P)
 {
-	float	diff[3];
-	float	denom;
-	float	t;
+	double	diff[3];
+	double	denom;
+	double	t;
 
 	denom = dot(dir, P->normal);
 	if (fabs(denom) < 1e-6f)

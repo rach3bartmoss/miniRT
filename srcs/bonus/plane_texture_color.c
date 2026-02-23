@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_texture_color.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 01:58:13 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 01:48:27 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl)
 {
 	t_pl_tex_ctx	ctx;
-	float			helper[3];
+	double			helper[3];
 
-	set_vec_float_values(helper, 0, 1, 0);
+	set_vec_double_values(helper, 0, 1, 0);
 	memset(&ctx, 0, sizeof(t_pl_tex_ctx));
 	if (fabs(pl->pl_vector_xyz[1]) < 0.999f)
 		cross(pl->pl_vector_xyz, helper, ctx.tan);
 	else
 	{
-		set_vec_float_values(helper, 1, 0, 0);
+		set_vec_double_values(helper, 1, 0, 0);
 		cross(pl->pl_vector_xyz, helper, ctx.tan);
 	}
 	normalize(ctx.tan, ctx.tan);

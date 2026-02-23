@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 23:47:24 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/29 22:56:57 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ int	parse_rgb(char *rgb_str, int rgb_target[3], t_type_elem type)
 /// @param ratio_str String with the value to convert.
 /// @param light_ratio A pointer to the light/brigth ratio value.
 /// @return return 1 on sucess, 0 on failure
-int	parse_light_ratio(char *ratio_str, float *light_ratio, t_type_elem type)
+int	parse_light_ratio(char *ratio_str, double *light_ratio, t_type_elem type)
 {
 	char	*endptr;
-	float	res;
+	double	res;
 
 	res = ft_strtof(ratio_str, &endptr);
 	if (*endptr != '\0')
 	{
-		printf("miniRT: Invalid float format for %s ratio\n",
+		printf("miniRT: Invalid double format for %s ratio\n",
 			get_type_name(type));
 		return (0);
 	}

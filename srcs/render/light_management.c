@@ -6,16 +6,16 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:01:03 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/23 23:41:27 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	get_sphere_sr_t(float *p_offset, float *dir, float distance,
+int	get_sphere_sr_t(double *p_offset, double *dir, double distance,
 		t_scene *scene)
 {
-	float	curr_sp;
+	double	curr_sp;
 	int		i;
 	int		count;
 
@@ -31,7 +31,7 @@ int	get_sphere_sr_t(float *p_offset, float *dir, float distance,
 	return (0);
 }
 
-int	get_plane_sr_t(float *p_offset, float *dir, float distance,
+int	get_plane_sr_t(double *p_offset, double *dir, double distance,
 		t_scene *scene)
 {
 	double	curr_pl;
@@ -51,7 +51,7 @@ int	get_plane_sr_t(float *p_offset, float *dir, float distance,
 	return (0);
 }
 
-int	get_cylinder_sr_t(float *p_offset, float *dir, float distance,
+int	get_cylinder_sr_t(double *p_offset, double *dir, double distance,
 		t_scene *scene)
 {
 	double	curr_cy;
@@ -71,8 +71,28 @@ int	get_cylinder_sr_t(float *p_offset, float *dir, float distance,
 	return (0);
 }
 
-int	shadow_ray_intersection_dispatcher(float *p_offset, float *dir,
-	float distance, t_scene *scene)
+int	get_paraboloid_sr_t(double *new_origin, double *new_dir, double distance,
+		t_scene *scene)
+{
+	double	curr_pa;
+	int		i;
+	int		count;
+
+	i = 0;
+	count = set_and_get_occ(-1, PARABOLOID);
+	while (i < count)
+	{
+		curr_pa = ray_intersection_pa_shadow(new_origin,
+			new_dir, scene->paraboloid[i]);
+		if (curr_pa > 0.0f && curr_pa < distance)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	shadow_ray_intersection_dispatcher(double *p_offset, double *dir,
+	double distance, t_scene *scene)
 {
 	int	is_in_shadow;
 
@@ -82,6 +102,8 @@ int	shadow_ray_intersection_dispatcher(float *p_offset, float *dir,
 		is_in_shadow = get_plane_sr_t(p_offset, dir, distance, scene);
 	if (!is_in_shadow)
 		is_in_shadow = get_cylinder_sr_t(p_offset, dir, distance, scene);
+	if (!is_in_shadow)
+		is_in_shadow = get_paraboloid_sr_t(p_offset, dir, distance, scene);
 	return (is_in_shadow);
 }
 
@@ -98,9 +120,9 @@ int	shadow_ray_intersection_dispatcher(float *p_offset, float *dir,
 int	apply_diffuse_specular_and_shadow(t_render_ctx *render,
 	t_scene *scene, t_window *win)
 {
-	float	light_dir_normalized[3];
-	float	p_offset[3];
-	float	distance;
+	double	light_dir_normalized[3];
+	double	p_offset[3];
+	double	distance;
 	int		is_in_shadow;
 
 	(void)win;

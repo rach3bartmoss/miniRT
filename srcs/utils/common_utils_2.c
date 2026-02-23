@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 21:15:09 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param xyz_str 
 /// @param xyz_target 
 /// @return Returns 1 on success 0 on failure
-int	parse_coordinates(char *xyz_str, float xyz_target[3])
+int	parse_coordinates(char *xyz_str, double xyz_target[3])
 {
 	char	**coordinates;
 	int		i;
@@ -36,7 +36,7 @@ int	parse_coordinates(char *xyz_str, float xyz_target[3])
 		xyz_target[i] = ft_strtof(coordinates[i], &endptr);
 		if (*endptr != '\0')
 		{
-			printf("miniRT: Invalid float format for coordinates (3)\n");
+			printf("miniRT: Invalid double format for coordinates (3)\n");
 			free_split(coordinates);
 			return (0);
 		}
@@ -45,7 +45,7 @@ int	parse_coordinates(char *xyz_str, float xyz_target[3])
 	return (free_split(coordinates), 1);
 }
 
-static int	parse_vector_loop(char	*vector_value, float *vector_target, int *i)
+static int	parse_vector_loop(char	*vector_value, double *vector_target, int *i)
 {
 	char	*endptr;
 
@@ -54,7 +54,7 @@ static int	parse_vector_loop(char	*vector_value, float *vector_target, int *i)
 	vector_target[*i] = ft_strtof(vector_value, &endptr);
 	if (*endptr != '\0')
 	{
-		printf("miniRT: Invalid float format for coordinates vectors (3)\n");
+		printf("miniRT: Invalid double format for coordinates vectors (3)\n");
 		return (0);
 	}
 	if (vector_target[*i] < -1.0 || vector_target[*i] > 1.0)
@@ -71,7 +71,7 @@ static int	parse_vector_loop(char	*vector_value, float *vector_target, int *i)
 /// @param vector_str 
 /// @param vector_target 
 /// @return 
-int	parse_coordinates_vector(char *vector_str, float vector_target[3])
+int	parse_coordinates_vector(char *vector_str, double vector_target[3])
 {
 	char	**vector_values;
 	int		i;
@@ -124,9 +124,9 @@ int	validate_fov_str(char *fov_str)
 	return (1);
 }
 
-int	parse_fov(char *fov_str, float *fov_target)
+int	parse_fov(char *fov_str, double *fov_target)
 {
-	float	res;
+	double	res;
 	char	*endptr;
 	int		sign;
 

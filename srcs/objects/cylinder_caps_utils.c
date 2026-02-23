@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_caps_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:13:01 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/22 23:15:23 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
+void	save_intersection_in_table(t_cy_ctx *cy_ctx, double *hit_p,
 	double t_side)
 {
-	float	q[3];
-	float	n[3];
+	double	q[3];
+	double	n[3];
 
 	scale(q, cy_ctx->normal, cy_ctx->y);
 	add(q, cy_ctx->curr_cy->cy_xyz, q);
@@ -38,11 +38,11 @@ void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
 /// @param cy_ctx 
 void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx)
 {
-	float	hit_p[3];
-	float	scale_td[3];
-	float	hitp_minus_center[3];
+	double	hit_p[3];
+	double	scale_td[3];
+	double	hitp_minus_center[3];
 
-	scale(scale_td, cy_ctx->d, (float)t_side);
+	scale(scale_td, cy_ctx->d, (double)t_side);
 	add(hit_p, cy_ctx->origin, scale_td);
 	sub(hitp_minus_center, hit_p, cy_ctx->curr_cy->cy_xyz);
 	cy_ctx->y = dot(hitp_minus_center, cy_ctx->normal);
@@ -62,18 +62,18 @@ void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx)
 /// @return Fill the v and w values inside t_cy_ctx struct
 void	calc_v_w(t_cy_ctx *cy_ctx)
 {
-	float	scale_da_normal[3];
+	double	scale_da_normal[3];
 	double	da;
-	float	o_minus_c[3];
-	float	scale_oca_normal[3];
+	double	o_minus_c[3];
+	double	scale_oca_normal[3];
 	double	oca;
 
 	da = dot(cy_ctx->d, cy_ctx->normal);
-	scale(scale_da_normal, cy_ctx->normal, (float)da);
+	scale(scale_da_normal, cy_ctx->normal, (double)da);
 	sub(cy_ctx->v, cy_ctx->d, scale_da_normal);
 	sub(o_minus_c, cy_ctx->origin, cy_ctx->curr_cy->cy_xyz);
 	oca = dot(o_minus_c, cy_ctx->normal);
-	scale(scale_oca_normal, cy_ctx->normal, (float)oca);
+	scale(scale_oca_normal, cy_ctx->normal, (double)oca);
 	sub(cy_ctx->w, o_minus_c, scale_oca_normal);
 }
 

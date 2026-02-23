@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_loop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 13:59:07 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 01:05:16 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:22:20 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	render_objects(t_app *app)
 	ray_sphere_intersect(app->ray_table, app->scene);
 	ray_plane_intersect(app->ray_table, app->scene);
 	ray_cylinder_intersection(app->ray_table, app->scene);
+	ray_paraboloid_intersection(app->ray_table, app->scene, 0);
 	y = 0;
 	while (y < app->win->height)
 	{

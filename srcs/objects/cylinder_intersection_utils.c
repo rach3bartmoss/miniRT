@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_intersection_utils.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 10:24:03 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 00:05:03 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx)
 /// @param w value after the axis removed from origin-to-cylinder
 /// @param cy_ctx 
 /// @return return the smallest positive root, t1 or t2
-double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx)
+double	solve_t_cylinder(double v[3], double w[3], t_cy_ctx *cy_ctx)
 {
 	t_abc	abc;
 	double	t1;

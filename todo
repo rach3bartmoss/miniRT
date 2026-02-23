@@ -1,7 +1,0 @@
-0. add threads to the engine (OK)
-1. add specular reflection to achieve a full phong reflection model (OK)
-2. color disruption: checkerboard pattern (OK)
-3. colored and multi-spot lights
-4. one other paraboloid 
-5. handle bump map textures
-6. add antialiasing

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_operations.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:03:08 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/08 23:13:30 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /// @brief Returns a scalar value of the dot product between two 3D vectors
 /// @param a 3D-Vector A
 /// @param b 3D-Vector B
-/// @return a floating-point result
-double	dot(float a[3], float b[3])
+/// @return a doubleing-point result
+double	dot(double a[3], double b[3])
 {
 	double	res;
 
@@ -31,7 +31,7 @@ double	dot(float a[3], float b[3])
 /// @param target Pointer to target vector
 /// @param a Pointer to A vector
 /// @param b Pointer to B vector
-void	sub(float *target, float *a, float *b)
+void	sub(double *target, double *a, double *b)
 {
 	target[0] = a[0] - b[0];
 	target[1] = a[1] - b[1];
@@ -42,7 +42,7 @@ void	sub(float *target, float *a, float *b)
 /// @param target Pointer to target vector
 /// @param a Pointer to A vector
 /// @param b Pointer to B vector
-void	add(float *target, float *a, float *b)
+void	add(double *target, double *a, double *b)
 {
 	target[0] = a[0] + b[0];
 	target[1] = a[1] + b[1];
@@ -53,7 +53,7 @@ void	add(float *target, float *a, float *b)
 /// @param target To store the result
 /// @param a 3-D vector
 /// @param scale_factor Scalar value
-void	scale(float *target, float *a, float scale_factor)
+void	scale(double *target, double *a, double scale_factor)
 {
 	target[0] = a[0] * scale_factor;
 	target[1] = a[1] * scale_factor;
@@ -64,9 +64,9 @@ void	scale(float *target, float *a, float scale_factor)
 /// @param vector_xyz vector raw value //-0.2, 0.5, 1
 /// @param target_xyz vector after normalization, assign to existent variable
 /// @return 1 on success, 0 on failure (zero/near-zero) case
-int	normalize(float	*vector_xyz, float *target_xyz)
+int	normalize(double	*vector_xyz, double *target_xyz)
 {
-	float	len;
+	double	len;
 
 	len = sqrtf(dot(vector_xyz, vector_xyz));
 	if (len > 1e-6f)

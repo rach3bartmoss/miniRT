@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   apply_bump_mapping.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 12:40:47 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 01:26:36 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-float	ft_clamp(float value, float min, float max)
+double	ft_clamp(double value, double min, double max)
 {
 	if (value < min)
 		return (min);
@@ -21,11 +21,11 @@ float	ft_clamp(float value, float min, float max)
 	return (value);
 }
 
-void	build_tangent_space(float normal[3],
-							float tangent[3],
-							float bitangent[3])
+void	build_tangent_space(double normal[3],
+							double tangent[3],
+							double bitangent[3])
 {
-	float	up[3];
+	double	up[3];
 
 	if (fabs(normal[1]) < 0.999f)
 	{
@@ -45,7 +45,7 @@ void	build_tangent_space(float normal[3],
 	normalize(bitangent, bitangent);
 }
 
-float	sample_height(t_texture *tex, float u, float v)
+double	sample_height(t_texture *tex, double u, double v)
 {
 	t_bump_height_ctx	ctx;
 
@@ -55,9 +55,9 @@ float	sample_height(t_texture *tex, float u, float v)
 	ctx.y = (int)(v * (tex->height - 1));
 	ctx.offset = ctx.y * tex->line_len + ctx.x * (tex->bpp / 8);
 	ctx.pixel = *(unsigned int *)(tex->buffer + ctx.offset);
-	ctx.r = (float)((ctx.pixel >> 16) & 0xFF);
-	ctx.g = (float)((ctx.pixel >> 8) & 0xFF);
-	ctx.b = (float)(ctx.pixel & 0xFF);
+	ctx.r = (double)((ctx.pixel >> 16) & 0xFF);
+	ctx.g = (double)((ctx.pixel >> 8) & 0xFF);
+	ctx.b = (double)(ctx.pixel & 0xFF);
 	return ((ctx.r + ctx.g + ctx.b) / 3.0f / 255.0f);
 }
 

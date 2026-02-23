@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_pixel_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 21:33:01 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:37:47 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	rgb3_to_hex(int rgb[3])
 	return (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
 }
 
-int	print_array3(float *target_xyz)
+int	print_array3(double *target_xyz)
 {
 	printf("{ %.3f, %.3f, %.3f }\n", target_xyz[0],
 		target_xyz[1], target_xyz[2]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_vectors_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:59:08 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/11 10:03:17 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 int	init_rays(t_ray_table *ray_table)
 {
-	ray_table->vectors_x = malloc(sizeof(float) * ray_table->total_rays);
+	ray_table->vectors_x = malloc(sizeof(double) * ray_table->total_rays);
 	if (!ray_table->vectors_x)
 	{
 		printf("miniRT: Vectors X failed (malloc)\n");
 		return (0);
 	}
-	ray_table->vectors_y = malloc(sizeof(float) * ray_table->total_rays);
+	ray_table->vectors_y = malloc(sizeof(double) * ray_table->total_rays);
 	if (!ray_table->vectors_y)
 	{
 		printf("miniRT: Vectors Y failed (malloc)\n");
 		free (ray_table->vectors_x);
 		return (0);
 	}
-	ray_table->vectors_z = malloc(sizeof(float) * ray_table->total_rays);
+	ray_table->vectors_z = malloc(sizeof(double) * ray_table->total_rays);
 	if (!ray_table->vectors_z)
 	{
 		printf("miniRT: Vectors Z failed (malloc)\n");
@@ -42,24 +42,24 @@ int	init_rays(t_ray_table *ray_table)
 /// @param win Struct to have access to window width and height
 /// @param flag 'w' to calculate ndc based on width 'h' for height
 /// @param xy_index uses 'x' index for width, 'y' for height
-/// @return return a float ndc value on sucess, -1.0f on failure
-float	solve_screen_uv(t_window *win, t_cam_basis *cam_basis,
+/// @return return a double ndc value on sucess, -1.0f on failure
+double	solve_screen_uv(t_window *win, t_cam_basis *cam_basis,
 	char flag, int xy_index)
 {
-	float	ndc;
-	float	screen_axis;
-	float	res_uv;
+	double	ndc;
+	double	screen_axis;
+	double	res_uv;
 
 	if (flag == 'w')
 	{
-		ndc = (xy_index + 0.5f) / (float)win->width;
+		ndc = (xy_index + 0.5f) / (double)win->width;
 		screen_axis = 2.0f * ndc - 1.0f;
 		res_uv = screen_axis * cam_basis->half_width;
 		return (res_uv);
 	}
 	if (flag == 'h')
 	{
-		ndc = (xy_index + 0.5f) / (float)win->height;
+		ndc = (xy_index + 0.5f) / (double)win->height;
 		screen_axis = 1.0f - 2.0f * ndc;
 		res_uv = screen_axis * cam_basis->half_height;
 		return (res_uv);
@@ -70,7 +70,7 @@ float	solve_screen_uv(t_window *win, t_cam_basis *cam_basis,
 int	fill_vectors_helper(t_cam_basis *cam_basis, t_screen_ndc_ctx *ndc_ctx,
 	t_ray_table *ray_table)
 {
-	float	dir[3];
+	double	dir[3];
 
 	dir[0] = cam_basis->forward[0] + ndc_ctx->u * cam_basis->right[0]
 		+ ndc_ctx->v * cam_basis->up[0];

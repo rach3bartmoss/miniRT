@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   light_phong.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:45:09 by joao-vri          #+#    #+#             */
-/*   Updated: 2026/02/22 23:43:13 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	combine_lights(t_render_ctx *render, t_scene *scene, float *dir)
+int	combine_lights(t_render_ctx *render, t_scene *scene, double *dir)
 {
 	t_light_model_ctx	ctx;
 
@@ -45,18 +45,18 @@ int	combine_lights(t_render_ctx *render, t_scene *scene, float *dir)
 void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
 	t_render_ctx *render)
 {
-	float	a;
-	float	ca[3];
-	float	term;
+	double	a;
+	double	ca[3];
+	double	term;
 	int		i;
 
 	a = scene->ambiance->light_ratio;
-	ca[0] = (float)scene->ambiance->a_rgb[0];
-	ca[1] = (float)scene->ambiance->a_rgb[1];
-	ca[2] = (float)scene->ambiance->a_rgb[2];
-	render->co[0] = (float)curr_rec->color[0];
-	render->co[1] = (float)curr_rec->color[1];
-	render->co[2] = (float)curr_rec->color[2];
+	ca[0] = (double)scene->ambiance->a_rgb[0];
+	ca[1] = (double)scene->ambiance->a_rgb[1];
+	ca[2] = (double)scene->ambiance->a_rgb[2];
+	render->co[0] = (double)curr_rec->color[0];
+	render->co[1] = (double)curr_rec->color[1];
+	render->co[2] = (double)curr_rec->color[2];
 	normalize_colors(ca);
 	normalize_colors(render->co);
 	i = 0;
@@ -71,11 +71,11 @@ void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
 	}
 }
 
-float	apply_specular_light(t_scene *scene, t_render_ctx *render)
+double	apply_specular_light(t_scene *scene, t_render_ctx *render)
 {
-	float	r_vector[3];
-	float	l_vector[3];
-	float	v_vector[3];
+	double	r_vector[3];
+	double	l_vector[3];
+	double	v_vector[3];
 	double	dot_res;
 	double	spec_angle;
 

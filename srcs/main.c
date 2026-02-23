@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 14:24:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	init_app(t_app *app, char **argv, t_window *win)
 	app->win->mlx = mlx_init();
 	app->win->width = 1280;
 	app->win->height = 720;
-	app->win->aspect_ratio = (float)win->width / (float)win->height;
+	app->win->aspect_ratio = (double)win->width / (double)win->height;
 	app->win->win = mlx_new_window(win->mlx, win->width, win->height, "miniRT");
 	app->win->img = mlx_new_image(win->mlx, win->width, win->height);
 	app->win->addr = mlx_get_data_addr(win->img, &win->bpp, &win->line_length,

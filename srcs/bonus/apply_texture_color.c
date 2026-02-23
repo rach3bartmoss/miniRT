@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   apply_texture_color.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 11:28:46 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 01:24:00 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	get_texture_color(t_texture *tex, int x, int y, int color[3])
 
 void	apply_sphere_texture(t_hit *hit, t_texture *tex)
 {
-	float	n[3];
-	float	uv[2];
+	double	n[3];
+	double	uv[2];
 	int		xy[2];
 
 	copy_vectors(n, hit->shading_normal);

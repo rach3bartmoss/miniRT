@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_intersection_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 00:23:38 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ double	solve_t(t_abc *abc)
 /// @param sphere 
 /// @param abc A = d * d; B = scale_tmp * sub_tmp; C = sub_tmp² - R²
 /// @return 
-int	solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc)
+int	solve_abc(double e[3], double d[3], t_sphere *sphere, t_abc *abc)
 {
-	float	scale_tmp[3];
-	float	sub_tmp[3];
+	double	scale_tmp[3];
+	double	sub_tmp[3];
 	double	radius;
 
 	abc->a = (double)dot(d, d);
@@ -62,10 +62,10 @@ int	solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc)
 	return (1);
 }
 
-int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
+int	update_hit_record(double t, double e[3], double d[3], t_sp_ctx *sp_ctx)
 {
-	float	hit_p[3];
-	float	normal[3];
+	double	hit_p[3];
+	double	normal[3];
 
 	if (!sp_ctx->rec)
 		return (0);
@@ -75,7 +75,7 @@ int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 	add(hit_p, e, hit_p);
 	sub(normal, hit_p, sp_ctx->curr_sp->sp_center_xyz);
 	normalize(normal, normal);
-	sp_ctx->rec->t = (float)t;
+	sp_ctx->rec->t = (double)t;
 	sp_ctx->rec->hit = 1;
 	sp_ctx->rec->object_idx = sp_ctx->i;
 	copy_vectors(sp_ctx->rec->hit_point, hit_p);
@@ -96,7 +96,7 @@ int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 /// @param d Ray direction normalized, vectors ZYX in ray_table
 /// @param sp_ctx Context variables store in just one place for simplicity
 /// @return 1 on success, 0 on failure, FIND 't' (closest hit point)
-double	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx, int flag)
+double	solve_discriminant(double e[3], double d[3], t_sp_ctx *sp_ctx, int flag)
 {
 	t_abc	abc;
 	double	t;

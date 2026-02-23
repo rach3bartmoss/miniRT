@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common_utils_4.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 22:33:42 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 21:15:23 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	validate_steep_str(char *diameter_str)
 	return (1);
 }
 
-int	parse_steepness(char *steep_str, float *steep_target, t_type_elem type)
+int	parse_steepness(char *steep_str, double *steep_target, t_type_elem type)
 {
 	char	*endptr;
-	float	res;
+	double	res;
 	int		sign;
 
 	sign = 1;

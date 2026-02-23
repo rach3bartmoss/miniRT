@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_shadow_rays_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 21:26:38 by dopereir          #+#    #+#             */
-/*   Updated: 2025/11/16 18:26:30 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 /// @param cy_ctx The current cylinder object and useful parameters
 /// @param t_max The distance between the ray-origin point and the light
 /// @return If the intersection lays between t_max boundaries return hit_cap.
-double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max)
+double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, double t_max)
 {
 	t_cy_cap	sray_ctx;
-	float		tmp[3];
-	float		center_minus_origin[3];
+	double		tmp[3];
+	double		center_minus_origin[3];
 
 	sray_ctx.r = cy_ctx->curr_cy->cy_diameter / 2;
 	scale(sray_ctx.cap_normal, cy_ctx->normal, -1.0f);
@@ -39,7 +39,7 @@ double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max)
 		/ sray_ctx.denom;
 	if (sray_ctx.hit_cap <= 1e-4f || sray_ctx.hit_cap >= t_max)
 		return (-1.0f);
-	scale(tmp, cy_ctx->d, (float)sray_ctx.hit_cap);
+	scale(tmp, cy_ctx->d, (double)sray_ctx.hit_cap);
 	add(sray_ctx.hit_cap_point, cy_ctx->origin, tmp);
 	sub(tmp, sray_ctx.hit_cap_point, cy_ctx->base_center);
 	if (dot(tmp, tmp) <= (sray_ctx.r * sray_ctx.r))
@@ -51,11 +51,11 @@ double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max)
 /// @param cy_ctx 
 /// @param t_max 
 /// @return If the intersection lays between t_max boundaries return hit_cap.
-double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max)
+double	cylinder_top_sr(t_cy_ctx *cy_ctx, double t_max)
 {
 	t_cy_cap	sray_ctx;
-	float		tmp[3];
-	float		center_minus_origin[3];
+	double		tmp[3];
+	double		center_minus_origin[3];
 
 	sray_ctx.hit_cap = -1.0f;
 	sray_ctx.denom = dot(cy_ctx->d, cy_ctx->normal);
@@ -66,7 +66,7 @@ double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max)
 		/ sray_ctx.denom;
 	if (sray_ctx.hit_cap <= 1e-4f || sray_ctx.hit_cap >= t_max)
 		return (-1.0f);
-	scale(tmp, cy_ctx->d, (float)sray_ctx.hit_cap);
+	scale(tmp, cy_ctx->d, (double)sray_ctx.hit_cap);
 	add(sray_ctx.hit_cap_point, cy_ctx->origin, tmp);
 	sub(tmp, sray_ctx.hit_cap_point, cy_ctx->top_center);
 	if (dot(tmp, tmp) <= (cy_ctx->radius * cy_ctx->radius))
@@ -75,7 +75,7 @@ double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max)
 		return (-1.0f);
 }
 
-void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir)
+void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, double *sr_origin, double *sr_dir)
 {
 	copy_vectors(cy_ctx->normal, cy_ctx->curr_cy->cy_vector_xyz);
 	copy_vectors(cy_ctx->d, sr_dir);
@@ -88,16 +88,16 @@ void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir)
 	add(cy_ctx->top_center, cy_ctx->curr_cy->cy_xyz, cy_ctx->ha);
 }
 
-float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
-	float t_max)
+double	comp_finite_height_for_light(double t_side, t_cy_ctx *cy_ctx,
+	double t_max)
 {
-	float	hit_p[3];
-	float	scale_td[3];
-	float	hitp_minus_center[3];
+	double	hit_p[3];
+	double	scale_td[3];
+	double	hitp_minus_center[3];
 
 	if (t_side <= 0.0f || t_side >= t_max)
 		return (-1.0f);
-	scale(scale_td, cy_ctx->d, (float)t_side);
+	scale(scale_td, cy_ctx->d, (double)t_side);
 	add(hit_p, cy_ctx->origin, scale_td);
 	sub(hitp_minus_center, hit_p, cy_ctx->curr_cy->cy_xyz);
 	cy_ctx->y = dot(hitp_minus_center, cy_ctx->normal);
@@ -108,11 +108,11 @@ float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
 	return (-1.0f);
 }
 
-float	ray_intersection_cy(float *sr_origin, float *sr_dir, t_cylinder *cy,
-	float distance)
+double	ray_intersection_cy(double *sr_origin, double *sr_dir, t_cylinder *cy,
+	double distance)
 {
 	t_cy_ctx	cy_ctx;
-	float		t_side;
+	double		t_side;
 	double		hit;
 	double		bot;
 	double		top;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   apply_checkerboard.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 22:13:12 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/28 23:16:00 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:25:11 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ void	apply_checkerboard_for_plane(t_hit *hit, t_plane *pl, int target[3])
 	int	a;
 	int	b;
 
-	if (fabsf(pl->pl_vector_xyz[1]) > 0.9f)
+	if (fabs(pl->pl_vector_xyz[1]) > 0.9f)
 	{
 		a = floorf(hit->hit_point[0] / SQUARE_PATTERN_SCALE);
 		b = floorf(hit->hit_point[2] / SQUARE_PATTERN_SCALE);
 	}
-	else if (fabsf(pl->pl_vector_xyz[0]) > 0.9f)
+	else if (fabs(pl->pl_vector_xyz[0]) > 0.9f)
 	{
 		a = floorf(hit->hit_point[1] / SQUARE_PATTERN_SCALE);
 		b = floorf(hit->hit_point[2] / SQUARE_PATTERN_SCALE);

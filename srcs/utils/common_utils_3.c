@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common_utils_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 22:27:52 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/26 11:16:33 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	sign_handler(char **target_str)
 	return (sign);
 }
 
-int	parse_diameter(char *diameter_str, float *diameter_target, t_type_elem type)
+int	parse_diameter(char *diameter_str, double *diameter_target, t_type_elem type)
 {
 	char	*endptr;
-	float	res;
+	double	res;
 	int		sign;
 
 	sign = 1;

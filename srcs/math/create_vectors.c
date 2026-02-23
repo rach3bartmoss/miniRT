@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_vectors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 20:52:02 by dopereir          #+#    #+#             */
-/*   Updated: 2025/10/09 20:26:08 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	init_custom_vec3(float target[3], float a, float b, float c)
+void	init_custom_vec3(double target[3], double a, double b, double c)
 {
 	target[0] = a;
 	target[1] = b;
@@ -26,9 +26,9 @@ void	init_custom_vec3(float target[3], float a, float b, float c)
 int	create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table)
 {
 	t_cam_basis	cam_basis;
-	float		fov_radian;
-	float		world_up[3];
-	float		cross_tmp[3];
+	double		fov_radian;
+	double		world_up[3];
+	double		cross_tmp[3];
 
 	init_custom_vec3(world_up, 0, 1, 0);
 	init_custom_vec3(cross_tmp, 0, 0, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   apply_checkerboard_helper.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 23:11:44 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 02:42:41 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 21:25:11 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 /// @param result 
 /// @param m 4x4 Matrix 
 /// @param p 3D-Vector point
-void	apply_matrix(float result[3], float m[4][4], float p[3])
+void	apply_matrix(double result[3], double m[4][4], double p[3])
 {
-	float	w;
+	double	w;
 
 	result[0] = p[0] * m[0][0] + p[1] * m[0][1] + p[2] * m[0][2] + m[0][3];
 	result[1] = p[0] * m[1][0] + p[1] * m[1][1] + p[2] * m[1][2] + m[1][3];
@@ -35,8 +35,8 @@ void	apply_matrix(float result[3], float m[4][4], float p[3])
 	}
 }
 
-void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
-			float forward[3])
+void	fill_inv_matrix_helper(double m[4][4], double axis[3], double right[3],
+			double forward[3])
 {
 	m[0][0] = right[0];
 	m[0][1] = right[1];
@@ -58,17 +58,17 @@ void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
 /// @brief Sum: *Calculate the inverse matrix for this cylinder*
 /// @param m 
 /// @param cy 
-void	fill_inv_matrix(float m[4][4], t_cylinder *cy)
+void	fill_inv_matrix(double m[4][4], t_cylinder *cy)
 {
-	float	axis[3];
-	float	right[3];
-	float	forward[3];
-	float	temp[3];
-	float	neg_pos[3];
+	double	axis[3];
+	double	right[3];
+	double	forward[3];
+	double	temp[3];
+	double	neg_pos[3];
 
-	set_vec_float_values(temp, 0.0f, 0.0f, 1.0f);
+	set_vec_double_values(temp, 0.0f, 0.0f, 1.0f);
 	normalize(cy->cy_vector_xyz, axis);
-	if (fabsf(axis[2]) > 0.9f)
+	if (fabs(axis[2]) > 0.9f)
 	{
 		temp[0] = 1.0f;
 		temp[2] = 0.0f;
@@ -78,11 +78,11 @@ void	fill_inv_matrix(float m[4][4], t_cylinder *cy)
 	cross(right, axis, forward);
 	normalize(forward, forward);
 	fill_inv_matrix_helper(m, axis, right, forward);
-	set_vec_float_values(neg_pos, -cy->cy_xyz[0], -cy->cy_xyz[1],
+	set_vec_double_values(neg_pos, -cy->cy_xyz[0], -cy->cy_xyz[1],
 		-cy->cy_xyz[2]);
-	m[0][3] = (float)dot(right, neg_pos);
-	m[1][3] = (float)dot(axis, neg_pos);
-	m[2][3] = (float)dot(forward, neg_pos);
+	m[0][3] = (double)dot(right, neg_pos);
+	m[1][3] = (double)dot(axis, neg_pos);
+	m[2][3] = (double)dot(forward, neg_pos);
 }
 
 void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene)
