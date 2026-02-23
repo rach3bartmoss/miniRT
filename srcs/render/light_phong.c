@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 23:45:09 by joao-vri          #+#    #+#             */
-/*   Updated: 2026/02/06 21:31:02 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/22 23:43:13 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	combine_lights(t_render_ctx *render, t_scene *scene, float *dir)
 
 	normalize_target_colors(ctx.obj_color, render->rec->color);
 	normalize_target_colors(ctx.light_color, scene->light->light_rgb);
-	ctx.diffuse_factor = fmaxf(0.0f, dot(render->rec->normal, dir));
+	ctx.diffuse_factor = fmaxf(0.0f, dot(render->rec->shading_normal, dir));
 	mult(ctx.diffuse_part, ctx.obj_color, ctx.light_color);
 	scale(ctx.diffuse_part, ctx.diffuse_part,
 		scene->light->bright_ratio * ctx.diffuse_factor);
@@ -83,9 +83,9 @@ float	apply_specular_light(t_scene *scene, t_render_ctx *render)
 	normalize(v_vector, v_vector);
 	sub(l_vector, scene->light->light_xyz, render->rec->hit_point);
 	normalize(l_vector, l_vector);
-	dot_res = dot(render->rec->normal, l_vector);
+	dot_res = dot(render->rec->shading_normal, l_vector);
 	dot_res *= 2;
-	scale(r_vector, render->rec->normal, dot_res);
+	scale(r_vector, render->rec->shading_normal, dot_res);
 	sub(r_vector, r_vector, l_vector);
 	spec_angle = dot(r_vector, v_vector);
 	spec_angle = fmax(0.0, spec_angle);

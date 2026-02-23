@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 01:58:23 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 00:50:26 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:45:13 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,9 @@ void	handle_right_click(int x, int y, t_app *app)
 {
 	t_r_click_ctx	ctx;
 
-	ctx.target_pair = NULL;
-	ctx.target_preset = NULL;
-	ctx.index = 0;
-	ctx.hit = 0;
-	
 	if (app->click_lock == 1)
 		return ;
-	ctx.index = y * app->win->width + x;
-	ctx.hit = &app->ray_table->hit_record[ctx.index];
-	if (!ctx.hit->hit)
+	if (!init_right_click_vars(x, y, app, &ctx))
 		return ;
 	if (!app->preset_list)
 	{
@@ -135,39 +128,5 @@ void	handle_right_click(int x, int y, t_app *app)
 		assign_texture_to_hit_obj(app, ctx.hit, ctx.target_pair);
 		free(ctx.target_pair);
 	}
-
-	//basically must render the scene again but now the obj have pointers to textures.
-	apply_texture_colors(app);
 	rerender(app);
-	/* iterate each hit in hit_table
-		the ones that have object with valid pointers to textures, recalculate the the colors
-
-	*/
-	//3) disturb normal and apply texture
-	//4) render program again with textures applied
 }
-
-
-
-
-
-
-
-
-
-
-	/* if (ctx.hit->object_type == SPHERE)
-	{
-		print_texture(app->scene->sphere[ctx.hit->obj_scene_idx]->base);
-		print_texture(app->scene->sphere[ctx.hit->obj_scene_idx]->bump);
-	}
-	if (ctx.hit->object_type == PLANE)
-	{
-		print_texture(app->scene->plane[ctx.hit->obj_scene_idx]->base);
-		print_texture(app->scene->plane[ctx.hit->obj_scene_idx]->bump);
-	}
-	if (ctx.hit->object_type == CYLINDER)
-	{
-		print_texture(app->scene->cylinder[ctx.hit->obj_scene_idx]->base);
-		print_texture(app->scene->cylinder[ctx.hit->obj_scene_idx]->bump);
-	} */

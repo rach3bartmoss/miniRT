@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 12:51:17 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 02:04:12 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 # define CYLINDER_CHECKER_FREQUENCY 20.0f //minimum for a real square pattern
 # define TEXTURE_CAPACITY 12
 # define PATH_MAX_SIZE 4096
-# define PRESET_N 9
+# define PRESET_N 12
 # define TEXTURE_SCALE 0.1f
+# define BUMP_STRENGTH 0.8F
 # define TEXTURE_N (PRESET_N * 2)
 
 # include <math.h>
@@ -200,6 +201,7 @@ typedef struct s_hit
 {
 	float		hit_point[3];
 	float		normal[3];
+	float		shading_normal[3];
 	int			color[3];
 	float		t; //distance from origin to hit
 	int			hit; //true/false 1/0
@@ -313,6 +315,14 @@ typedef struct s_screen_ndc_ctx
 	int		y_index;
 	int		index;
 }	t_screen_ndc_ctx;
+
+typedef struct s_r_click_ctx
+{
+	int			index;
+	t_hit		*hit;
+	t_preset	*target_preset;
+	t_tex_pair	*target_pair;
+}	t_r_click_ctx;
 
 typedef struct s_app
 {
@@ -490,6 +500,7 @@ void	set_vec_float_values(float vec[3], float va, float vb, float vc);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
+int		init_right_click_vars(int x, int y, t_app *app, t_r_click_ctx *ctx);
 int		mouse_click_handler(int keycode, int x, int y, t_app *app);
 //apply_checkerboard.c
 int		apply_checkerboard(t_hit *hit);
@@ -527,8 +538,9 @@ int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
 
 //apply_texture_color.c
+float	ft_clamp(float value, float min, float max);
 void	get_texture_color(t_texture *tex, int x, int y, int color[3]);
-int		apply_texture_colors(t_app *app);
+void	apply_textures_for_hit(t_hit *rec, t_scene *scene);
 //apply_bump_mapping.c
 void	apply_sphere_bump(t_hit *hit, t_texture *bump);
 
@@ -571,14 +583,6 @@ typedef struct s_light_model_ctx
 	int		j;
 }	t_light_model_ctx;
 
-typedef struct s_r_click_ctx
-{
-	int			index;
-	t_hit		*hit;
-	t_preset	*target_preset;
-	t_tex_pair	*target_pair;
-}	t_r_click_ctx;
-
 typedef struct s_pl_tex_ctx
 {
 	float	uv[2];
@@ -587,5 +591,33 @@ typedef struct s_pl_tex_ctx
 	float	vec[3];
 	int		xy[2];
 }	t_pl_tex_ctx;
+
+typedef struct s_sp_bump_ctx
+{
+	float	n[3];
+	float	uv[2];
+	float	du;
+	float	dv;
+	float	d_u;
+	float	d_v;
+	float	h;
+	float	hu;
+	float	hv;
+	float	tangent[3];
+	float	bitangent[3];
+	float	new_normal[3];
+	float	force;
+}	t_sp_bump_ctx;
+
+typedef struct s_bump_height_ctx
+{
+	int				x;
+	int				y;
+	unsigned int	pixel;
+	int				offset;
+	float			r;
+	float			g;
+	float			b;
+}	t_bump_height_ctx;
 
 #endif

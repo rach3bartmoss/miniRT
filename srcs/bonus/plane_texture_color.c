@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 01:58:13 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 12:06:32 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:48:27 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 void	apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl)
 {
 	t_pl_tex_ctx	ctx;
+	float			helper[3];
 
+	set_vec_float_values(helper, 0, 1, 0);
 	memset(&ctx, 0, sizeof(t_pl_tex_ctx));
 	if (fabs(pl->pl_vector_xyz[1]) < 0.999f)
-		cross(pl->pl_vector_xyz, (float[3]){0,1,0}, ctx.tan);
+		cross(pl->pl_vector_xyz, helper, ctx.tan);
 	else
-		cross(pl->pl_vector_xyz, (float[3]){1,0,0}, ctx.tan);
+	{
+		set_vec_float_values(helper, 1, 0, 0);
+		cross(pl->pl_vector_xyz, helper, ctx.tan);
+	}
 	normalize(ctx.tan, ctx.tan);
 	cross(ctx.tan, pl->pl_vector_xyz, ctx.bi_tan);
 	normalize(ctx.bi_tan, ctx.bi_tan);

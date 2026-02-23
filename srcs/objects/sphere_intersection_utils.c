@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:19:52 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/26 23:48:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 00:23:38 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx)
 	sp_ctx->rec->object_idx = sp_ctx->i;
 	copy_vectors(sp_ctx->rec->hit_point, hit_p);
 	copy_vectors(sp_ctx->rec->normal, normal);
+	copy_vectors(sp_ctx->rec->shading_normal, normal);
 	copy_int_vectors(sp_ctx->rec->color, sp_ctx->curr_sp->sp_rgb);
 	sp_ctx->rec->object_type = SPHERE;
 	return (1);

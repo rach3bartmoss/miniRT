@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:23:47 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/20 10:58:01 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:45:55 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,19 @@ int	key_press(int keycode, t_app *app)
 	if (keycode == KEY_ESC)
 		close_window(app);
 	return (0);
+}
+
+int	init_right_click_vars(int x, int y, t_app *app, t_r_click_ctx *ctx)
+{
+	ctx->target_pair = NULL;
+	ctx->target_preset = NULL;
+	ctx->index = 0;
+	ctx->hit = NULL;
+	ctx->index = y * app->win->width + x;
+	ctx->hit = &app->ray_table->hit_record[ctx->index];
+	if (!ctx->hit->hit)
+		return (0);
+	return (1);
 }
 
 int	mouse_click_handler(int keycode, int x, int y, t_app *app)
