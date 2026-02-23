@@ -39,6 +39,18 @@ int	file_management(char *filename)
 	return (fd);
 }
 
+int	check_mandatory_objects(t_scene *app)
+{
+	(void)app;
+	if (set_and_get_occ(GET_OCCURRENCE, AMBIENT) == 0
+		|| set_and_get_occ(GET_OCCURRENCE, CAMERA) == 0
+		|| set_and_get_occ(GET_OCCURRENCE, LIGHT) == 0)
+	{
+		return (0);
+	}
+	return (1);
+}
+
 int	parse_file(t_scene	*scene, int fd)
 {
 	char	*line;
@@ -62,5 +74,5 @@ int	parse_file(t_scene	*scene, int fd)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (rc);
+	return (check_mandatory_objects(scene));
 }
