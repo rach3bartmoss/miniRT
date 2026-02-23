@@ -25,7 +25,7 @@
 # define PRESET_N 12
 # define TEXTURE_SCALE 0.1f
 # define BUMP_STRENGTH 0.8F
-# define TEXTURE_N (PRESET_N * 2)
+# define TEXTURE_N 24 //(PRESET * 2)
 
 # include <math.h>
 # include <float.h>
@@ -55,14 +55,14 @@ typedef enum e_type
 	PLANE,
 	CYLINDER,
 	PARABOLOID,
-}	e_type_elem;
+}	t_type_elem;
 
 typedef enum e_tex_type
 {
 	BASE,
 	BUMP,
 	DEFAULT,
-}	e_type_tex;
+}	t_type_tex;
 
 typedef struct s_preset
 {
@@ -81,7 +81,7 @@ typedef struct s_texture
 	char		*buffer;
 	char		*path;
 	void		*img;
-	e_type_tex	type;
+	t_type_tex	type;
 	t_preset	*preset;//pointer to preset values in the preset_list
 }	t_texture;
 
@@ -116,35 +116,35 @@ typedef struct s_light
 
 typedef struct s_sphere
 {
-	char	*id; //sp
-	float	sp_center_xyz[3];
-	float	sp_diameter;
-	int		sp_rgb[3];
-	int		checkerboard;
+	char		*id; //sp
+	float		sp_center_xyz[3];
+	float		sp_diameter;
+	int			sp_rgb[3];
+	int			checkerboard;
 	t_texture	*base;
 	t_texture	*bump;
 }	t_sphere;
 
 typedef struct s_plane
 {
-	char	*id;				//pl
-	float	pl_xyz[3];			//p0
-	float	pl_vector_xyz[3];	//N
-	int		pl_rgb[3];			//color
-	int		checkerboard;
+	char		*id;				//pl
+	float		pl_xyz[3];			//p0
+	float		pl_vector_xyz[3];	//N
+	int			pl_rgb[3];			//color
+	int			checkerboard;
 	t_texture	*base;
 	t_texture	*bump;
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	char	*id; //cy
-	float	cy_xyz[3];
-	float	cy_vector_xyz[3];
-	float	cy_diameter;
-	float	cy_height;
-	int		cy_rgb[3];
-	int		checkerboard;
+	char		*id; //cy
+	float		cy_xyz[3];
+	float		cy_vector_xyz[3];
+	float		cy_diameter;
+	float		cy_height;
+	int			cy_rgb[3];
+	int			checkerboard;
 	t_texture	*base;
 	t_texture	*bump;
 }	t_cylinder;
@@ -209,7 +209,7 @@ typedef struct s_hit
 	int			hit; //true/false 1/0
 	int			object_idx;//in the array of objects
 	int			obj_scene_idx;
-	e_type_elem	object_type;
+	t_type_elem	object_type;
 }	t_hit;
 
 typedef struct s_ray_table
@@ -329,14 +329,14 @@ typedef struct s_r_click_ctx
 typedef struct s_app
 {
 	struct sigaction	sa;
-	t_scene		*scene;
-	t_window	*win;
-	t_ray_table	*ray_table;
-	t_texture	**textures;
-	t_preset	**preset_list;
-	int			n_textures;
-	int			tex_capacity;
-	int			click_lock;//to prevent spam clicks while rendering
+	t_scene				*scene;
+	t_window			*win;
+	t_ray_table			*ray_table;
+	t_texture			**textures;
+	t_preset			**preset_list;
+	int					n_textures;
+	int					tex_capacity;
+	int					click_lock;//to prevent spam clicks while rendering
 }	t_app;
 
 // y_start and y_end will be our horizontal delimiters
@@ -349,183 +349,194 @@ typedef struct s_thread_data
 }	t_thread_data;
 
 //clean_utils.c
-void	free_split(char **parts);
-void	sanitize_gnl(int fd);
-void	cleanup_all(t_scene *scene);
+void		free_split(char **parts);
+void		sanitize_gnl(int fd);
+void		cleanup_all(t_scene *scene);
 //common_utils.c
-int		parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type);
-int		parse_light_ratio(char *ratio_str, float *light_ratio,
-			e_type_elem type);
-int		set_and_get_occ(int value, e_type_elem index);
-int		handle_default_error(void **scene_elem, void *str1, void *str2);
-int		pre_elem_check(void **target, char *line, char **parse_line,
-			e_type_elem type);
+int			parse_rgb(char *rgb_str, int rgb_target[3], t_type_elem type);
+int			parse_light_ratio(char *ratio_str, float *light_ratio,
+				t_type_elem type);
+int			set_and_get_occ(int value, t_type_elem index);
+int			handle_default_error(void **scene_elem, void *str1, void *str2);
+int			pre_elem_check(void **target, char *line, char **parse_line,
+				t_type_elem type);
 //common_utils_2.c
-int		parse_coordinates(char *xyz_str, float xyz_target[3]);
-int		parse_coordinates_vector(char *vector_str, float vector_target[3]);
-int		parse_fov(char *fov_str, float *fov_target);
-int		validate_fov_str(char *fov_str);
+int			parse_coordinates(char *xyz_str, float xyz_target[3]);
+int			parse_coordinates_vector(char *vector_str, float vector_target[3]);
+int			parse_fov(char *fov_str, float *fov_target);
+int			validate_fov_str(char *fov_str);
 //common_utils_3.c
-int		sign_handler(char **target_str);
-int		parse_diameter(char *diameter_str, float *diameter_target,
-			e_type_elem type);
-int		validate_diameter_str(char *diameter_str);
-int		check_dots(char *diameter_str, int i);
-long	get_time_ms(void);
+int			sign_handler(char **target_str);
+int			parse_diameter(char *diameter_str, float *diameter_target,
+				t_type_elem type);
+int			validate_diameter_str(char *diameter_str);
+int			check_dots(char *diameter_str, int i);
+long		get_time_ms(void);
 //common_utils_4.c
-int		parse_steepness(char *steep_str, float *steep_target, e_type_elem type);
-void	clean_paraboloid_and_cylinder(t_scene *scene);
+int			parse_steepness(char *steep_str, float *steep_target,
+				t_type_elem type);
+void		clean_paraboloid_and_cylinder(t_scene *scene);
 //create_vectors.c
-int		create_rays(t_camera *camera, t_window *win, t_ray_table *ray_table);
+int			create_rays(t_camera *camera, t_window *win,
+				t_ray_table *ray_table);
 //create_vectors_utils.c
-int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
-int		init_rays(t_ray_table *ray_table);
-int		calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis,
-			t_window *win);
-int		print_array3(float *target_xyz);
+int			cross(float *a_xyz, float *b_xyz, float *target_xyz);
+int			init_rays(t_ray_table *ray_table);
+int			calc_vectors(t_ray_table *ray_table, t_cam_basis *cam_basis,
+				t_window *win);
+int			print_array3(float *target_xyz);
 //cylinder_caps.c
-double	cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
-double	cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
+double		cylinder_bottom_cap(t_cy_ctx *cy_ctx, int flag);
+double		cylinder_top_cap(t_cy_ctx *cy_ctx, int flag);
 //cylinder_caps_utils.c
-void	save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
-			double t_side);
-void	compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
-void	calc_v_w(t_cy_ctx *cy_ctx);
-double	solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx);
+void		save_intersection_in_table(t_cy_ctx *cy_ctx, float *hit_p,
+				double t_side);
+void		compute_cylinder_finite_height(double t_side, t_cy_ctx *cy_ctx);
+void		calc_v_w(t_cy_ctx *cy_ctx);
+double		solve_cylinder_formula(t_scene	*scene, t_cy_ctx *cy_ctx);
 //cylinder_shadow_rays_utils.c
-double	cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
-double	cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
-void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin, float *sr_dir);
-float	comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
-			float t_max);
-float	ray_intersection_cy(float *sr_origin, float *sr_dir,
-			t_cylinder *cy, float distance);
+double		cylinder_top_sr(t_cy_ctx *cy_ctx, float t_max);
+double		cylinder_bottom_sr(t_cy_ctx *cy_ctx, float t_max);
+void		prep_sr_cy_intersect(t_cy_ctx *cy_ctx, float *sr_origin,
+				float *sr_dir);
+float		comp_finite_height_for_light(float t_side, t_cy_ctx *cy_ctx,
+				float t_max);
+float		ray_intersection_cy(float *sr_origin, float *sr_dir,
+				t_cylinder *cy, float distance);
 //cylinder_intersection_utils.c
-void	init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
-double	solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
-int		render_cylinder(t_ray_table *ray_table, t_scene *scene, t_window *win);
-int		ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene);
+void		init_curr_iter_values(t_scene *scene, t_cy_ctx *cy_ctx);
+double		solve_t_cylinder(float v[3], float w[3], t_cy_ctx *cy_ctx);
+int			render_cylinder(t_ray_table *ray_table, t_scene *scene,
+				t_window *win);
+int			ray_cylinder_intersection(t_ray_table *ray_table, t_scene *scene);
 //error_handlers.c
-int		open_error_cases(char *filename, int errno_code);
-void	print_element(void *elem, e_type_elem type);
-void	print_spheres(t_scene *scene);
-void	print_planes(t_scene *scene);
-void	print_cylinders(t_scene *scene);
-void	print_paraboloid(t_scene *scene);
+int			open_error_cases(char *filename, int errno_code);
+void		print_element(void *elem, t_type_elem type);
+void		print_spheres(t_scene *scene);
+void		print_planes(t_scene *scene);
+void		print_cylinders(t_scene *scene);
+void		print_paraboloid(t_scene *scene);
 //fill_ambiance.c
-int		fill_ambiance(t_scene *scene, char *line);
+int			fill_ambiance(t_scene *scene, char *line);
 //fill_camera.c
-int		fill_camera(t_scene *scene, char *line);
+int			fill_camera(t_scene *scene, char *line);
 //fill_cylinder.c
-int		validate_height_str(char *height_str);
-int		parse_height(char *height_str, float *height_target);
-int		fill_cylinder(t_scene *scene, char *line);
+int			validate_height_str(char *height_str);
+int			parse_height(char *height_str, float *height_target);
+int			fill_cylinder(t_scene *scene, char *line);
 //fill_light.c
-int		fill_light(t_scene *scene, char *line);
+int			fill_light(t_scene *scene, char *line);
 //fill_plane.c
-int		fill_plane(t_scene *scene, char *line);
+int			fill_plane(t_scene *scene, char *line);
 //fill_paraboloid.c
-int		fill_paraboloid(t_scene *scene, char *line);
+int			fill_paraboloid(t_scene *scene, char *line);
 //fill_sphere.c
-int		fill_sphere(t_scene *scene, char *line);
+int			fill_sphere(t_scene *scene, char *line);
 //fill_utils.c
-size_t	get_elem_size(e_type_elem type);
-char	*get_type_name(e_type_elem type);
+size_t		get_elem_size(t_type_elem type);
+char		*get_type_name(t_type_elem type);
 //init_hit_record.c
-void	init_hit_record(t_ray_table *ray_table);
+void		init_hit_record(t_ray_table *ray_table);
 //init_objects.c
-int		init_objects(t_scene *scene);
+int			init_objects(t_scene *scene);
 //render_loop.c
-void	*render_thread(void *data);
-void	start_multithread_render(t_app *app);
-void	render_objects(t_app *app);
+void		*render_thread(void *data);
+void		start_multithread_render(t_app *app);
+void		render_objects(t_app *app);
 //shading_utils.c
-int		apply_shade_to_pixel(t_app *app, t_hit *hit);
+int			apply_shade_to_pixel(t_app *app, t_hit *hit);
 //sphere_render.c
-int		render_sphere(t_ray_table *ray_table, t_scene *scene, t_window *win);
+int			render_sphere(t_ray_table *ray_table, t_scene *scene,
+				t_window *win);
 //math_operations.c
-int		sign(double x);
+int			sign(double x);
 //light_management.c
-int		apply_diffuse_specular_and_shadow(t_render_ctx *render, t_scene *scene,
-			t_window *win);
+int			apply_diffuse_specular_and_shadow(t_render_ctx *render,
+				t_scene *scene, t_window *win);
 //light_management_utils.c
-float	prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
-			float *p_offset);
-double	ray_intersection_pl_shadow(float *sr_origin, float *sr_dir,
-			t_plane *pl, float distance);
-float	ray_intersection_sp(float *sr_origin, float *sr_dir, t_sphere *sphere);
+float		prep_shadow_ray(t_scene *scene, t_render_ctx *render, float *dir,
+				float *p_offset);
+double		ray_intersection_pl_shadow(float *sr_origin, float *sr_dir,
+				t_plane *pl, float distance);
+float		ray_intersection_sp(float *sr_origin, float *sr_dir,
+				t_sphere *sphere);
 //light_phong.c
-float	apply_specular_light(t_scene *scene, t_render_ctx *render);
-int		combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
-void	apply_ambient_light(t_scene *scene, t_hit *curr_rec,
-			t_render_ctx *render);
+float		apply_specular_light(t_scene *scene, t_render_ctx *render);
+int			combine_lights(t_render_ctx *render, t_scene *scene, float *dir);
+void		apply_ambient_light(t_scene *scene, t_hit *curr_rec,
+				t_render_ctx *render);
 //parser.c
-int		check_filename(char *filename);
-int		file_management(char *filename);
-int		parse_file(t_scene	*scene, int fd);
+int			check_filename(char *filename);
+int			file_management(char *filename);
+int			parse_file(t_scene	*scene, int fd);
 //plane_intersection_utils.c
-double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag);
+double		solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag);
 //plane_intersection.c
-int		ray_plane_intersect(t_ray_table *ray_table, t_scene *scene);
-int		render_plane(t_ray_table *ray_table, t_scene *scene, t_window *win);
+int			ray_plane_intersect(t_ray_table *ray_table, t_scene *scene);
+int			render_plane(t_ray_table *ray_table, t_scene *scene, t_window *win);
 //populate_structs.c
-int		check_element_id(char *id, t_scene *scene, char *line);
-int		tokenize_line(char *line, t_scene *scene);
+int			check_element_id(char *id, t_scene *scene, char *line);
+int			tokenize_line(char *line, t_scene *scene);
 //put_pixel_utils.c
-void	mrt_put_pixel(t_window *win, int x, int y, int color);
-int		rgb3_to_hex(int rgb[3]);
+void		mrt_put_pixel(t_window *win, int x, int y, int color);
+int			rgb3_to_hex(int rgb[3]);
 //sphere_intersection_utils.c
-double	solve_t(t_abc *abc);
-int		solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc);
-int		update_hit_record(double t, float e[3], float d[3], t_sp_ctx *sp_ctx);
-double	solve_discriminant(float e[3], float d[3], t_sp_ctx *sp_ctx, int flag);
-int		ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene);
+double		solve_t(t_abc *abc);
+int			solve_abc(float e[3], float d[3], t_sphere *sphere, t_abc *abc);
+int			update_hit_record(double t, float e[3], float d[3],
+				t_sp_ctx *sp_ctx);
+double		solve_discriminant(float e[3], float d[3],
+				t_sp_ctx *sp_ctx, int flag);
+int			ray_sphere_intersect(t_ray_table *ray_table, t_scene *scene);
 //validate_array_utils.c
-int		validate_rgb_components(char **components, char *rgb_str);
-int		validate_coordinates(char **coordinates, char *xyz_str);
+int			validate_rgb_components(char **components, char *rgb_str);
+int			validate_coordinates(char **coordinates, char *xyz_str);
 //vector_operations.c
-double	dot(float a[3], float b[3]);
-void	sub(float *target, float *a, float *b);
-void	add(float *target, float *a, float *b);
-void	scale(float *target, float *a, float scale_factor);
-int		normalize(float *vector_xyz, float *target_xyz);
+double		dot(float a[3], float b[3]);
+void		sub(float *target, float *a, float *b);
+void		add(float *target, float *a, float *b);
+void		scale(float *target, float *a, float scale_factor);
+int			normalize(float *vector_xyz, float *target_xyz);
 //vector_operations_2.c
-void	copy_vectors(float out[3], float in[3]);
-void	copy_int_vectors(int out[3], int in[3]);
-void	mult(float target_xyz[3], float a[3], float b[3]);
-void	normalize_colors(float rgb[3]);
-void	normalize_target_colors(float target_xyz[3], int rgb[3]);
+void		copy_vectors(float out[3], float in[3]);
+void		copy_int_vectors(int out[3], int in[3]);
+void		mult(float target_xyz[3], float a[3], float b[3]);
+void		normalize_colors(float rgb[3]);
+void		normalize_target_colors(float target_xyz[3], int rgb[3]);
 //vector_operations_3.c
-int		cross(float *a_xyz, float *b_xyz, float *target_xyz);
-double	ray_length(float vector[3]);
-void	set_vec_int_values(int vec[3], int va, int vb, int vc);
-void	set_vec_float_values(float vec[3], float va, float vb, float vc);
+int			cross(float *a_xyz, float *b_xyz, float *target_xyz);
+double		ray_length(float vector[3]);
+void		set_vec_int_values(int vec[3], int va, int vb, int vc);
+void		set_vec_float_values(float vec[3], float va, float vb, float vc);
 //key_events.c
-int		close_window(t_app *app);
-int		key_press(int keycode, t_app *app);
-int		init_right_click_vars(int x, int y, t_app *app, t_r_click_ctx *ctx);
-int		mouse_click_handler(int keycode, int x, int y, t_app *app);
+int			close_window(t_app *app);
+int			key_press(int keycode, t_app *app);
+int			init_right_click_vars(int x, int y, t_app *app, t_r_click_ctx *ctx);
+int			mouse_click_handler(int keycode, int x, int y, t_app *app);
 //apply_checkerboard.c
-int		apply_checkerboard(t_hit *hit);
-void	apply_checkboard_for_sphere(t_hit *hit, t_sphere *sp, int target[3]);
-void	apply_checkerboard_for_plane(t_hit *hit, t_plane *pl, int target[3]);
-void	apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
+int			apply_checkerboard(t_hit *hit);
+void		apply_checkboard_for_sphere(t_hit *hit, t_sphere *sp,
+				int target[3]);
+void		apply_checkerboard_for_plane(t_hit *hit, t_plane *pl,
+				int target[3]);
+void		apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
 //apply_checkerboard_helper.c
-void	apply_matrix(float result[3], float m[4][4], float p[3]);
-void	fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
-			float forward[3]);
-void	fill_inv_matrix(float m[4][4], t_cylinder *cy);
-void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
+void		apply_matrix(float result[3], float m[4][4], float p[3]);
+void		fill_inv_matrix_helper(float m[4][4], float axis[3], float right[3],
+				float forward[3]);
+void		fill_inv_matrix(float m[4][4], t_cylinder *cy);
+void		reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
 //click_event_bonus.c
-void	handle_click(int x, int y, t_app *app);
-void	rerender(t_app *app);
+void		handle_click(int x, int y, t_app *app);
+void		rerender(t_app *app);
 
 //input_textures.c
-void	handle_right_click(int x, int y, t_app *app);
+void		handle_right_click(int x, int y, t_app *app);
 
 //textures_assign.c
 t_preset	*input_match_preset_name(t_preset **list, char *line);
-void		assign_texture_to_hit_obj(t_app *app, t_hit *hit, t_tex_pair *pair);//ok
+void		assign_texture_to_hit_obj(t_app *app, t_hit *hit,
+				t_tex_pair *pair);
 t_tex_pair	*link_texture_preset(t_preset *preset, t_app *app);
 t_preset	*choose_preset(t_preset **list);
 
@@ -541,14 +552,13 @@ int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
 
 //apply_texture_color.c
-float	ft_clamp(float value, float min, float max);
-void	get_texture_color(t_texture *tex, int x, int y, int color[3]);
-void	apply_textures_for_hit(t_hit *rec, t_scene *scene);
+float		ft_clamp(float value, float min, float max);
+void		get_texture_color(t_texture *tex, int x, int y, int color[3]);
+void		apply_textures_for_hit(t_hit *rec, t_scene *scene);
 //apply_bump_mapping.c
-void	apply_sphere_bump(t_hit *hit, t_texture *bump);
-
+void		apply_sphere_bump(t_hit *hit, t_texture *bump);
 //plane_texture_color.c
-void	apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
+void		apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
 
 //STRUCTS FOR BONUS
 typedef struct s_ck_ctx
@@ -567,7 +577,7 @@ typedef struct s_ck_ctk
 {
 	float	mx[4][4];
 	float	tetha;
-	float	rawU;
+	float	raw_u;
 	float	u;
 	float	p[3];
 	float	v;

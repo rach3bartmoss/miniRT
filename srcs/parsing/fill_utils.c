@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-size_t	get_elem_size(e_type_elem type)
+size_t	get_elem_size(t_type_elem type)
 {
 	if (type == AMBIENT)
 		return (sizeof(t_ambient));
@@ -29,7 +29,7 @@ size_t	get_elem_size(e_type_elem type)
 	return (0);
 }
 
-char	*get_type_name(e_type_elem type)
+char	*get_type_name(t_type_elem type)
 {
 	if (type == AMBIENT)
 		return ("AMBIENT");

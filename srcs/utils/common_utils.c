@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int	parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type)
+int	parse_rgb(char *rgb_str, int rgb_target[3], t_type_elem type)
 {
 	char	**components;
 	int		i;
@@ -46,7 +46,7 @@ int	parse_rgb(char *rgb_str, int rgb_target[3], e_type_elem type)
 /// @param ratio_str String with the value to convert.
 /// @param light_ratio A pointer to the light/brigth ratio value.
 /// @return return 1 on sucess, 0 on failure
-int	parse_light_ratio(char *ratio_str, float *light_ratio, e_type_elem type)
+int	parse_light_ratio(char *ratio_str, float *light_ratio, t_type_elem type)
 {
 	char	*endptr;
 	float	res;
@@ -74,7 +74,7 @@ int	parse_light_ratio(char *ratio_str, float *light_ratio, e_type_elem type)
 /// @param value Value to update
 /// @param index Infomation to update
 /// @return -1 as value returns the index element value, value != -1 sets
-int	set_and_get_occ(int value, e_type_elem index)
+int	set_and_get_occ(int value, t_type_elem index)
 {
 	static int	code[7] = {0};
 
@@ -110,7 +110,7 @@ int	handle_default_error(void **scene_elem, void *str1, void *str2)
 /// @param type type of the scene info
 /// @return 1 on success, 0 on failure
 int	pre_elem_check(void **target, char *line,
-	char **parse_line, e_type_elem type)
+	char **parse_line, t_type_elem type)
 {
 	size_t	elem_size;
 

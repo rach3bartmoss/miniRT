@@ -93,8 +93,8 @@ void	apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3])
 	fill_inv_matrix(ctx.mx, cy);
 	apply_matrix(ctx.p, ctx.mx, hit->hit_point);
 	ctx.tetha = atan2f(ctx.p[0], ctx.p[2]);
-	ctx.rawU = ctx.tetha / (2.0f * M_PI);
-	ctx.u = 1.0f - (ctx.rawU + 0.5f);
+	ctx.raw_u = ctx.tetha / (2.0f * M_PI);
+	ctx.u = 1.0f - (ctx.raw_u + 0.5f);
 	ctx.v = ctx.p[1];
 	ctx.v = fmodf(ctx.v, 1.0f);
 	if (ctx.v < 0.0f)

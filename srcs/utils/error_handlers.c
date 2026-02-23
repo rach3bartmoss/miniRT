@@ -37,7 +37,7 @@ int	open_error_cases(char *filename, int errno_code)
 	return (-1);
 }
 
-/*void	print_element(void *elem, e_type_elem type)
+/*void	print_element(void *elem, t_type_elem type)
 {
 	if (!elem)
 	{

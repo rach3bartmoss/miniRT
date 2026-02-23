@@ -30,7 +30,7 @@ int	sign_handler(char **target_str)
 	return (sign);
 }
 
-int	parse_diameter(char *diameter_str, float *diameter_target, e_type_elem type)
+int	parse_diameter(char *diameter_str, float *diameter_target, t_type_elem type)
 {
 	char	*endptr;
 	float	res;
