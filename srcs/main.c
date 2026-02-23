@@ -71,7 +71,7 @@ void	clean_program(t_app *app)
 	if (app->ray_table->hit_record)
 		free (app->ray_table->hit_record);
 	if (app->textures)
-		clean_textures_list(app ,app->textures);
+		clean_textures_list(app, app->textures);
 	if (app->preset_list)
 		clean_preset_list(app->preset_list);
 	if (app->win->win)

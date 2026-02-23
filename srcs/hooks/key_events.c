@@ -19,7 +19,7 @@ int	close_window(t_app *app)
 	free(app->ray_table->vectors_y);
 	free(app->ray_table->vectors_z);
 	if (app->textures)
-		clean_textures_list(app ,app->textures);
+		clean_textures_list(app, app->textures);
 	if (app->preset_list)
 		clean_preset_list(app->preset_list);
 	if (app->ray_table->hit_record)

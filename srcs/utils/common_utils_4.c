@@ -40,7 +40,7 @@ int	validate_steep_str(char *diameter_str)
 	return (1);
 }
 
-int	parse_steepness(char *steep_str, float *steep_target, e_type_elem type)
+int	parse_steepness(char *steep_str, float *steep_target, t_type_elem type)
 {
 	char	*endptr;
 	float	res;

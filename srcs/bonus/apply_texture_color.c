@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int	validate_obj_texture(e_type_elem type, int obj_idx, t_app *app)
+int	validate_obj_texture(t_type_elem type, int obj_idx, t_app *app)
 {
 	if (type == SPHERE)
 	{
