@@ -71,6 +71,28 @@ Main resources used to complete the mandatory part of the project:
 
 ![Full phong illumination model](includes/readme_misc/phong_illumination_equation_banner.jpg)
 
+# **Bonus Features:**
+<p>The bonus part expands the mandatory engine with additional visual and geometric features, such as a new object: Paraboloid, the Full Phong Reflection Model (Ambient + diffuse + specular), a checkerboard pattern applied to spheres, planes and cylinders, textures to planes and spheres objects and bump mapping to match the textures, the engine currently doesn't support multispot lights but we can edit the color of the light source in the .rt file</p>
+
+### 1. Full Phong Reflection Model (Specular)
+The mandatory part already implements ambient and diffuse lighting. The bonus adds the **specular component**, completing the full Phong reflection model. This simulates the bright highlight you see on shiny surfaces when light reflects directly toward the camera.
+
+### 2. Checkerboard Pattern
+A procedural **checkerboard texture** can be applied to any object in the scene. This is achieved through color disruption based on the hit point coordinates, alternating between two colors without needing an external texture file.
+
+<ul>To apply the checkerboard pattern to surfaces use the mouse to left click the desired object</ul>
+
+### 3. Paraboloid Object
+A new second-degree geometric object is introduced: the **Paraboloid**. Like the sphere, plane and cylinder it supports full intersection math, shading and lighting, and can be placed and oriented freely in the scene via the `.rt` file.
+
+### 4. Bump Map Textures
+**Bump mapping** allows surfaces to appear textured and uneven without modifying the actual geometry. This is done by perturbing the surface normal at each hit point based on a texture map, simulating depth and roughness under lighting.
+
+
+**Bonus resources:**
+- Specular reflection and full Phong model by [utexas.edu](https://www.cs.utexas.edu/~bajaj/graphics2012/cs354/lectures/lect14.pdf)
+- Bump mapping introduction by [scratchapixel.com](https://www.scratchapixel.com/lessons/advanced-rendering/introduction-to-bump-mapping/bump-map.html)
+
 ## Important note: 
 ### How IA helped us:
 
