@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 21:44:05 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/21 12:51:17 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # define SHADOW_EPS 1e-3f
 # define SQUARE_PATTERN_SCALE 5.0f
 # define CYLINDER_CHECKER_FREQUENCY 20.0f //minimum for a real square pattern
+# define TEXTURE_CAPACITY 12
+# define PATH_MAX_SIZE 4096
+# define PRESET_N 9
+# define TEXTURE_SCALE 0.1f
+# define TEXTURE_N (PRESET_N * 2)
 
 # include <math.h>
 # include <float.h>
@@ -32,6 +37,8 @@
 # include <pthread.h>
 # include <stdint.h>
 # include <sys/time.h>
+# include <limits.h>
+# include <termios.h>
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
@@ -46,6 +53,40 @@ typedef enum e_type
 	CYLINDER,
 	PARABOLOID,
 }	e_type_elem;
+
+typedef enum e_tex_type
+{
+	BASE,
+	BUMP,
+	DEFAULT,
+}	e_type_tex;
+
+typedef struct s_preset
+{
+	char	*name;
+	char	*base;
+	char	*bump;
+}	t_preset;
+
+typedef struct s_texture
+{
+	int			width;
+	int			height;
+	int			bpp;//bits per pixel
+	int			line_len;
+	int			endian;
+	char		*buffer;
+	char		*path;
+	void		*img;
+	e_type_tex	type;
+	t_preset	*preset;//pointer to preset values in the preset_list
+}	t_texture;
+
+typedef struct s_texture_pair
+{
+	t_texture	*base;
+	t_texture	*bump;
+}	t_tex_pair;
 
 typedef struct s_ambient
 {
@@ -76,7 +117,9 @@ typedef struct s_sphere
 	float	sp_center_xyz[3];
 	float	sp_diameter;
 	int		sp_rgb[3];
-	int		checkerboard;//init where?
+	int		checkerboard;
+	t_texture	*base;
+	t_texture	*bump;
 }	t_sphere;
 
 typedef struct s_plane
@@ -85,7 +128,9 @@ typedef struct s_plane
 	float	pl_xyz[3];			//p0
 	float	pl_vector_xyz[3];	//N
 	int		pl_rgb[3];			//color
-	int		checkerboard;//init where?
+	int		checkerboard;
+	t_texture	*base;
+	t_texture	*bump;
 }	t_plane;
 
 typedef struct s_cylinder
@@ -96,7 +141,9 @@ typedef struct s_cylinder
 	float	cy_diameter;
 	float	cy_height;
 	int		cy_rgb[3];
-	int		checkerboard;//init where?
+	int		checkerboard;
+	t_texture	*base;
+	t_texture	*bump;
 }	t_cylinder;
 
 //PARABOLOID STRUCT FOR BONUS
@@ -272,6 +319,10 @@ typedef struct s_app
 	t_scene		*scene;
 	t_window	*win;
 	t_ray_table	*ray_table;
+	t_texture	**textures;
+	t_preset	**preset_list;
+	int			n_textures;
+	int			tex_capacity;
 	int			click_lock;//to prevent spam clicks while rendering
 }	t_app;
 
@@ -439,7 +490,7 @@ void	set_vec_float_values(float vec[3], float va, float vb, float vc);
 //key_events.c
 int		close_window(t_app *app);
 int		key_press(int keycode, t_app *app);
-int		double_left_click(int keycode, int x, int y, t_app *app);
+int		mouse_click_handler(int keycode, int x, int y, t_app *app);
 //apply_checkerboard.c
 int		apply_checkerboard(t_hit *hit);
 void	apply_checkboard_for_sphere(t_hit *hit, t_sphere *sp, int target[3]);
@@ -453,6 +504,36 @@ void	fill_inv_matrix(float m[4][4], t_cylinder *cy);
 void	reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
 //click_event_bonus.c
 void	handle_click(int x, int y, t_app *app);
+void	rerender(t_app *app);
+
+//input_textures.c
+void	handle_right_click(int x, int y, t_app *app);
+
+//textures_assign.c
+t_preset	*input_match_preset_name(t_preset **list, char *line);
+void		assign_texture_to_hit_obj(t_app *app, t_hit *hit, t_tex_pair *pair);//ok
+t_tex_pair	*link_texture_preset(t_preset *preset, t_app *app);
+t_preset	*choose_preset(t_preset **list);
+
+//load_textures.c
+t_texture	*load_xpm_file(t_app *app, char *filename);
+t_texture	*load_texture(t_app *app, char *filename);
+int			init_textures(t_app *app);
+//textures_utils.c
+void		clean_textures_list(t_app *app, t_texture **arr);
+void		clean_preset_list(t_preset **arr);
+void		free_preset(t_preset *preset);
+int			check_preset_values(t_preset *preset);
+int			sanitize_preset_line(t_preset **list, char *line);
+
+//apply_texture_color.c
+void	get_texture_color(t_texture *tex, int x, int y, int color[3]);
+int		apply_texture_colors(t_app *app);
+//apply_bump_mapping.c
+void	apply_sphere_bump(t_hit *hit, t_texture *bump);
+
+//plane_texture_color.c
+void	apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
 
 //STRUCTS FOR BONUS
 typedef struct s_ck_ctx
@@ -489,5 +570,22 @@ typedef struct s_light_model_ctx
 	float	spec_factor;
 	int		j;
 }	t_light_model_ctx;
+
+typedef struct s_r_click_ctx
+{
+	int			index;
+	t_hit		*hit;
+	t_preset	*target_preset;
+	t_tex_pair	*target_pair;
+}	t_r_click_ctx;
+
+typedef struct s_pl_tex_ctx
+{
+	float	uv[2];
+	float	tan[3];
+	float	bi_tan[3];
+	float	vec[3];
+	int		xy[2];
+}	t_pl_tex_ctx;
 
 #endif
