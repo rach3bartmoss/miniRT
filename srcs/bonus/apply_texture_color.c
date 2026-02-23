@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 11:28:46 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 12:59:46 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:24:00 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	apply_sphere_texture(t_hit *hit, t_texture *tex)
 	float	uv[2];
 	int		xy[2];
 
-	copy_vectors(n, hit->normal);
+	copy_vectors(n, hit->shading_normal);
 	uv[0] = 0.5f + atan2f(n[2], n[0]) / (2.0f * M_PI);
 	uv[1] = 0.5f - asinf(n[1]) / M_PI;
 	xy[0] = (int)(uv[0] * tex->width);
@@ -65,41 +65,23 @@ void	apply_sphere_texture(t_hit *hit, t_texture *tex)
 	get_texture_color(tex, xy[0], xy[1], hit->color);
 }
 
-int	apply_texture_colors(t_app *app)
+void	apply_textures_for_hit(t_hit *rec, t_scene *scene)
 {
-	int			i;
-	int			obj_idx;
-	e_type_elem	type;
-	t_hit		*hit;
-	t_texture	*tex;
+	t_sphere	*sp;
+	t_plane		*pl;
 
-	i = 0;
-	while (i < app->ray_table->total_rays)
+	if (rec->object_type == SPHERE)
 	{
-		obj_idx = app->ray_table->hit_record[i].obj_scene_idx;
-		type = app->ray_table->hit_record[i].object_type;
-		if (validate_obj_texture(type, obj_idx, app))
-		{
-			hit = &app->ray_table->hit_record[i];
-			if (!hit->hit)
-			{
-				i++;
-				continue ;
-			}
-			if (type == SPHERE)
-			{
-				tex = app->scene->sphere[obj_idx]->base;
-				apply_sphere_texture(hit, tex);
-				//tex = app->scene->sphere[obj_idx]->bump;
-				//apply_sphere_bump(hit, tex);
-			}
-			if (type == PLANE)
-			{
-				tex = app->scene->plane[obj_idx]->base;
-				apply_plane_texture(hit, tex, app->scene->plane[obj_idx]);
-			}
-		}
-		i++;
+		sp = scene->sphere[rec->obj_scene_idx];
+		if (sp->base)
+			apply_sphere_texture(rec, sp->base);
+		if (sp->bump)
+			apply_sphere_bump(rec, sp->bump);
 	}
-	return (0);
+	else if (rec->object_type == PLANE)
+	{
+		pl = scene->plane[rec->obj_scene_idx];
+		if (pl->base)
+			apply_plane_texture(rec, pl->base, pl);
+	}
 }

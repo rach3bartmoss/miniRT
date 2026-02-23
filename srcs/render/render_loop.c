@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 13:59:07 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 21:41:11 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:05:16 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static void	apply_object_base_color(t_render_ctx *render, t_scene *scene)
 static void	render_loop_helper(t_render_ctx	*render, t_window *win,
 	t_scene *scene)
 {
+	copy_vectors(render->rec->shading_normal, render->rec->normal);
 	apply_object_base_color(render, scene);
+	apply_textures_for_hit(render->rec, scene);
 	apply_ambient_light(scene, render->rec, render);
 	if (apply_diffuse_specular_and_shadow(render, scene, win) == 1)
 		render->color = rgb3_to_hex(render->out_shade);

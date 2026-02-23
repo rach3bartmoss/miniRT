@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_management_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 22:27:10 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/23 23:49:40 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 00:19:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2026/01/27 00:07:49 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/22 23:14:38 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 		add(pl_ctx->hit_p, pl_ctx->origin, pl_ctx->scale_td);
 		copy_vectors(pl_ctx->rec->hit_point, pl_ctx->hit_p);
 		copy_vectors(pl_ctx->rec->normal, pl_ctx->normal);
+		copy_vectors(pl_ctx->rec->shading_normal, pl_ctx->normal);
 		copy_int_vectors(pl_ctx->rec->color, pl_ctx->curr_pl->pl_rgb);
 	}
 	return (t);

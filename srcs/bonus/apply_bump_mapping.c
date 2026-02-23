@@ -6,11 +6,20 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 12:40:47 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/21 12:57:32 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 01:26:36 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+float	ft_clamp(float value, float min, float max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
+}
 
 void	build_tangent_space(float normal[3],
 							float tangent[3],
@@ -18,7 +27,6 @@ void	build_tangent_space(float normal[3],
 {
 	float	up[3];
 
-	// Choose a helper vector that is NOT parallel to normal
 	if (fabs(normal[1]) < 0.999f)
 	{
 		up[0] = 0.0f;
@@ -31,73 +39,52 @@ void	build_tangent_space(float normal[3],
 		up[1] = 0.0f;
 		up[2] = 0.0f;
 	}
-
-	// T = up × normal
-	cross(tangent, up, normal);
+	cross(up, normal, tangent);
 	normalize(tangent, tangent);
-
-	// B = normal × T
-	cross(bitangent, normal, tangent);
+	cross(normal, tangent, bitangent);
 	normalize(bitangent, bitangent);
 }
 
 float	sample_height(t_texture *tex, float u, float v)
 {
-	int				x;
-	int				y;
-	unsigned int	pixel;
-	int				offset;
-	float			r;
-	float			g;
-	float			b;
+	t_bump_height_ctx	ctx;
 
 	u = u - floorf(u);
 	v = v - floorf(v);
-
-	x = (int)(u * (tex->width - 1));
-	y = (int)(v * (tex->height - 1));
-
-	offset = y * tex->line_len + x * (tex->bpp / 8);
-	pixel = *(unsigned int *)(tex->buffer + offset);
-
-	r = (float)((pixel >> 16) & 0xFF);
-	g = (float)((pixel >> 8) & 0xFF);
-	b = (float)(pixel & 0xFF);
-
-	return ((r + g + b) / 3.0f / 255.0f);
+	ctx.x = (int)(u * (tex->width - 1));
+	ctx.y = (int)(v * (tex->height - 1));
+	ctx.offset = ctx.y * tex->line_len + ctx.x * (tex->bpp / 8);
+	ctx.pixel = *(unsigned int *)(tex->buffer + ctx.offset);
+	ctx.r = (float)((ctx.pixel >> 16) & 0xFF);
+	ctx.g = (float)((ctx.pixel >> 8) & 0xFF);
+	ctx.b = (float)(ctx.pixel & 0xFF);
+	return ((ctx.r + ctx.g + ctx.b) / 3.0f / 255.0f);
 }
 
 void	apply_sphere_bump(t_hit *hit, t_texture *bump)
 {
-	float	n[3];
-	float	uv[2];
-	float du, dv;
-	float h, hu, hv;
-	float tangent[3], bitangent[3];
-	float new_normal[3];
-	float strength = 0.5f;
+	t_sp_bump_ctx	ctx;
+	int				i;
 
-	copy_vectors(n, hit->normal);
-	uv[0] = 0.5f + atan2f(n[2], n[0]) / (2.0f * M_PI);
-	uv[1] = 0.5f - asinf(n[1]) / M_PI;
-
-	du = 1.0f / bump->width;
-	dv = 1.0f / bump->height;
-
-	h  = sample_height(bump, uv[0], uv[1]);
-	hu = sample_height(bump, uv[0] + du, uv[1]);
-	hv = sample_height(bump, uv[0], uv[1] + dv);
-
-	float dU = hu - h;
-	float dV = hv - h;
-
-	build_tangent_space(hit->normal, tangent, bitangent);
-
-	for (int i = 0; i < 3; i++)
-		new_normal[i] = hit->normal[i]
-						+ strength * dU * tangent[i]
-						+ strength * dV * bitangent[i];
-
-	normalize(new_normal, new_normal);
-	copy_vectors(hit->normal, new_normal);
+	i = 0;
+	ctx.force = BUMP_STRENGTH;
+	copy_vectors(ctx.n, hit->shading_normal);
+	ctx.uv[0] = 0.5f + atan2f(ctx.n[2], ctx.n[0]) / (2.0f * M_PI);
+	ctx.uv[1] = 0.5f - asinf(ctx.n[1]) / M_PI;
+	ctx.du = 1.0f / bump->width;
+	ctx.dv = 1.0f / bump->height;
+	ctx.h = sample_height(bump, ctx.uv[0], ctx.uv[1]);
+	ctx.hu = sample_height(bump, ctx.uv[0] + ctx.du, ctx.uv[1]);
+	ctx.hv = sample_height(bump, ctx.uv[0], ctx.uv[1] + ctx.dv);
+	ctx.d_u = ft_clamp(ctx.hu - ctx.h, -0.2f, 0.2f);
+	ctx.d_v = ft_clamp(ctx.hv - ctx.h, -0.2f, 0.2f);
+	build_tangent_space(hit->shading_normal, ctx.tangent, ctx.bitangent);
+	while (i < 3)
+	{
+		ctx.new_normal[i] = hit->shading_normal[i] + ctx.force * ctx.d_u
+			* ctx.tangent[i] + ctx.force * ctx.d_v * ctx.bitangent[i];
+		i++;
+	}
+	normalize(ctx.new_normal, ctx.new_normal);
+	copy_vectors(hit->shading_normal, ctx.new_normal);
 }
