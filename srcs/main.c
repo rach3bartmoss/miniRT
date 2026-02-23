@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/20 09:39:19 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 14:24:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ int	run_program(t_app *app)
 	return (0);
 }
 
+void	ignore_signal(int sig)
+{
+	(void)sig;
+}
+
 int	main(int argc, char **argv)
 {
 	t_app		app;
@@ -112,6 +117,11 @@ int	main(int argc, char **argv)
 	t_window	win;
 	t_ray_table	ray_table;
 
+	app.sa.sa_handler = ignore_signal;
+	sigemptyset(&app.sa.sa_mask);
+	app.sa.sa_flags = 0;
+	sigaction(SIGINT, &app.sa, NULL);
+	sigaction(SIGQUIT, &app.sa, NULL);
 	if (pre_runtime_check(argv, argc) == 1)
 		return (1);
 	app.scene = &scene;
