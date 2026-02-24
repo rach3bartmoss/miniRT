@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
 /*   Updated: 2026/02/24 00:03:12 by joao-vri         ###   ########.fr       */
@@ -305,6 +305,8 @@ typedef struct s_cy_cap_ctx
 typedef struct s_pa_ctx
 {
 	t_paraboloid	*pa;
+	t_texture		*base;
+	t_texture		*bump;
 	int				i; // index
 	double			d[3];
 	double			o[3];
@@ -570,6 +572,8 @@ void		clean_preset_list(t_preset **arr);
 void		free_preset(t_preset *preset);
 int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
+//signal_handler.c
+void		ignore_signal(int sig);
 //apply_texture_color.c
 double		ft_clamp(double value, double min, double max);
 void		get_texture_color(t_texture *tex, int x, int y, int color[3]);
