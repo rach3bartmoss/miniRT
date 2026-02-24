@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/24 00:03:12 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/24 00:09:49 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -484,6 +484,8 @@ double		ray_intersection_pl_shadow(double *sr_origin, double *sr_dir,
 				t_plane *pl, double distance);
 double		ray_intersection_sp(double *sr_origin, double *sr_dir,
 				t_sphere *sphere);
+int			get_paraboloid_sr_t(double *new_origin, double *new_dir,
+				double distance, t_scene *scene);
 //light_phong.c
 double		apply_specular_light(t_scene *scene, t_render_ctx *render);
 int			combine_lights(t_render_ctx *render, t_scene *scene, double *dir);
