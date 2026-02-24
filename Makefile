@@ -89,62 +89,62 @@ BON_SRCS_DIR	= $(BON_DIR)/srcs
 BON_BUILD		= $(BON_DIR)/build
 
 BON_SRCS = \
-	$(BON_SRCS_DIR)/bonus/apply_checkerboard.c \
-	$(BON_SRCS_DIR)/bonus/apply_checkerboard_helper.c \
-	$(BON_SRCS_DIR)/bonus/click_event_bonus.c \
-	$(BON_SRCS_DIR)/bonus/apply_texture_color.c \
-	$(BON_SRCS_DIR)/bonus/apply_bump_mapping.c \
-	$(BON_SRCS_DIR)/bonus/plane_texture_color.c \
-	$(BON_SRCS_DIR)/bonus/input_textures.c \
-	$(BON_SRCS_DIR)/bonus/textures_utils.c \
-	$(BON_SRCS_DIR)/bonus/textures_assign.c \
-	$(BON_SRCS_DIR)/bonus/load_textures.c \
-	$(BON_SRCS_DIR)/utils/error_handlers.c \
-	$(BON_SRCS_DIR)/utils/common_utils.c \
-	$(BON_SRCS_DIR)/utils/common_utils_2.c \
-	$(BON_SRCS_DIR)/utils/common_utils_3.c \
-	$(BON_SRCS_DIR)/utils/common_utils_4.c \
-	$(BON_SRCS_DIR)/utils/init_hit_record.c \
-	$(BON_SRCS_DIR)/utils/clean_utils.c \
-	$(BON_SRCS_DIR)/utils/init_objects.c \
-	$(BON_SRCS_DIR)/parsing/fill_camera.c \
-	$(BON_SRCS_DIR)/parsing/fill_light.c \
-	$(BON_SRCS_DIR)/parsing/populate_structs.c \
-	$(BON_SRCS_DIR)/parsing/fill_cylinder.c \
-	$(BON_SRCS_DIR)/parsing/fill_ambiance.c \
-	$(BON_SRCS_DIR)/parsing/fill_plane.c \
-	$(BON_SRCS_DIR)/parsing/fill_sphere.c \
-	$(BON_SRCS_DIR)/parsing/fill_paraboloid.c \
-	$(BON_SRCS_DIR)/parsing/validate_array_utils.c \
-	$(BON_SRCS_DIR)/parsing/parser.c \
-	$(BON_SRCS_DIR)/parsing/fill_utils.c \
-	$(BON_SRCS_DIR)/objects/cylinder_intersection_utils.c \
-	$(BON_SRCS_DIR)/objects/plane_intersection.c \
-	$(BON_SRCS_DIR)/objects/sphere_render.c \
-	$(BON_SRCS_DIR)/objects/cylinder_caps.c \
-	$(BON_SRCS_DIR)/objects/sphere_intersection_utils.c \
-	$(BON_SRCS_DIR)/objects/plane_intersection_utils.c \
-	$(BON_SRCS_DIR)/objects/cylinder_shadow_rays_utils.c \
-	$(BON_SRCS_DIR)/objects/cylinder_caps_utils.c \
-	$(BON_SRCS_DIR)/objects/paraboloid_calc.c \
-	$(BON_SRCS_DIR)/objects/paraboloid_init.c \
-	$(BON_SRCS_DIR)/objects/paraboloid_intersection.c \
-	$(BON_SRCS_DIR)/math/create_vectors_utils.c \
-	$(BON_SRCS_DIR)/math/vector_operations_2.c \
-	$(BON_SRCS_DIR)/math/vector_operations_3.c \
-	$(BON_SRCS_DIR)/math/create_vectors.c \
-	$(BON_SRCS_DIR)/math/math_operations.c \
-	$(BON_SRCS_DIR)/math/vector_operations.c \
-	$(BON_SRCS_DIR)/hooks/key_events.c \
-	$(BON_SRCS_DIR)/hooks/signal_handler.c \
-	$(BON_SRCS_DIR)/render/light_management_utils.c \
-	$(BON_SRCS_DIR)/render/light_management.c \
-	$(BON_SRCS_DIR)/render/light_phong.c \
-	$(BON_SRCS_DIR)/render/put_pixel_utils.c \
-	$(BON_SRCS_DIR)/render/render_loop.c \
-	$(BON_SRCS_DIR)/render/render_thread.c \
-	$(BON_SRCS_DIR)/render/shading_utils.c \
-	$(BON_SRCS_DIR)/main.c
+	$(BON_SRCS_DIR)/bonus/apply_checkerboard_bonus.c \
+	$(BON_SRCS_DIR)/bonus/apply_checkerboard_helper_bonus.c \
+	$(BON_SRCS_DIR)/bonus/click_event_bonus_bonus.c \
+	$(BON_SRCS_DIR)/bonus/apply_texture_color_bonus.c \
+	$(BON_SRCS_DIR)/bonus/apply_bump_mapping_bonus.c \
+	$(BON_SRCS_DIR)/bonus/plane_texture_color_bonus.c \
+	$(BON_SRCS_DIR)/bonus/input_textures_bonus.c \
+	$(BON_SRCS_DIR)/bonus/textures_utils_bonus.c \
+	$(BON_SRCS_DIR)/bonus/textures_assign_bonus.c \
+	$(BON_SRCS_DIR)/bonus/load_textures_bonus.c \
+	$(BON_SRCS_DIR)/utils/error_handlers_bonus.c \
+	$(BON_SRCS_DIR)/utils/common_utils_bonus.c \
+	$(BON_SRCS_DIR)/utils/common_utils_2_bonus.c \
+	$(BON_SRCS_DIR)/utils/common_utils_3_bonus.c \
+	$(BON_SRCS_DIR)/utils/common_utils_4_bonus.c \
+	$(BON_SRCS_DIR)/utils/init_hit_record_bonus.c \
+	$(BON_SRCS_DIR)/utils/clean_utils_bonus.c \
+	$(BON_SRCS_DIR)/utils/init_objects_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_camera_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_light_bonus.c \
+	$(BON_SRCS_DIR)/parsing/populate_structs_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_cylinder_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_ambiance_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_plane_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_sphere_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_paraboloid_bonus.c \
+	$(BON_SRCS_DIR)/parsing/validate_array_utils_bonus.c \
+	$(BON_SRCS_DIR)/parsing/parser_bonus.c \
+	$(BON_SRCS_DIR)/parsing/fill_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/cylinder_intersection_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/plane_intersection_bonus.c \
+	$(BON_SRCS_DIR)/objects/sphere_render_bonus.c \
+	$(BON_SRCS_DIR)/objects/cylinder_caps_bonus.c \
+	$(BON_SRCS_DIR)/objects/sphere_intersection_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/plane_intersection_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/cylinder_shadow_rays_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/cylinder_caps_utils_bonus.c \
+	$(BON_SRCS_DIR)/objects/paraboloid_calc_bonus.c \
+	$(BON_SRCS_DIR)/objects/paraboloid_init_bonus.c \
+	$(BON_SRCS_DIR)/objects/paraboloid_intersection_bonus.c \
+	$(BON_SRCS_DIR)/math/create_vectors_utils_bonus.c \
+	$(BON_SRCS_DIR)/math/vector_operations_2_bonus.c \
+	$(BON_SRCS_DIR)/math/vector_operations_3_bonus.c \
+	$(BON_SRCS_DIR)/math/create_vectors_bonus.c \
+	$(BON_SRCS_DIR)/math/math_operations_bonus.c \
+	$(BON_SRCS_DIR)/math/vector_operations_bonus.c \
+	$(BON_SRCS_DIR)/hooks/key_events_bonus.c \
+	$(BON_SRCS_DIR)/hooks/signal_handler_bonus.c \
+	$(BON_SRCS_DIR)/render/light_management_utils_bonus.c \
+	$(BON_SRCS_DIR)/render/light_management_bonus.c \
+	$(BON_SRCS_DIR)/render/light_phong_bonus.c \
+	$(BON_SRCS_DIR)/render/put_pixel_utils_bonus.c \
+	$(BON_SRCS_DIR)/render/render_loop_bonus.c \
+	$(BON_SRCS_DIR)/render/render_thread_bonus.c \
+	$(BON_SRCS_DIR)/render/shading_utils_bonus.c \
+	$(BON_SRCS_DIR)/main_bonus.c
 
 BON_OBJS = $(BON_SRCS:$(BON_SRCS_DIR)/%.c=$(BON_BUILD)/%.o)
 
@@ -227,19 +227,23 @@ clean:
 	@rm -rf $(MAN_BUILD)
 	@$(MAKE) clean -s -C $(MAN_LIBFT_DIR)
 	@$(MAKE) clean -s -C $(MAN_MLX_DIR)
+
+clean_bonus:
 	@echo "$(RED)Cleaning bonus objects...$(RESET)"
 	@rm -rf $(BON_BUILD)
 	@$(MAKE) clean -s -C $(BON_LIBFT_DIR)
 	@$(MAKE) clean -s -C $(BON_MLX_DIR)
 
-fclean: clean
+fclean: clean clean_bonus
 	@echo "$(RED)Removing executables...$(RESET)"
 	@rm -f $(NAME) $(NAME_BONUS)
 	@$(MAKE) fclean -s -C $(MAN_LIBFT_DIR)
 	@$(MAKE) fclean -s -C $(BON_LIBFT_DIR)
 
-re: fclean all
+re: clean
+	@$(MAKE) all
 
-re_bonus: fclean bonus
+re_bonus: clean_bonus
+	@$(MAKE) bonus
 
-.PHONY: all bonus clean fclean re re_bonus valgrind valgrind_bonus
+.PHONY: all bonus clean clean_bonus fclean re re_bonus valgrind valgrind_bonus
