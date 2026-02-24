@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 22:16:39 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/20 11:09:25 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/24 03:31:52 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,16 @@ t_texture	*load_texture(t_app *app, char *filename)
 
 void	init_textures_assing_loop(t_app *app, int *i, int *j)
 {
-	app->textures[*i] = load_texture(app, app->preset_list[*j]->base);
+	if (app->preset_list[*j])
+		app->textures[*i] = load_texture(app, app->preset_list[*j]->base);
 	if (app->textures[*i])
 	{
 		app->textures[*i]->type = BASE;
 		app->textures[*i]->preset = app->preset_list[*j];
 	}
 	(*i)++;
-	app->textures[*i] = load_texture(app, app->preset_list[*j]->bump);
+	if (app->preset_list[*j])
+		app->textures[*i] = load_texture(app, app->preset_list[*j]->bump);
 	if (app->textures[*i])
 	{
 		app->textures[*i]->type = BUMP;

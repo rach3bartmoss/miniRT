@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 01:58:23 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/24 03:51:17 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/24 04:01:54 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_preset	*store_preset(char *line)
 	return (preset);
 }
 
-void	load_conf_file_loop(t_preset ***preset_list, FILE *f)
+int	load_conf_file_loop(t_preset ***preset_list, FILE *f)
 {
 	size_t	len;
 	int		i;
@@ -60,11 +60,12 @@ void	load_conf_file_loop(t_preset ***preset_list, FILE *f)
 			clean_preset_list(*preset_list);
 			free(line);
 			*preset_list = NULL;
-			return ;
+			return (0);
 		}
 		i++;
 	}
 	free(line);
+	return (1);
 }
 
 t_preset	**load_conf_file(char *filename)
@@ -84,7 +85,8 @@ t_preset	**load_conf_file(char *filename)
 		fclose(f);
 		return (NULL);
 	}
-	load_conf_file_loop(&preset_list, f);
+	if (!load_conf_file_loop(&preset_list, f))
+		return (fclose(f), NULL);
 	fclose(f);
 	return (preset_list);
 }
