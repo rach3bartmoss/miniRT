@@ -6,7 +6,7 @@
 /*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 01:58:23 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 01:45:13 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/24 03:39:05 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_preset	*store_preset(char *line)
 	return (preset);
 }
 
-void	load_conf_file_loop(t_preset ***preset_list, FILE *f)
+int	load_conf_file_loop(t_preset ***preset_list, FILE *f)
 {
 	size_t	len;
 	int		i;
@@ -60,11 +60,12 @@ void	load_conf_file_loop(t_preset ***preset_list, FILE *f)
 			clean_preset_list(*preset_list);
 			free(line);
 			*preset_list = NULL;
-			return ;
+			return (0);
 		}
 		i++;
 	}
 	free(line);
+	return (1);
 }
 
 t_preset	**load_conf_file(char *filename)
@@ -84,7 +85,8 @@ t_preset	**load_conf_file(char *filename)
 		fclose(f);
 		return (NULL);
 	}
-	load_conf_file_loop(&preset_list, f);
+	if (!load_conf_file_loop(&preset_list, f))
+		return (fclose(f), NULL);
 	fclose(f);
 	return (preset_list);
 }
@@ -113,7 +115,7 @@ void	handle_right_click(int x, int y, t_app *app)
 	if (!app->preset_list)
 	{
 		app->preset_list = load_conf_file("configure/styles.conf");
-		if (!init_textures(app))
+		if (!app->preset_list || !init_textures(app))
 		{
 			clean_preset_list(app->preset_list);
 			return ;
