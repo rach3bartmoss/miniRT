@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   click_event_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:36:25 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/06 22:10:50 by dopereir         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:35:47 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	rerender(t_app *app)
 			app->win->height);
 	app->win->addr = mlx_get_data_addr(app->win->img, &app->win->bpp,
 			&app->win->line_length, &app->win->endian);
-	start_multithread_render(app);
+	start_multithread_render(app, sysconf(_SC_NPROCESSORS_ONLN));
 	app->click_lock = 0;
 }
 

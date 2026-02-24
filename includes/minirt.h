@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/24 00:03:12 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,7 @@ typedef struct s_pa_ctx
 	double			b; // interaction
 	double			c; // relative position
 	double			discr; // discriminant
+	double			t; // distance
 }	t_pa_ctx;
 
 typedef struct s_abc
@@ -459,9 +460,11 @@ void		init_hit_record(t_ray_table *ray_table);
 //init_objects.c
 int			init_objects(t_scene *scene);
 //render_loop.c
-void		*render_thread(void *data);
-void		start_multithread_render(t_app *app);
+void		apply_object_base_color(t_render_ctx *render, t_scene *scene);
 void		render_objects(t_app *app);
+//render_thread.c
+void		*render_thread(void *data);
+void		start_multithread_render(t_app *app, int n_threads);
 //shading_utils.c
 int			apply_shade_to_pixel(t_app *app, t_hit *hit);
 //sphere_render.c
@@ -526,7 +529,8 @@ void		normalize_target_colors(double target_xyz[3], int rgb[3]);
 int			cross(double *a_xyz, double *b_xyz, double *target_xyz);
 double		ray_length(double vector[3]);
 void		set_vec_int_values(int vec[3], int va, int vb, int vc);
-void		set_vec_double_values(double vec[3], double va, double vb, double vc);
+void		set_vec_double_values(double vec[3], double va,
+				double vb, double vc);
 //key_events.c
 int			close_window(t_app *app);
 int			key_press(int keycode, t_app *app);
@@ -541,24 +545,21 @@ void		apply_checkerboard_for_plane(t_hit *hit, t_plane *pl,
 void		apply_checkerboard_cy(t_hit *hit, t_cylinder *cy, int target[3]);
 //apply_checkerboard_helper.c
 void		apply_matrix(double result[3], double m[4][4], double p[3]);
-void		fill_inv_matrix_helper(double m[4][4], double axis[3], double right[3],
-				double forward[3]);
+void		fill_inv_matrix_helper(double m[4][4], double axis[3],
+				double right[3], double forward[3]);
 void		fill_inv_matrix(double m[4][4], t_cylinder *cy);
 void		reverse_checkboard_pattern(t_render_ctx *render, t_scene *scene);
 //click_event_bonus.c
 void		handle_click(int x, int y, t_app *app);
 void		rerender(t_app *app);
-
 //input_textures.c
 void		handle_right_click(int x, int y, t_app *app);
-
 //textures_assign.c
 t_preset	*input_match_preset_name(t_preset **list, char *line);
 void		assign_texture_to_hit_obj(t_app *app, t_hit *hit,
 				t_tex_pair *pair);
 t_tex_pair	*link_texture_preset(t_preset *preset, t_app *app);
 t_preset	*choose_preset(t_preset **list);
-
 //load_textures.c
 t_texture	*load_xpm_file(t_app *app, char *filename);
 t_texture	*load_texture(t_app *app, char *filename);
@@ -569,7 +570,6 @@ void		clean_preset_list(t_preset **arr);
 void		free_preset(t_preset *preset);
 int			check_preset_values(t_preset *preset);
 int			sanitize_preset_line(t_preset **list, char *line);
-
 //apply_texture_color.c
 double		ft_clamp(double value, double min, double max);
 void		get_texture_color(t_texture *tex, int x, int y, int color[3]);
@@ -578,15 +578,20 @@ void		apply_textures_for_hit(t_hit *rec, t_scene *scene);
 void		apply_sphere_bump(t_hit *hit, t_texture *bump);
 //plane_texture_color.c
 void		apply_plane_texture(t_hit *hit, t_texture *tex, t_plane *pl);
-//paraboloid test
-void	init_paraboloid_ctx(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, t_scene *scene, t_ray_table *ray_table, int i);
-void	init_shadow_paraboloid(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx, double *new_origin, double *dir);
-int		paraboloid_discriminant(t_pa_ctx *curr_ctx);
-double	paraboloid_quadratic(t_pa_ctx *curr_ctx);
-double	paraboloid_height_test(t_pa_ctx *curr_ctx, double tx);
-void	paraboloid_normal(t_pa_ctx *curr_ctx, double t);
-void	ray_paraboloid_intersection(t_ray_table *ray_table, t_scene *scene, int shadow);
-double	ray_intersection_pa_shadow(double *new_origin, double *new_dir, t_paraboloid *pa);
+//paraboloid_init.c
+void		init_paraboloid_ctx(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx,
+				t_scene *scene, t_ray_table *ray_table);
+void		init_shadow_paraboloid(t_paraboloid *curr_pa, t_pa_ctx *curr_ctx,
+				double *new_origin, double *dir);
+//paraboloid_calc.c
+int			paraboloid_discriminant(t_pa_ctx *curr_ctx);
+double		paraboloid_quadratic(t_pa_ctx *curr_ctx);
+double		paraboloid_height_test(t_pa_ctx *curr_ctx, double tx);
+void		paraboloid_normal(t_pa_ctx *curr_ctx, double t);
+//paraboloid_intersection.c
+void		ray_paraboloid_intersection(t_ray_table *ray_table, t_scene *scene);
+double		ray_intersection_pa_shadow(double *new_origin, double *new_dir,
+				t_paraboloid *pa);
 
 //STRUCTS FOR BONUS
 typedef struct s_ck_ctx

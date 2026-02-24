@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 21:26:38 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:13:27 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ double	cylinder_top_sr(t_cy_ctx *cy_ctx, double t_max)
 		return (-1.0f);
 }
 
-void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx, double *sr_origin, double *sr_dir)
+void	prep_sr_cy_intersect(t_cy_ctx *cy_ctx,
+	double *sr_origin, double *sr_dir)
 {
 	copy_vectors(cy_ctx->normal, cy_ctx->curr_cy->cy_vector_xyz);
 	copy_vectors(cy_ctx->d, sr_dir);

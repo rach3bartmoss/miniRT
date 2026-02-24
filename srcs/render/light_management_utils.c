@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 22:27:10 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:30:00 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ double	ray_intersection_sp(double *sr_origin, double *sr_dir,
 	return (t);
 }
 
-double	ray_intersection_pl_shadow(double *sr_origin, double *sr_dir, t_plane *pl,
-	double distance)
+double	ray_intersection_pl_shadow(double *sr_origin, double *sr_dir,
+	t_plane *pl, double distance)
 {
 	double	denom;
 	double	plane0_light0[3];
@@ -58,9 +58,10 @@ double	ray_intersection_pl_shadow(double *sr_origin, double *sr_dir, t_plane *pl
 		return (-1.0);
 }
 
-double	ray_intersection_pa_shadow(double *new_origin, double *new_dir, t_paraboloid *pa)
+double	ray_intersection_pa_shadow(double *new_origin,
+	double *new_dir, t_paraboloid *pa)
 {
-	double	  t;
+	double		t;
 	t_pa_ctx	shadow_ctx;
 
 	init_shadow_paraboloid(pa, &shadow_ctx, new_origin, new_dir);

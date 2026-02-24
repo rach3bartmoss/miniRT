@@ -55,7 +55,9 @@ SRCS = 	srcs/bonus/apply_checkerboard.c \
 		srcs/objects/plane_intersection_utils.c \
 		srcs/objects/cylinder_shadow_rays_utils.c \
 		srcs/objects/cylinder_caps_utils.c \
-		srcs/objects/paraboloid_1.c \
+		srcs/objects/paraboloid_calc.c \
+		srcs/objects/paraboloid_init.c \
+		srcs/objects/paraboloid_intersection.c \
 		srcs/math/create_vectors_utils.c \
 		srcs/math/vector_operations_2.c \
 		srcs/math/vector_operations_3.c \
@@ -68,6 +70,7 @@ SRCS = 	srcs/bonus/apply_checkerboard.c \
 		srcs/render/light_phong.c \
 		srcs/render/put_pixel_utils.c \
 		srcs/render/render_loop.c \
+		srcs/render/render_thread.c \
 		srcs/render/shading_utils.c \
 		srcs/main.c
 

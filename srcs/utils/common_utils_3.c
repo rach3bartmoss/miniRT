@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 22:27:52 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:18:27 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	sign_handler(char **target_str)
 	return (sign);
 }
 
-int	parse_diameter(char *diameter_str, double *diameter_target, t_type_elem type)
+int	parse_diameter(char *diameter_str, double *diameter_target,
+	t_type_elem type)
 {
 	char	*endptr;
 	double	res;
