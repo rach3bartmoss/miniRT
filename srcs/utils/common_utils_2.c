@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:55:26 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:18:48 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	parse_coordinates(char *xyz_str, double xyz_target[3])
 	return (free_split(coordinates), 1);
 }
 
-static int	parse_vector_loop(char	*vector_value, double *vector_target, int *i)
+static int	parse_vector_loop(char	*vector_value, double *vector_target,
+	int *i)
 {
 	char	*endptr;
 

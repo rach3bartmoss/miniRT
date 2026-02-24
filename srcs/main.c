@@ -6,7 +6,7 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:30 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:32:52 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	run_program(t_app *app)
 	init_hit_record(app->ray_table);
 	render_objects(app);
 	mlx_put_image_to_window(app->win->mlx, app->win->win, app->win->img, 0, 0);
-	start_multithread_render(app);
+	start_multithread_render(app, sysconf(_SC_NPROCESSORS_ONLN));
 	mlx_put_image_to_window(app->win->mlx, app->win->win, app->win->img, 0, 0);
 	return (0);
 }

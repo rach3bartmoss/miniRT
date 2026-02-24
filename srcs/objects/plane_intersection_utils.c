@@ -6,26 +6,11 @@
 /*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:47:34 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/23 21:24:59 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:16:52 by joao-vri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-// DEPRECATED FUNCTION
-/*int	plane_occludes(double origin[3], double dir[3], double max_t, t_pl_ctx *P)
-{
-	double	diff[3];
-	double	denom;
-	double	t;
-
-	denom = dot(dir, P->normal);
-	if (fabs(denom) < 1e-6f)
-		return (-1);
-	sub(diff, P->p0, origin);
-	t = dot(diff, P->normal) / denom;
-	return (t > SHADOW_EPS && t < max_t);
-}*/
 
 static void	create_iter_pl_ctx(t_scene *scene, t_pl_ctx *pl_ctx)
 {
@@ -35,16 +20,14 @@ static void	create_iter_pl_ctx(t_scene *scene, t_pl_ctx *pl_ctx)
 	pl_ctx->denom = dot(pl_ctx->d, pl_ctx->normal);
 }
 
-//ray:		R(t) = O + tD
-//plane:	(X - P0) * n = 0
-/*	together:
+/* ray:		R(t) = O + tD
+plane:	(X - P0) * n = 0
+	together:
 			(O + td - P0) * n = 0
 	t	=	(Po - O) * n / D * n
-
 	if (D * N) = 0 ray is parallel to the plane
-*/
-//store into scale_tD = (t*D)
-//hit_p = (O + t * D)
+store into scale_tD = (t*D)
+hit_p = (O + t * D) */
 double	solve_pl_formula(t_scene *scene, t_pl_ctx *pl_ctx, int flag)
 {
 	double	t;
