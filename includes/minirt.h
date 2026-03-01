@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-vri <joao-vri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dopereir <dopereir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 18:36:51 by dopereir          #+#    #+#             */
-/*   Updated: 2026/02/24 00:09:49 by joao-vri         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:56:32 by dopereir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,25 +93,25 @@ typedef struct s_texture_pair
 
 typedef struct s_ambient
 {
-	char		id; //A
 	double		light_ratio;	//range between 0.0 - 1.0
 	int			a_rgb[3];			//[0-255]
+	char		id; //A
 }	t_ambient;
 
 typedef struct s_camera
 {
-	char		id; //C
 	double		coordinates_xyz[3];			//origin point of the camera
 	double		vector_xyz[3];	//Orientation of each axis XYZ [0.0~1.0]
 	double		fov;			//horizontal field view [0-180]
+	char		id; //C
 }	t_camera;
 
 typedef struct s_light
 {
-	char		id; //L
 	double		light_xyz[3];
 	double		bright_ratio;		//[0.0~1.0]
 	int			light_rgb[3];			//[0-255]
+	char		id; //L
 }	t_light;
 
 typedef struct s_sphere
@@ -154,10 +154,10 @@ typedef struct s_paraboloid
 {
 	double	center[3];
 	double	axis[3];
-	int		rgb[3];
 	double	k;//steepness
 	double	height;
 	char	*id;
+	int		rgb[3];
 }	t_paraboloid;
 
 typedef struct s_scene
